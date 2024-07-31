@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const ajudasCustoController = require('../controllers/ajudasCustoController');
+const ajudasCustoController = require('../controllers/estadoAjudasController');
 
 // Listar todos os custos
 router.get('/', ajudasCustoController.listarTodos);
 
 // Listar um custo por ID
-router.get('/:id', ajudasCustoController.listarPorId);
+router.get('/:id', ajudasCustoController.listarPorIds);
 
 // Criar um novo custo
 router.post('/create', ajudasCustoController.criar);

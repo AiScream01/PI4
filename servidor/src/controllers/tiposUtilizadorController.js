@@ -1,4 +1,4 @@
-const TiposUtilizador = require('../models/tiposUtilizador');
+const TiposUtilizador = require('../models/tipos_utilizador');
 
 // Listar todos os tipos de utilizador
 exports.listarTodos = async (req, res) => {

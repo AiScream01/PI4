@@ -6,19 +6,19 @@ const sequelize = require('./models/database');
 
 
 // Routes
-const utilizadorRoutes = require('./routes/utilizadoresRoute.js')
-const tiposutilizadorRoutes = require('./routes/tiposutilizadorRoute.js')
-const reunioesutilizadoresRoutes = require('./routes/reunioesutilizadoresRoute.js')
-const reunioesRoutes = require('./routes/reunioesRoute.js')
-const recibosvencimentoRoutes = require('./routes/recibosvencimentoRoute.js')
-const protocolosparceriaRoutes = require('./routes/protocolosparceriaRoute.js')
-const noticiasRoute = require('./routes/noticiasRoute.js')
-const logsRoute = require('./routes/logsRoute.js')
-const feriasRoute = require('./routes/feriasRoute.js')
-const faltasRoute = require('./routes/faltasRoute.js')
-const estadosRoute = require('./routes/estadosRoute.js')
-const despesasviaturaRoute = require('./routes/despesasviaturaRoute.js')
-const ajudascustoRoute = require('./routes/ajudascustoRoute.js')
+const utilizadorRoutes = require('./routes/utilizadoresRoutes.js')
+const tiposutilizadorRoutes = require('./routes/tipoutilizadorRoutes.js')
+const reunioesutilizadoresRoutes = require('./routes/reunioesutilizadoresRoutes.js')
+const reunioesRoutes = require('./routes/reunioesRoutes.js')
+const recibosvencimentoRoutes = require('./routes/recibosvencimentoRoutes.js')
+const protocolosparceriaRoutes = require('./routes/protocolosparceriaRoutes.js')
+const noticiasRoute = require('./routes/noticiasRoutes.js')
+const logsRoute = require('./routes/logsRoutes.js')
+const feriasRoute = require('./routes/feriasRoutes.js')
+const faltasRoute = require('./routes/faltasRoutes.js')
+const estadosRoute = require('./routes/estadoRoutes.js')
+const despesasviaturaRoute = require('./routes/despesasviaturapessoalRoutes.js')
+const ajudascustoRoute = require('./routes/ajudascustoRoutes.js')
 
 
 // Configurações
