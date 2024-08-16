@@ -1,72 +1,77 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 
-export default function AjudasCusto() {
-  const ajudas = [
-    {
-      id: 1,
-      imagem: 'path/to/image.jpg',  // Substitua por um caminho real
-      nome: 'Nome do Colaborador',
-      custo: '100€',
-      descricao: 'Descrição do custo',
-      comprovativo: 'ficheiro.pdf',
-    },
+export default function Ajudas() {
+    const ajudasData = [
+        {
+            id: 1,
+            imagem: 'https://via.placeholder.com/50',
+            nome: 'João Silva',
+            custo: '50€',
+            descricao: 'Compra de material de escritório',
+            comprovativo: 'comprovativo1.pdf'
+        },
+        {
+            id: 2,
+            imagem: 'https://via.placeholder.com/50',
+            nome: 'Maria Santos',
+            custo: '100€',
+            descricao: 'Reembolso de viagem',
+            comprovativo: 'comprovativo2.pdf'
+        },
+        {
+            id: 3,
+            imagem: 'https://via.placeholder.com/50',
+            nome: 'Carlos Pereira',
+            custo: '75€',
+            descricao: 'Refeição com cliente',
+            comprovativo: 'comprovativo3.pdf'
+        }
+    ];
 
-  ];
-
-  return (
-    <div className="bg">
-      <div className="container py-5 h-100">
-        <div className="row d-flex justify-content-center align-items-center h-100">
-          <div className="col-12 col-md-8 col-lg-12 col-xl-12">
-            <div className="card bg-light text-black" style={{ borderRadius: '1rem' }}>
-              <div className="card-body p-5 text-center">
-                <div className="mb-md-5 mt-md-4 pb-5">
-                  <h2>Ajudas de Custo</h2>
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Colaborador</th>
-                        <th scope="col">Custo</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Comprovativo</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody className="table-group-divider">
-                      {ajudas.map((ajuda) => (
-                        <tr key={ajuda.id}>
-                          <td>
-                            <img src={ajuda.imagem} alt="Imagem do colaborador" style={{ width: '50px', borderRadius: '50%' }} />
-                          </td>
-                          <td>{ajuda.nome}</td>
-                          <td>{ajuda.custo}</td>
-                          <td>{ajuda.descricao}</td>
-                          <td>{ajuda.comprovativo}</td>
-                          <td>
-                            <button
-                              type="button"
-                              className="btn btn-outline-dark me-2 rounded-pill"
-                            >
-                              Aceitar
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-outline-danger rounded-pill"
-                            >
-                              Rejeitar
-                            </button>
-                          </td>
+    return (
+        <div className="container mt-5">
+            <h2 className="mb-4">Ajudas</h2>
+            <div className="table-responsive">
+                <table className="table align-middle">
+                    <thead className="table-light">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Colaborador</th>
+                            <th scope="col">Custo</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Comprovativo</th>
+                            <th scope="col">Ações</th>
                         </tr>
-                      ))}
+                    </thead>
+                    <tbody>
+                        {ajudasData.map((ajuda) => (
+                            <tr key={ajuda.id}>
+                                <td>
+                                    <img src={ajuda.imagem} alt="User" className="rounded-circle" width="40" height="40" />
+                                </td>
+                                <td>{ajuda.nome}</td>
+                                <td>{ajuda.custo}</td>
+                                <td>{ajuda.descricao}</td>
+                                <td>
+                                    <a href={`/path/to/comprovativos/${ajuda.comprovativo}`} download className="text-decoration-none">
+                                        <FaFilePdf className="me-2" /> {ajuda.comprovativo}
+                                    </a>
+                                </td>
+                                <td>
+                                    <button className="btn p-1" style={{ color: 'green' }}>
+                                        <FaCheck size={20} />
+                                    </button>
+                                    <button className="btn p-1" style={{ color: 'red' }}>
+                                        <FaTimes size={20} />
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
-                  </table>
-                </div>
-              </div>
+                </table>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

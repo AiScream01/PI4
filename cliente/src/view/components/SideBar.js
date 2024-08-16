@@ -21,6 +21,11 @@ export default function SideBar() {
                     </Link>
                 </li>
                 <li className="nav-item">
+                    <Link to="/ajudas" className="nav-link text-white">
+                        Ajudas
+                    </Link>
+                </li>
+                <li className="nav-item">
                     <Link to="/viatura-propria" className="nav-link text-white">
                         Viatura Própria
                     </Link>

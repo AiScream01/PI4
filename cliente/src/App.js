@@ -8,6 +8,7 @@ import SideBar from "./view/components/SideBar";
 // Importar componentes para as diferentes páginas
 import PedidoFerias from "./view/backoffice/PedidoFerias";
 import Horas from "./view/backoffice/Horas";
+import Ajudas from "./view/backoffice/AjudasCusto"
 import ViaturaPropria from "./view/backoffice/ViaturaPropria";
 import Faltas from "./view/backoffice/Faltas";
 import DadosPessoais from "./view/backoffice/DadosPessoais";
@@ -27,6 +28,7 @@ export default function App() {
                     <Routes>
                         <Route path="/pedido-ferias" element={<PedidoFerias />} />
                         <Route path="/horas" element={<Horas />} />
+                        <Route path="/ajudas" element={<Ajudas />} />
                         <Route path="/viatura-propria" element={<ViaturaPropria />} />
                         <Route path="/faltas" element={<Faltas />} />
                         <Route path="/dados-pessoais" element={<DadosPessoais />} />
