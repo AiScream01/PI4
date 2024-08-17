@@ -28,13 +28,19 @@ exports.listarPorId = async (req, res) => {
 // Criar nova parceria
 exports.criar = async (req, res) => {
     try {
-        const parceria = await ProtocolosParcerias.create(req.body);
+        const { titulo, descricao, categoria, logotipo } = req.body;
+        const parceria = await ProtocolosParcerias.create({
+            titulo,
+            descricao,
+            categoria,
+            logotipo
+        });
         res.status(201).json(parceria);
     } catch (error) {
+        console.error('Erro ao criar parceria:', error); // Log do erro para debug
         res.status(500).json({ error: error.message });
     }
 };
-
 // Atualizar parceria por ID
 exports.atualizar = async (req, res) => {
     try {

@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const sequelize = require('./database'); // Conexão com o banco de dados
 
-// Defina o modelo Noticias
 const Noticias = sequelize.define('Noticias', {
     id_noticia: {
         type: DataTypes.INTEGER,
@@ -13,7 +12,7 @@ const Noticias = sequelize.define('Noticias', {
         allowNull: false
     },
     descricao: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false
     },
     data: {
@@ -21,12 +20,12 @@ const Noticias = sequelize.define('Noticias', {
         allowNull: false
     },
     imagem: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: true
     }
 }, {
     tableName: 'noticias',
-    timestamps: false // Para não adicionar colunas de timestamps automaticamente
+    timestamps: false
 });
 
 module.exports = Noticias;
