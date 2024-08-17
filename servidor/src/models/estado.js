@@ -1,7 +1,7 @@
+// models/estado.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const sequelize = require('./database');
 
-// Defina o modelo Estado
 const Estado = sequelize.define('Estado', {
     id_estado: {
         type: DataTypes.INTEGER,
@@ -14,8 +14,7 @@ const Estado = sequelize.define('Estado', {
     }
 }, {
     tableName: 'estado',
-    timestamps: false // Para não adicionar colunas de timestamps automaticamente
+    timestamps: false
 });
 
 module.exports = Estado;
-

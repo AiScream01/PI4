@@ -1,7 +1,9 @@
+// models/estado_ferias.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const sequelize = require('./database');
+const Estado = require('./estado'); // Ajuste o caminho conforme necessário
+const Ferias = require('./ferias'); // Ajuste o caminho conforme necessário
 
-// Defina o modelo EstadoFerias
 const EstadoFerias = sequelize.define('EstadoFerias', {
     id_estado: {
         type: DataTypes.INTEGER,
@@ -13,15 +15,10 @@ const EstadoFerias = sequelize.define('EstadoFerias', {
     }
 }, {
     tableName: 'estado_ferias',
-    timestamps: false // Para não adicionar colunas de timestamps automaticamente
+    timestamps: false
 });
 
-// Defina o relacionamento com o modelo Estado
-const Estado = require('./estado'); // Certifique-se de ajustar o caminho conforme necessário
+// Associação com Estado
 EstadoFerias.belongsTo(Estado, { foreignKey: 'id_estado' });
-
-// Defina o relacionamento com o modelo Ferias
-const Ferias = require('./ferias'); // Certifique-se de ajustar o caminho conforme necessário
-EstadoFerias.belongsTo(Ferias, { foreignKey: 'id_ferias' });
 
 module.exports = EstadoFerias;

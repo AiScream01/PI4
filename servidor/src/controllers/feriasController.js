@@ -1,14 +1,36 @@
+// controllers/feriasController.js
 const Ferias = require('../models/ferias');
+const EstadoFerias = require('../models/estado_ferias');
+const Estado = require('../models/estado');
 
-// Listar todas as férias
+// Listar todas as férias com o estado correspondente
 exports.listarTodos = async (req, res) => {
     try {
-        const ferias = await Ferias.findAll();
-        res.json(ferias);
+        const ferias = await Ferias.findAll({
+            include: [
+                {
+                    model: EstadoFerias,
+                    include: [
+                        {
+                            model: Estado,
+                            attributes: ['id_estado', 'estado']
+                        }
+                    ],
+                    attributes: ['id_estado']
+                }
+            ],
+            attributes: ['id_ferias', 'data_inicio', 'data_fim', 'id_user']
+        });
+
+        // Filtrar apenas as férias com estado "Pendente" (id_estado === 3)
+        const pendentes = ferias.filter(item => item.estado_ferias.some(estado => estado.estado.id_estado === 3)); // 3 = Pendente
+
+        res.json(pendentes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Listar férias por ID
 exports.listarPorId = async (req, res) => {
