@@ -1,7 +1,6 @@
-// models/ferias.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
-const Utilizadores = require('./utilizadores'); // Ajuste o caminho conforme necessário
+const Utilizadores = require('./utilizadores');
 
 const Ferias = sequelize.define('Ferias', {
     id_ferias: {
@@ -27,10 +26,6 @@ const Ferias = sequelize.define('Ferias', {
 });
 
 // Associação com Utilizadores
-Ferias.belongsTo(Utilizadores, { foreignKey: 'id_user' });
-
-// Associação com EstadoFerias
-const EstadoFerias = require('./estado_ferias'); // Ajuste o caminho conforme necessário
-Ferias.hasMany(EstadoFerias, { foreignKey: 'id_ferias' });
+Ferias.belongsTo(Utilizadores, { foreignKey: 'id_user', as: 'utilizador' });
 
 module.exports = Ferias;

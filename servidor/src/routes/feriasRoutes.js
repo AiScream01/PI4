@@ -5,6 +5,9 @@ const feriasController = require('../controllers/feriasController');
 // Listar todas as férias
 router.get('/', feriasController.listarTodos);
 
+// Listar todas as férias pendentes
+router.get('/pendentes', feriasController.listarPendentes);
+
 // Listar férias por ID
 router.get('/:id_ferias', feriasController.listarPorId);
 

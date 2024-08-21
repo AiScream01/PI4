@@ -3,22 +3,48 @@ const path = require('path');
 const app = express();
 const sequelize = require('./models/database');
 
-
+// Importa o arquivo de associações
+require('./models/associations');
 
 // Routes
+//Utilizador
 const utilizadorRoutes = require('./routes/utilizadoresRoutes.js')
 const tiposutilizadorRoutes = require('./routes/tipoutilizadorRoutes.js')
+
+//horas
+const horasRoute = require('./routes/horasRoutes.js')
+
+//estado e estados
+const estadosRoute = require('./routes/estadoRoutes.js')
+
+//reuniões
 const reunioesutilizadoresRoutes = require('./routes/reunioesutilizadoresRoutes.js')
 const reunioesRoutes = require('./routes/reunioesRoutes.js')
+
+//recibos de vencimento
 const recibosvencimentoRoutes = require('./routes/recibosvencimentoRoutes.js')
+
+//Parcerias
 const protocolosparceriaRoutes = require('./routes/protocolosparceriaRoutes.js')
+
+//Noticias
 const noticiasRoute = require('./routes/noticiasRoutes.js')
+
+//Logs
 const logsRoute = require('./routes/logsRoutes.js')
+
+//Ferias
 const feriasRoute = require('./routes/feriasRoutes.js')
+
+//Faltas
 const faltasRoute = require('./routes/faltasRoutes.js')
-const estadosRoute = require('./routes/estadoRoutes.js')
+
+//Despesas Viatura Própria
 const despesasviaturaRoute = require('./routes/despesasviaturapessoalRoutes.js')
+
+//Ajudas de custo
 const ajudascustoRoute = require('./routes/ajudascustoRoutes.js')
+
 
 
 // Configurações
@@ -41,6 +67,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Adicion
 app.use('/utilizador', utilizadorRoutes)
 app.use('/tiposutilizador', tiposutilizadorRoutes)
 app.use('/reunioesutilizadores', reunioesutilizadoresRoutes)
+app.use('/horas', horasRoute)
 app.use('/reunioes', reunioesRoutes)
 app.use('/recibovencimento', recibosvencimentoRoutes)
 app.use('/protocolosparceria', protocolosparceriaRoutes)

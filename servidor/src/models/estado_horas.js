@@ -1,7 +1,7 @@
+// models/estado_horas.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const sequelize = require('./database');
 
-// Defina o modelo EstadoHoras
 const EstadoHoras = sequelize.define('EstadoHoras', {
     id_estado: {
         type: DataTypes.INTEGER,
@@ -13,15 +13,7 @@ const EstadoHoras = sequelize.define('EstadoHoras', {
     }
 }, {
     tableName: 'estado_horas',
-    timestamps: false // Para não adicionar colunas de timestamps automaticamente
+    timestamps: false
 });
-
-// Defina o relacionamento com o modelo Estado
-const Estado = require('./estado'); // Certifique-se de ajustar o caminho conforme necessário
-EstadoHoras.belongsTo(Estado, { foreignKey: 'id_estado' });
-
-// Defina o relacionamento com o modelo Horas
-const Horas = require('./horas'); // Certifique-se de ajustar o caminho conforme necessário
-EstadoHoras.belongsTo(Horas, { foreignKey: 'id_horas' });
 
 module.exports = EstadoHoras;

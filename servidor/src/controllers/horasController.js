@@ -1,10 +1,41 @@
 const Horas = require('../models/horas');
+const EstadoHoras = require('../models/estado_horas'); // Supondo que exista um model para estado_horas
+const Estado = require('../models/estado'); // Supondo que exista um model para estado
+const Utilizador = require ('../models/utilizadores.js')
+
 
 // Listar todas as horas
 exports.listarTodos = async (req, res) => {
     try {
         const horas = await Horas.findAll();
         res.json(horas);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Listar todas as horas pendentes
+exports.listarPendentes = async (req, res) => {
+    try {
+        const horasPendentes = await Horas.findAll({
+            include: [
+                {
+                    model: EstadoHoras,
+                    include: [{
+                        model: Estado,
+                        where: {
+                            id_estado: 3 // Aqui colocamos o ID do estado "pendente"
+                        }
+                    }]
+                },
+                {
+                    model: Utilizador,
+                    as: 'utilizador',
+                    attributes: ['nome', 'foto']
+                }
+            ]
+        });
+        res.json(horasPendentes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -53,6 +84,35 @@ exports.atualizar = async (req, res) => {
     }
 };
 
+// Atualizar estado das horas
+exports.atualizarEstadoHoras = async (req, res) => {
+    try {
+        const { id_estado, id_horas } = req.params;
+        const { novo_estado } = req.body;
+
+        // Verifica se o estado e horas existem
+        const estadoHoras = await EstadoHoras.findOne({ where: { id_estado, id_horas } });
+
+        if (!estadoHoras) {
+            return res.status(404).json({ message: 'EstadoHoras não encontrado' });
+        }
+
+        // Atualiza o estado
+        const [updated] = await EstadoHoras.update({ id_estado: novo_estado }, {
+            where: { id_estado, id_horas }
+        });
+
+        if (updated) {
+            const updatedEstadoHoras = await EstadoHoras.findOne({ where: { id_estado, id_horas } });
+            res.json(updatedEstadoHoras);
+        } else {
+            res.status(404).json({ message: 'Erro ao atualizar EstadoHoras' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
 // Eliminar horas por ID
 exports.eliminar = async (req, res) => {
     try {
@@ -69,3 +129,5 @@ exports.eliminar = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
