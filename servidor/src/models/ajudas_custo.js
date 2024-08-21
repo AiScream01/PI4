@@ -31,6 +31,6 @@ const AjudasCusto = sequelize.define('AjudasCusto', {
 
 // Defina o relacionamento com o modelo Utilizadores
 const Utilizadores = require('./utilizadores'); // Certifique-se de ajustar o caminho conforme necessário
-AjudasCusto.belongsTo(Utilizadores, { foreignKey: 'id_user' });
+AjudasCusto.belongsTo(Utilizadores, { foreignKey: 'id_user', as: 'utilizador' });
 
 module.exports = AjudasCusto;

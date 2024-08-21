@@ -41,8 +41,8 @@ Estado.hasMany(EstadoFaltas, { foreignKey: 'id_estado' });
 EstadoFaltas.belongsTo(Estado, { foreignKey: 'id_estado' });
 
 // Despesas e EstadoDespesas
-Despesas.hasMany(EstadoDespesas, { foreignKey: 'id_despesas' });
-EstadoDespesas.belongsTo(Despesas, { foreignKey: 'id_despesas' });
+Despesas.hasMany(EstadoDespesas, { foreignKey: 'id_despesa' });
+EstadoDespesas.belongsTo(Despesas, { foreignKey: 'id_despesa' });
 
 // Estado e EstadoDespesas
 Estado.hasMany(EstadoDespesas, { foreignKey: 'id_estado' });

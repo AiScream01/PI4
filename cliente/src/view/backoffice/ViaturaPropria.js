@@ -1,41 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
+import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 
 export default function ViaturaPropria() {
-    const viaturaData = [
-        {
-            id: 1,
-            imagem: 'https://via.placeholder.com/50',
-            nome: 'João Silva',
-            km: '50 km',
-            partida: 'Lisboa',
-            chegada: 'Porto',
-            portagens: '5.50€'
-        },
-        {
-            id: 2,
-            imagem: 'https://via.placeholder.com/50',
-            nome: 'Maria Santos',
-            km: '100 km',
-            partida: 'Coimbra',
-            chegada: 'Lisboa',
-            portagens: '10.00€'
-        },
-        {
-            id: 3,
-            imagem: 'https://via.placeholder.com/50',
-            nome: 'Carlos Pereira',
-            km: '200 km',
-            partida: 'Faro',
-            chegada: 'Lisboa',
-            portagens: '20.00€'
+    const [viaturaData, setViaturaData] = useState([]);
+
+    useEffect(() => {
+        const fetchViaturaData = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}despesasviatura/pendentes`); // Ajuste o endpoint conforme necessário
+                setViaturaData(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar as despesas de viatura pessoal:', error);
+            }
+        };
+
+        fetchViaturaData();
+    }, []);
+
+    const atualizarEstadoDespesa = async (idDespesa, novoEstado) => {
+        try {
+            const response = await axios.put(`${API_BASE_URL}despesasviatura/estado/update/${novoEstado}/${idDespesa}`);
+            console.log('Estado atualizado com sucesso:', response.data);
+            // Atualize o estado local após a atualização
+            setViaturaData(viaturaData.map(despesa => 
+                despesa.id_despesa === idDespesa ? { ...despesa, estado: novoEstado } : despesa
+            ));
+        } catch (error) {
+            console.error('Erro ao atualizar estado da despesa:', error);
         }
-    ];
+    };
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4">Viatura Própria</h2>
+            <h2 className="mb-4">Despesas de Viatura Própria</h2>
             <div className="table-responsive">
                 <table className="table align-middle">
                     <thead className="table-light">
@@ -51,20 +51,28 @@ export default function ViaturaPropria() {
                     </thead>
                     <tbody>
                         {viaturaData.map((viatura) => (
-                            <tr key={viatura.id}>
+                            <tr key={viatura.id_despesa}>
                                 <td>
                                     <img src={viatura.imagem} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
-                                <td>{viatura.nome}</td>
+                                <td>{viatura.utilizador.nome}</td>
                                 <td>{viatura.km}</td>
-                                <td>{viatura.partida}</td>
-                                <td>{viatura.chegada}</td>
-                                <td>{viatura.portagens}</td>
+                                <td>{viatura.ponto_partida}</td>
+                                <td>{viatura.ponto_chegada}</td>
+                                <td>{viatura.preco_portagens}</td>
                                 <td>
-                                    <button className="btn p-1" style={{ color: 'green' }}>
+                                    <button 
+                                        className="btn p-1" 
+                                        style={{ color: 'green' }} 
+                                        onClick={() => atualizarEstadoDespesa(viatura.id_despesa, 1)} // Aceitar
+                                    >
                                         <FaCheck size={20} />
                                     </button>
-                                    <button className="btn p-1" style={{ color: 'red' }}>
+                                    <button 
+                                        className="btn p-1" 
+                                        style={{ color: 'red' }} 
+                                        onClick={() => atualizarEstadoDespesa(viatura.id_despesa, 2)} // Recusar
+                                    >
                                         <FaTimes size={20} />
                                     </button>
                                 </td>

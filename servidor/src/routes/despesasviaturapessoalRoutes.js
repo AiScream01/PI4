@@ -5,6 +5,9 @@ const despesasViaturaPessoalController = require('../controllers/despesasViatura
 // Listar todas as despesas de viatura pessoal
 router.get('/', despesasViaturaPessoalController.listarTodos);
 
+//LIstar todas as despesas pendentes
+router.get('/pendentes', despesasViaturaPessoalController.listarPendentes);
+
 // Listar uma despesa por ID
 router.get('/:id', despesasViaturaPessoalController.listarPorId);
 

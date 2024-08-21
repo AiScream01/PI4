@@ -17,17 +17,24 @@ exports.listarTodos = async (req, res) => {
 // Listar todas as horas pendentes
 exports.listarPendentes = async (req, res) => {
     try {
+        // Primeiro, encontramos todos os IDs das horas com estado pendente
+        const horasPendentesIds = await EstadoHoras.findAll({
+            where: { id_estado: 3 },
+            attributes: ['id_horas'] // Retornamos apenas os IDs das horas pendentes
+        });
+
+        // Se não houver horas pendentes, retornamos uma lista vazia
+        if (horasPendentesIds.length === 0) {
+            return res.json([]);
+        }
+
+        // Extraímos os IDs das horas pendentes
+        const ids = horasPendentesIds.map(item => item.id_horas);
+
+        // Encontramos as horas com os IDs filtrados
         const horasPendentes = await Horas.findAll({
+            where: { id_horas: ids },
             include: [
-                {
-                    model: EstadoHoras,
-                    include: [{
-                        model: Estado,
-                        where: {
-                            id_estado: 3 // Aqui colocamos o ID do estado "pendente"
-                        }
-                    }]
-                },
                 {
                     model: Utilizador,
                     as: 'utilizador',
@@ -35,11 +42,14 @@ exports.listarPendentes = async (req, res) => {
                 }
             ]
         });
+
+        // Retornamos as horas pendentes
         res.json(horasPendentes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Listar horas por ID
 exports.listarPorId = async (req, res) => {

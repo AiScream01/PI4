@@ -96,24 +96,33 @@ exports.eliminar = async (req, res) => {
 // Listar todas as férias pendentes
 exports.listarPendentes = async (req, res) => {
     try {
+        // Primeiro, encontramos todos os IDs das férias com estado pendente
+        const feriasPendentesIds = await EstadoFerias.findAll({
+            where: { id_estado: 3 },
+            attributes: ['id_ferias'] // Retornamos apenas os IDs das férias pendentes
+        });
+
+        // Se não houver férias pendentes, retornamos uma lista vazia
+        if (feriasPendentesIds.length === 0) {
+            return res.json([]);
+        }
+
+        // Extraímos os IDs das férias pendentes
+        const ids = feriasPendentesIds.map(item => item.id_ferias);
+
+        // Encontramos as férias com os IDs filtrados
         const feriasPendentes = await Ferias.findAll({
+            where: { id_ferias: ids },
             include: [
                 {
-                    model: EstadoFerias,
-                    include: [{
-                        model: Estado,
-                        where: {
-                            id_estado: 3 // Aqui colocamos o ID do estado "pendente"
-                        }
-                    }]
-                },
-                {
                     model: Utilizador,
-                    as: 'utilizador', // Substitua pelo nome correto da associação, se for diferente
+                    as: 'utilizador', // Certifique-se de que 'utilizador' é o alias correto
                     attributes: ['nome', 'foto']
                 }
             ]
         });
+
+        // Retornamos as férias pendentes
         res.json(feriasPendentes);
     } catch (error) {
         res.status(500).json({ error: error.message });

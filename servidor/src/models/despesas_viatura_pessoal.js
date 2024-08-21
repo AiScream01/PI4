@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const Utilizadores = require('./utilizadores');
 
 // Defina o modelo DespesasViaturaPessoal
 const DespesasViaturaPessoal = sequelize.define('DespesasViaturaPessoal', {
@@ -38,7 +39,6 @@ const DespesasViaturaPessoal = sequelize.define('DespesasViaturaPessoal', {
 });
 
 // Defina o relacionamento com o modelo Utilizadores
-const Utilizadores = require('./utilizadores'); // Certifique-se de ajustar o caminho conforme necessário
-DespesasViaturaPessoal.belongsTo(Utilizadores, { foreignKey: 'id_user' });
+DespesasViaturaPessoal.belongsTo(Utilizadores, { foreignKey: 'id_user', as: 'utilizador'  });
 
 module.exports = DespesasViaturaPessoal;

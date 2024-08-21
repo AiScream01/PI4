@@ -1,20 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const ajudasCustoController = require('../controllers/estadoAjudasController');
+const ajudasCustoController = require('../controllers/ajudasController');
 
-// Listar todos os custos
+// Rota para listar todas as ajudas de custo
 router.get('/', ajudasCustoController.listarTodos);
 
-// Listar um custo por ID
-router.get('/:id', ajudasCustoController.listarPorIds);
+// Rota para listar ajudas de custo pendentes
+router.get('/pendentes', ajudasCustoController.listarPendentes);
 
-// Criar um novo custo
-router.post('/create', ajudasCustoController.criar);
+// Rota para listar ajudas de custo por ID
+router.get('/:id_custo', ajudasCustoController.listarPorId);
 
-// Atualizar um custo por ID
-router.put('/update/:id', ajudasCustoController.atualizar);
+// Rota para criar uma nova ajuda de custo
+router.post('/', ajudasCustoController.criar);
 
-// Eliminar um custo por ID
-router.delete('/delete/:id', ajudasCustoController.eliminar);
+// Rota para atualizar uma ajuda de custo por ID
+router.put('/:id_custo', ajudasCustoController.atualizar);
+
+// Rota para atualizar o estado da ajuda de custo
+router.put('/estado/update/:id_estado/:id_custo', ajudasCustoController.atualizarEstado);
+
+// Rota para eliminar uma ajuda de custo por ID
+router.delete('/:id_custo', ajudasCustoController.eliminar);
 
 module.exports = router;
