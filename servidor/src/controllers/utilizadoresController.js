@@ -1,9 +1,16 @@
 const Utilizadores = require('../models/utilizadores');
+const TiposUtilizador = require('../models/tipos_utilizador');
+const bcrypt = require('bcrypt'); // Importação do bcrypt para hash da palavra-passe
 
 // Listar todos os utilizadores
 exports.listarTodos = async (req, res) => {
     try {
-        const utilizadores = await Utilizadores.findAll();
+        const utilizadores = await Utilizadores.findAll({
+            include: [{
+                model: TiposUtilizador,
+                attributes: ['id_tipo', 'tipo'] // Inclua os campos que deseja retornar
+            }]
+        });
         res.json(utilizadores);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -27,7 +34,18 @@ exports.listarPorId = async (req, res) => {
 // Criar um novo utilizador
 exports.criar = async (req, res) => {
     try {
-        const utilizador = await Utilizadores.create(req.body);
+        // Criptografa a senha usando bcrypt
+        const hashedPassword = await bcrypt.hash(req.body.palavrapasse, 10);
+        
+        // Substitui a senha no corpo da requisição pela versão criptografada
+        const utilizadorData = {
+            ...req.body,
+            palavrapasse: hashedPassword
+        };
+
+        // Cria o utilizador no banco de dados
+        const utilizador = await Utilizadores.create(utilizadorData);
+        
         res.status(201).json(utilizador);
     } catch (error) {
         res.status(500).json({ error: error.message });
