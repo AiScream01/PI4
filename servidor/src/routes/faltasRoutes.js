@@ -5,6 +5,9 @@ const faltasController = require('../controllers/faltasController');
 // Listar todas as faltas
 router.get('/', faltasController.listarTodos);
 
+// Listar todas as faltas
+router.get('/pendentes', faltasController.listarPendentes);
+
 // Listar uma falta por ID
 router.get('/:id_falta', faltasController.listarPorId);
 

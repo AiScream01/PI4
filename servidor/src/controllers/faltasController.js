@@ -1,4 +1,7 @@
 const Faltas = require('../models/faltas');
+const EstadoFaltas = require('../models/estado_faltas.js'); // Supondo que exista um model para estado_horas
+const Estado = require('../models/estado'); // Supondo que exista um model para estado
+const Utilizador = require ('../models/utilizadores.js')
 
 // Listar todas as faltas
 exports.listarTodos = async (req, res) => {
@@ -65,6 +68,43 @@ exports.eliminar = async (req, res) => {
         } else {
             res.status(404).json({ message: 'Falta não encontrada' });
         }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+// Listar todas as faltas pendentes
+exports.listarPendentes = async (req, res) => {
+    try {
+        // Primeiro, encontramos todos os IDs das faltas com estado pendente
+        const faltasPendentesIds = await EstadoFaltas.findAll({
+            where: { id_estado: 3 }, // Estado pendente
+            attributes: ['id_falta'] // Retornamos apenas os IDs das faltas pendentes
+        });
+
+        // Se não houver faltas pendentes, retornamos uma lista vazia
+        if (faltasPendentesIds.length === 0) {
+            return res.json([]);
+        }
+
+        // Extraímos os IDs das faltas pendentes
+        const ids = faltasPendentesIds.map(item => item.id_falta);
+
+        // Encontramos as faltas com os IDs filtrados
+        const faltasPendentes = await Faltas.findAll({
+            where: { id_falta: ids },
+            include: [
+                {
+                    model: Utilizador,
+                    as: 'utilizador',
+                    attributes: ['nome', 'foto']
+                }
+            ]
+        });
+
+        // Retornamos as faltas pendentes
+        res.json(faltasPendentes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
