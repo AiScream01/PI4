@@ -21,15 +21,28 @@ export default function PedidoFerias() {
         fetchFerias();
     }, []);
 
-    const atualizarEstadoFerias = async (idFerias, novoEstado) => {
-        try {
-            const response = await axios.put(`${API_BASE_URL}estado_ferias/${idFerias}/estado`, { id_estado: novoEstado });
-            console.log('Estado atualizado com sucesso:', response.data);
-            setFeriasData(feriasData.filter(feria => feria.id_ferias !== idFerias));
-            Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-        } catch (error) {
-            console.error('Erro ao atualizar estado:', error);
-            Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
+    const atualizarEstadoFerias = async (idFerias, novoEstado, confirmacao) => {
+        const result = await Swal.fire({
+            title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
+            text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await axios.put(`${API_BASE_URL}ferias/estado/${idFerias}`, { id_estado: novoEstado });
+                console.log('Estado atualizado com sucesso:', response.data);
+                setFeriasData(feriasData.filter(feria => feria.id_ferias !== idFerias));
+                Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+            } catch (error) {
+                console.error('Erro ao atualizar estado:', error);
+                Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
+            }
         }
     };
 
@@ -50,7 +63,7 @@ export default function PedidoFerias() {
                     <tbody>
                         {feriasData.map((item) => (
                             <tr key={item.id_ferias}>
-                                 <td>
+                                <td>
                                     <img src={item.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{item.utilizador?.nome || 'N/A'}</td> {/* Supondo que 'utilizador' é um objeto com o nome */}
@@ -59,13 +72,13 @@ export default function PedidoFerias() {
                                 <td>
                                     <button
                                         className="btn p-1" style={{ color: 'green' }}
-                                        onClick={() => atualizarEstadoFerias(item.id_ferias, 1)} // 1 = Aceito
+                                        onClick={() => atualizarEstadoFerias(item.id_ferias, 1, true)} // 1 = Aceito
                                     >
                                         <FaCheck size={20} />
                                     </button>
                                     <button
                                         className="btn p-1" style={{ color: 'red' }}
-                                        onClick={() => atualizarEstadoFerias(item.id_ferias, 2)} // 2 = Recusado
+                                        onClick={() => atualizarEstadoFerias(item.id_ferias, 2, false)} // 2 = Recusado
                                     >
                                         <FaTimes size={20} />
                                     </button>

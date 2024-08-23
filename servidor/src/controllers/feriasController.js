@@ -128,3 +128,25 @@ exports.listarPendentes = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Atualizar estado das férias por ID
+exports.atualizarEstado = async (req, res) => {
+    try {
+        const { id_ferias } = req.params;
+        const { id_estado } = req.body;
+
+        // Atualizar o estado_ferias com o novo id_estado
+        const [updated] = await EstadoFerias.update(
+            { id_estado },
+            { where: { id_ferias } }
+        );
+
+        if (updated) {
+            res.json({ message: 'Estado atualizado com sucesso' });
+        } else {
+            res.status(404).json({ message: 'Férias não encontradas' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

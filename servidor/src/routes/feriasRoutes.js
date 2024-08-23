@@ -17,6 +17,9 @@ router.post('/create', feriasController.criar);
 // Atualizar férias por ID
 router.put('/update/:id_ferias', feriasController.atualizar);
 
+// Atualizar o estado das férias por ID
+router.put('/estado/:id_ferias', feriasController.atualizarEstado);
+
 // Eliminar férias por ID
 router.delete('/delete/:id_ferias', feriasController.eliminar);
 
