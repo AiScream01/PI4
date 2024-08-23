@@ -1,7 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const sequelize = require('./database'); // Ajuste o caminho conforme necessário
 
-// Defina o modelo Utilizadores
 const Utilizadores = sequelize.define('Utilizadores', {
     id_user: {
         type: DataTypes.INTEGER,
@@ -33,17 +32,13 @@ const Utilizadores = sequelize.define('Utilizadores', {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    id_tipo: {
-        type: DataTypes.INTEGER,
+    role: { // Adiciona o campo role
+        type: DataTypes.STRING,
         allowNull: false
     }
 }, {
     tableName: 'utilizadores',
     timestamps: false // Para não adicionar colunas de timestamps automaticamente
 });
-
-// Defina o relacionamento com o modelo TiposUtilizador
-const TiposUtilizador = require('./tipos_utilizador'); // Certifique-se de ajustar o caminho conforme necessário
-Utilizadores.belongsTo(TiposUtilizador, { foreignKey: 'id_tipo' });
 
 module.exports = Utilizadores;

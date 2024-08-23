@@ -1,16 +1,10 @@
 const Utilizadores = require('../models/utilizadores');
-const TiposUtilizador = require('../models/tipos_utilizador');
 const bcrypt = require('bcrypt'); // Importação do bcrypt para hash da palavra-passe
 
 // Listar todos os utilizadores
 exports.listarTodos = async (req, res) => {
     try {
-        const utilizadores = await Utilizadores.findAll({
-            include: [{
-                model: TiposUtilizador,
-                attributes: ['id_tipo', 'tipo'] // Inclua os campos que deseja retornar
-            }]
-        });
+        const utilizadores = await Utilizadores.findAll();
         res.json(utilizadores);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -34,20 +28,27 @@ exports.listarPorId = async (req, res) => {
 // Criar um novo utilizador
 exports.criar = async (req, res) => {
     try {
+        // Adicione log para ver o corpo da requisição
+        console.log('Dados recebidos:', req.body);
+
         // Criptografa a senha usando bcrypt
         const hashedPassword = await bcrypt.hash(req.body.palavrapasse, 10);
-        
+
         // Substitui a senha no corpo da requisição pela versão criptografada
         const utilizadorData = {
             ...req.body,
             palavrapasse: hashedPassword
         };
 
+        // Adicione log para verificar os dados antes de criar o utilizador
+        console.log('Dados do utilizador a serem criados:', utilizadorData);
+
         // Cria o utilizador no banco de dados
         const utilizador = await Utilizadores.create(utilizadorData);
-        
+
         res.status(201).json(utilizador);
     } catch (error) {
+        console.error('Erro ao criar utilizador:', error);
         res.status(500).json({ error: error.message });
     }
 };
@@ -55,7 +56,13 @@ exports.criar = async (req, res) => {
 // Atualizar um utilizador por ID
 exports.atualizar = async (req, res) => {
     try {
-        const [updated] = await Utilizadores.update(req.body, {
+        // Verifica se a senha foi fornecida para atualização e a criptografa se necessário
+        const updateData = { ...req.body };
+        if (updateData.palavrapasse) {
+            updateData.palavrapasse = await bcrypt.hash(updateData.palavrapasse, 10);
+        }
+
+        const [updated] = await Utilizadores.update(updateData, {
             where: { id_user: req.params.id }
         });
         if (updated) {

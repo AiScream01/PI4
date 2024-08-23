@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
-import Swal from 'sweetalert2'; // Importa o SweetAlert2
-import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
+import Swal from 'sweetalert2';
+import API_BASE_URL from '../../config';
 
 export default function Utilizadores() {
     const [utilizadoresData, setUtilizadoresData] = useState([]);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [selectedUsuario, setSelectedUsuario] = useState({ id_user: '', nome: '', email: '', imagem: '', tipo: '' });
-    const [newUsuario, setNewUsuario] = useState({ nome: '', email: '', imagem: '', palavrapasse: '', tipo: '' });
-
+    const [selectedUsuario, setSelectedUsuario] = useState({ id_user: '', nome: '', email: '', imagem: '', role: '' });
+    const [newUsuario, setNewUsuario] = useState({ nome: '', email: '', imagem: '', palavrapasse: '', role: '' });
+    
     useEffect(() => {
         const fetchUtilizadores = async () => {
             try {
@@ -65,19 +65,23 @@ export default function Utilizadores() {
     };
 
     const handleSaveEdit = async () => {
+        const updatedUsuario = {
+            ...selectedUsuario,
+            role: selectedUsuario.role // Role diretamente
+        };
         try {
             const response = await fetch(API_BASE_URL + `utilizador/update/${selectedUsuario.id_user}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(selectedUsuario)
+                body: JSON.stringify(updatedUsuario)
             });
 
             if (response.ok) {
-                const updatedUsuario = await response.json();
+                const result = await response.json();
                 setUtilizadoresData(utilizadoresData.map(usuario =>
-                    usuario.id_user === selectedUsuario.id_user ? updatedUsuario : usuario
+                    usuario.id_user === selectedUsuario.id_user ? result : usuario
                 ));
                 setShowEditModal(false);
                 Swal.fire('Sucesso!', 'Os dados do utilizador foram atualizados.', 'success');
@@ -91,23 +95,33 @@ export default function Utilizadores() {
     };
 
     const handleSaveAdd = async () => {
+        const newUsuarioWithRole = {
+            nome: newUsuario.nome,
+            email: newUsuario.email,
+            imagem: newUsuario.imagem,
+            palavrapasse: newUsuario.palavrapasse,
+            role: newUsuario.role // Role diretamente
+        };
+    
+        console.log('Dados enviados para criação:', newUsuarioWithRole);
+    
         try {
             const response = await fetch(API_BASE_URL + 'utilizador/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(newUsuario)
+                body: JSON.stringify(newUsuarioWithRole)
             });
-            const responseBody = await response.json();
-            console.log('Resposta da API:', responseBody);
-
+    
             if (response.ok) {
-                const createdUsuario = await response.json();
-                setUtilizadoresData([...utilizadoresData, createdUsuario]);
+                const result = await response.json();
+                setUtilizadoresData([...utilizadoresData, result]);
                 setShowAddModal(false);
                 Swal.fire('Sucesso!', 'O novo utilizador foi adicionado.', 'success');
             } else {
+                const errorText = await response.text(); // Obtenha a mensagem de erro do servidor
+                console.error('Erro ao adicionar o utilizador:', errorText);
                 Swal.fire('Erro!', 'Não foi possível adicionar o novo utilizador.', 'error');
             }
         } catch (error) {
@@ -139,7 +153,7 @@ export default function Utilizadores() {
                             <th scope="col"></th>
                             <th scope="col">Colaborador</th>
                             <th scope="col">Email</th>
-                            <th scope="col">Tipo</th>
+                            <th scope="col">Role</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -151,7 +165,7 @@ export default function Utilizadores() {
                                 </td>
                                 <td>{usuario.nome}</td>
                                 <td>{usuario.email}</td>
-                                <td>{usuario.TiposUtilizador ? usuario.TiposUtilizador.tipo : 'Desconhecido'}</td> {/* Correção aqui */}
+                                <td>{usuario.role}</td> {/* Mostra o role diretamente */}
                                 <td>
                                     <button
                                         className="btn p-1 me-2" style={{ color: '#008000' }}
@@ -205,16 +219,16 @@ export default function Utilizadores() {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="tipo" className="form-label">Tipo</label>
+                                    <label htmlFor="role" className="form-label">Role</label>
                                     <select
                                         className="form-select"
-                                        id="tipo"
-                                        name="tipo"
-                                        value={selectedUsuario.tipo}
+                                        id="role"
+                                        name="role"
+                                        value={selectedUsuario.role}
                                         onChange={handleInputChange}
                                     >
-                                        <option value="admin">Admin</option>
-                                        <option value="user">User</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Utilizador">Utilizador</option>
                                     </select>
                                 </div>
                                 <div className="mb-3">
@@ -271,27 +285,16 @@ export default function Utilizadores() {
                                     />
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="palavrapasse" className="form-label">Palavra-passe</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="palavrapasse"
-                                        name="palavrapasse"
-                                        value={newUsuario.palavrapasse}
-                                        onChange={handleNewInputChange}
-                                    />
-                                </div>
-                                <div className="mb-3">
-                                    <label htmlFor="tipo" className="form-label">Tipo</label>
+                                    <label htmlFor="role" className="form-label">Role</label>
                                     <select
                                         className="form-select"
-                                        id="tipo"
-                                        name="tipo"
-                                        value={newUsuario.tipo}
+                                        id="role"
+                                        name="role"
+                                        value={newUsuario.role}
                                         onChange={handleNewInputChange}
                                     >
-                                        <option value="admin">Admin</option>
-                                        <option value="user">User</option>
+                                        <option value="Admin">Admin</option>
+                                        <option value="Utilizador">Utilizador</option>
                                     </select>
                                 </div>
                                 <div className="mb-3">
@@ -302,6 +305,17 @@ export default function Utilizadores() {
                                         id="imagem"
                                         name="imagem"
                                         value={newUsuario.imagem}
+                                        onChange={handleNewInputChange}
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="palavrapasse" className="form-label">Senha</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="palavrapasse"
+                                        name="palavrapasse"
+                                        value={newUsuario.palavrapasse}
                                         onChange={handleNewInputChange}
                                     />
                                 </div>

@@ -9,7 +9,7 @@ require('./models/associations');
 // Routes
 //Utilizador
 const utilizadorRoutes = require('./routes/utilizadoresRoutes.js')
-const tiposutilizadorRoutes = require('./routes/tipoutilizadorRoutes.js')
+//const tiposutilizadorRoutes = require('./routes/tipoutilizadorRoutes.js')
 
 //horas
 const horasRoute = require('./routes/horasRoutes.js')
@@ -65,7 +65,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Adicion
 
 // Rotas
 app.use('/utilizador', utilizadorRoutes)
-app.use('/tiposutilizador', tiposutilizadorRoutes)
+//app.use('/tiposutilizador', tiposutilizadorRoutes)
 app.use('/reunioesutilizadores', reunioesutilizadoresRoutes)
 app.use('/horas', horasRoute)
 app.use('/reunioes', reunioesRoutes)
