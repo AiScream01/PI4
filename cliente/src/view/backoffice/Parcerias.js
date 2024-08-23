@@ -126,10 +126,16 @@ export default function Parcerias() {
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4">Parcerias</h2>
-            <button className="btn btn-primary mb-4" onClick={() => setShowAddModal(true)}>
-                <FaPlus /> Adicionar Parceria
-            </button>
+<div className="d-flex justify-content-between align-items-center mb-4">
+    <h2 className="mb-0">Parcerias</h2>
+    <button
+        className="btn btn-primary"
+        onClick={() => setShowAddModal(true)}
+        style={{ backgroundColor: "#1ED700", borderColor: "#1ED700" }}
+    >
+        <FaPlus /> Adicionar Parceria
+    </button>
+</div>
             <div className="row">
                 {parceriasData.map((parceria) => (
                     <div className="col-6 col-md-3 mb-4" key={parceria.id_parceria}>
