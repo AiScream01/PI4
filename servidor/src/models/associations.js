@@ -13,6 +13,12 @@ const EstadoDespesas = require('./estado_despesas');
 const Ferias = require('./ferias');
 const EstadoFerias = require('./estado_ferias');
 
+const ReuniaoUtilizadores = require('./reunioes_utilizadores');
+const Utilizador = require('./utilizadores');
+
+const Reuniao = require('./reunioes');
+const EstadoReuniao = require('./estado_reuniao');
+
 const Estado = require('./estado');
 
 // Defina as associações
@@ -56,4 +62,23 @@ EstadoFerias.belongsTo(Ferias, { foreignKey: 'id_ferias' });
 Estado.hasMany(EstadoFerias, { foreignKey: 'id_estado' });
 EstadoFerias.belongsTo(Estado, { foreignKey: 'id_estado' });
 
-module.exports = { Horas, EstadoHoras, Ajudas, EstadoAjudas, Estado, Faltas, EstadoFaltas, Despesas, EstadoDespesas, Ferias, EstadoFerias };
+//Reuniao e Estado reuniao
+Reuniao.hasMany(EstadoReuniao, { foreignKey: 'id_reuniao' });
+EstadoReuniao.belongsTo(Reuniao, { foreignKey: 'id_reuniao' });
+
+//Estado e EstadoReuniao
+Estado.hasMany(EstadoReuniao, {foreignKey: 'id_estado'});
+EstadoReuniao.belongsTo(Estado, { foreignKey: 'id_estado' });
+
+
+//Utilizador e Reunioes_utilizador
+Utilizador.hasMany(ReuniaoUtilizadores, {foreignKey: 'id_user'});
+ReuniaoUtilizadores.belongsTo(Utilizador, {foreignKey: 'id_user'});
+
+//Reunioes e ReunioesUtilizador
+Reuniao.hasMany(ReuniaoUtilizadores, {foreignKey: 'id_reuniao'});
+ReuniaoUtilizadores.belongsTo(Reuniao, {foreignKey: 'id_reuniao'});
+
+
+module.exports = { Horas, EstadoHoras, Ajudas, EstadoAjudas, Estado, Faltas, EstadoFaltas, Despesas,
+    EstadoDespesas, Ferias, EstadoFerias, ReuniaoUtilizadores,  Utilizador, Reuniao, EstadoReuniao};

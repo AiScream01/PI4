@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
+const Utilizadores = require('./utilizadores'); // Certifique-se de ajustar o caminho conforme necessário
 
 // Defina o modelo Reunioes
 const Reunioes = sequelize.define('Reunioes', {
@@ -30,7 +31,7 @@ const Reunioes = sequelize.define('Reunioes', {
 });
 
 // Defina o relacionamento com o modelo Utilizadores
-const Utilizadores = require('./utilizadores'); // Certifique-se de ajustar o caminho conforme necessário
-Reunioes.belongsTo(Utilizadores, { foreignKey: 'id_user' });
+
+Reunioes.belongsTo(Utilizadores, { foreignKey: 'id_user', as: 'utilizador' });
 
 module.exports = Reunioes;

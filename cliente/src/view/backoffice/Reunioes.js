@@ -1,38 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
+import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 
 export default function Reunioes() {
-    const reunioesData = [
-        {
-            id: 1,
-            imagem: 'https://via.placeholder.com/50',
-            nome: 'João Silva',
-            dia: '2024-08-20',
-            hora: '10:00',
-            assunto: 'Planejamento de Projeto',
-        },
-        {
-            id: 2,
-            imagem: 'https://via.placeholder.com/50',
-            nome: 'Maria Santos',
-            dia: '2024-08-21',
-            hora: '14:00',
-            assunto: 'Revisão de Metas',
-        },
-        {
-            id: 3,
-            imagem: 'https://via.placeholder.com/50',
-            nome: 'Carlos Pereira',
-            dia: '2024-08-22',
-            hora: '09:00',
-            assunto: 'Análise de Resultados',
+    const [reunioesData, setReunioesData] = useState([]);
+
+    useEffect(() => {
+        const fetchReunioes = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}reunioes/pendentes`);
+                setReunioesData(response.data);
+            } catch (error) {
+                console.error('Erro ao buscar as reuniões:', error);
+            }
+        };
+
+        fetchReunioes();
+    }, []);
+
+    const atualizarEstadoReuniao = async (idReuniao, novoEstado) => {
+        try {
+            const response = await axios.put(`${API_BASE_URL}reunioes/estado/update/${novoEstado}/${idReuniao}`);
+            console.log('Estado atualizado com sucesso:', response.data);
+        } catch (error) {
+            console.error('Erro ao atualizar estado:', error);
         }
-    ];
+    };
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4">Reuniões</h2>
+            <h2 className="mb-4">Reuniões Pendentes</h2>
             <div className="table-responsive">
                 <table className="table align-middle">
                     <thead className="table-light">
@@ -40,26 +39,32 @@ export default function Reunioes() {
                             <th scope="col"></th>
                             <th scope="col">Colaborador</th>
                             <th scope="col">Dia</th>
-                            <th scope="col">Hora</th>
                             <th scope="col">Assunto</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         {reunioesData.map((reuniao) => (
-                            <tr key={reuniao.id}>
+                            <tr key={reuniao.id_reuniao}>
                                 <td>
-                                    <img src={reuniao.imagem} alt="User" className="rounded-circle" width="50" height="50" />
+                                    <img src={reuniao.utilizador.foto} alt="User" className="rounded-circle" width="50" height="50" />
                                 </td>
-                                <td>{reuniao.nome}</td>
-                                <td>{new Date(reuniao.dia).toLocaleDateString()}</td>
-                                <td>{reuniao.hora}</td>
-                                <td>{reuniao.assunto}</td>
+                                <td>{reuniao.utilizador.nome}</td>
+                                <td>{new Date(reuniao.data).toLocaleDateString()}</td>
+                                <td>{reuniao.titulo}</td>
                                 <td>
-                                    <button className="btn p-1 me-2" style={{ color: 'green' }}>
+                                    <button 
+                                        className="btn p-1 me-2" 
+                                        style={{ color: 'green' }} 
+                                        onClick={() => atualizarEstadoReuniao(reuniao.id_reuniao, 1)} // Aceitar
+                                    >
                                         <FaCheck size={20} />
                                     </button>
-                                    <button className="btn p-1" style={{ color: 'red' }}>
+                                    <button 
+                                        className="btn p-1" 
+                                        style={{ color: 'red' }} 
+                                        onClick={() => atualizarEstadoReuniao(reuniao.id_reuniao, 2)} // Recusar
+                                    >
                                         <FaTimes size={20} />
                                     </button>
                                 </td>

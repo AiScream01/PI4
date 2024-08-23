@@ -1,10 +1,49 @@
 const Reunioes = require('../models/reunioes');
+const EstadoReunioes = require('../models/estado_reuniao');
+const Estado = require('../models/estado'); // Supondo que exista um model para estado
+const Utilizador = require ('../models/utilizadores.js')
 
 // Listar todas as reuniões
 exports.listarTodos = async (req, res) => {
     try {
         const reunioes = await Reunioes.findAll();
         res.json(reunioes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// Listar todas as reuniões pendentes
+exports.listarPendentes = async (req, res) => {
+    try {
+        // Primeiro, encontramos todos os IDs das reuniões com estado pendente
+        const reunioesPendentesIds = await EstadoReunioes.findAll({
+            where: { id_estado: 3 }, // Assumindo que o estado 3 é o estado "pendente"
+            attributes: ['id_reuniao'] // Retornamos apenas os IDs das reuniões pendentes
+        });
+
+        // Se não houver reuniões pendentes, retornamos uma lista vazia
+        if (reunioesPendentesIds.length === 0) {
+            return res.json([]);
+        }
+
+        // Extraímos os IDs das reuniões pendentes
+        const ids = reunioesPendentesIds.map(item => item.id_reuniao);
+
+        // Encontramos as reuniões com os IDs filtrados
+        const reunioesPendentes = await Reunioes.findAll({
+            where: { id_reuniao: ids },
+            include: [
+                {
+                    model: Utilizador,
+                    as: 'utilizador',
+                    attributes: ['nome', 'foto']
+                }
+            ]
+        });
+
+        // Retornamos as reuniões pendentes
+        res.json(reunioesPendentes);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -5,6 +5,9 @@ const reunioesController = require('../controllers/reunioesController');
 // Listar todas as reuniões
 router.get('/', reunioesController.listarTodos);
 
+// Listar todas as reuniões
+router.get('/pendentes', reunioesController.listarPendentes);
+
 // Listar reunião por ID
 router.get('/:id', reunioesController.listarPorId);
 

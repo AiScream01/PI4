@@ -35,11 +35,11 @@ export default function SideBar() {
                         Faltas
                     </Link>
                 </li>
-                <li className="nav-item">
+                {/*<li className="nav-item">
                     <Link to="/dados-pessoais" className="nav-link text-white">
                         Dados Pessoais
                     </Link>
-                </li>
+                </li>*/}
                 <li className="nav-item">
                     <Link to="/noticias" className="nav-link text-white">
                         Noticias
@@ -50,11 +50,11 @@ export default function SideBar() {
                         Parcerias
                     </Link>
                 </li>
-                <li className="nav-item">
+                {/*<li className="nav-item">
                     <Link to="/notificacao-push" className="nav-link text-white">
                         Notificação Push
                     </Link>
-                </li>
+                </li>*/}
                 <li className="nav-item">
                     <Link to="/reunioes" className="nav-link text-white">
                         Reuniões

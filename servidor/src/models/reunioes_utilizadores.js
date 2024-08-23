@@ -16,12 +16,4 @@ const ReunioesUtilizadores = sequelize.define('ReunioesUtilizadores', {
     timestamps: false // Para não adicionar colunas de timestamps automaticamente
 });
 
-// Defina o relacionamento com o modelo Utilizadores
-const Utilizadores = require('./utilizadores'); // Certifique-se de ajustar o caminho conforme necessário
-ReunioesUtilizadores.belongsTo(Utilizadores, { foreignKey: 'id_user' });
-
-// Defina o relacionamento com o modelo Reunioes
-const Reunioes = require('./reunioes'); // Certifique-se de ajustar o caminho conforme necessário
-ReunioesUtilizadores.belongsTo(Reunioes, { foreignKey: 'id_reuniao' });
-
 module.exports = ReunioesUtilizadores;
