@@ -75,7 +75,7 @@ export default function SideBar() {
                     </Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/micro-site" className="nav-link" style={getLinkStyle('/micro-site')}>
+                    <Link to="/micro-site-editar" className="nav-link" style={getLinkStyle('/micro-site-editar')}>
                         Micro-Site
                     </Link>
                 </li>

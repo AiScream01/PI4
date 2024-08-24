@@ -18,31 +18,42 @@ import NotificacaoPush from "./view/backoffice/NotificacaoPush";
 import Reunioes from "./view/backoffice/Reunioes";
 import Utilizadores from "./view/backoffice/Utilizadores";
 import MicroSite from "./view/backoffice/MicroSite";
+import EditarMicroSite from './view/backoffice/EditarMicroSite';
 
 export default function App() {
     return (
         <Router>
+            <Routes>
+                <Route path="/pedido-ferias" element={addSidebar(<PedidoFerias />)} />
+                <Route path="/horas" element={addSidebar(<Horas />)} />
+                <Route path="/ajudas" element={addSidebar(<Ajudas />)} />
+                <Route path="/viatura-propria" element={addSidebar(<ViaturaPropria />)} />
+                <Route path="/faltas" element={addSidebar(<Faltas />)} />
+                <Route path="/dados-pessoais" element={addSidebar(<DadosPessoais />)} />
+                <Route path="/noticias" element={addSidebar(<Noticias />)} />
+                <Route path="/parcerias" element={addSidebar(<Parcerias />)} />
+                <Route path="/notificacao-push" element={addSidebar(<NotificacaoPush />)} />
+                <Route path="/reunioes" element={addSidebar(<Reunioes />)} />
+                <Route path="/utilizadores" element={addSidebar(<Utilizadores />)} />
+                <Route path="/micro-site-editar" element={addSidebar(<EditarMicroSite />)} />
+                <Route path="/micro-site" element={<MicroSite />} />
+                {/* Rota padrão */}
+                <Route path="/" element={<PedidoFerias />} />
+                
+            </Routes>
+        </Router>
+    );
+
+    function addSidebar(prop){
+        return (
             <div className="d-flex">
                 <SideBar />
                 <div className="flex-grow-1 p-3">
-                    <Routes>
-                        <Route path="/pedido-ferias" element={<PedidoFerias />} />
-                        <Route path="/horas" element={<Horas />} />
-                        <Route path="/ajudas" element={<Ajudas />} />
-                        <Route path="/viatura-propria" element={<ViaturaPropria />} />
-                        <Route path="/faltas" element={<Faltas />} />
-                        <Route path="/dados-pessoais" element={<DadosPessoais />} />
-                        <Route path="/noticias" element={<Noticias />} />
-                        <Route path="/parcerias" element={<Parcerias />} />
-                        <Route path="/notificacao-push" element={<NotificacaoPush />} />
-                        <Route path="/reunioes" element={<Reunioes />} />
-                        <Route path="/utilizadores" element={<Utilizadores />} />
-                        <Route path="/micro-site" element={<MicroSite />} />
-                        {/* Rota padrão */}
-                        <Route path="/" element={<PedidoFerias />} />
-                    </Routes>
+                    {prop}
                 </div>
             </div>
-        </Router>
-    );
+        );
+
+    }
+
 }
