@@ -146,3 +146,24 @@ exports.eliminar = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Atualizar estado das ajudas de custo por ID
+exports.atualizarEstado = async (req, res) => {
+    try {
+        const { id_custo } = req.params;
+        const { id_estado } = req.body;
+
+        const [updated] = await EstadoAjudas.update(
+            { id_estado },
+            { where: { id_custo } }
+        );
+
+        if (updated) {
+            res.json({ message: 'Estado atualizado com sucesso' });
+        } else {
+            res.status(404).json({ message: 'Ajuda de custo não encontrada' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

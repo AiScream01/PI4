@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
+import Swal from 'sweetalert2';
 
 export default function Horas() {
     const [horasData, setHorasData] = useState([]);
@@ -20,12 +21,28 @@ export default function Horas() {
         fetchHoras();
     }, []);
 
-    const atualizarEstadoHoras = async (idHoras, novoEstado) => {
-        try {
-            const response = await axios.put(`${API_BASE_URL}horas/estado/update/${novoEstado}/${idHoras}`);
-            console.log('Estado atualizado com sucesso:', response.data);
-        } catch (error) {
-            console.error('Erro ao atualizar estado:', error);
+    const atualizarEstadoHoras = async (idHoras, novoEstado, confirmacao) => {
+        const result = await Swal.fire({
+            title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
+            text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await axios.put(`${API_BASE_URL}horas/estado/${idHoras}`, { id_estado: novoEstado });
+                console.log('Estado atualizado com sucesso:', response.data);
+                setHorasData(horasData.filter(hora => hora.id_horas !== idHoras));
+                Swal.fire('Sucesso!', 'O estado das horas foi atualizado.', 'success');
+            } catch (error) {
+                console.error('Erro ao atualizar estado:', error);
+                Swal.fire('Erro!', 'Não foi possível atualizar o estado.', 'error');
+            }
         }
     };
 
@@ -57,17 +74,17 @@ export default function Horas() {
                                     </a>
                                 </td>
                                 <td>
-                                    <button 
-                                        className="btn p-1" 
-                                        style={{ color: 'green' }} 
-                                        onClick={() => atualizarEstadoHoras(hora.id_horas, 1)} // Aceitar
+                                    <button
+                                        className="btn p-1"
+                                        style={{ color: 'green' }}
+                                        onClick={() => atualizarEstadoHoras(hora.id_horas, 1, 'Tem certeza de que deseja aceitar esta solicitação de horas?')}
                                     >
                                         <FaCheck size={20} />
                                     </button>
-                                    <button 
-                                        className="btn p-1" 
-                                        style={{ color: 'red' }} 
-                                        onClick={() => atualizarEstadoHoras(hora.id_horas, 2)} // Recusar
+                                    <button
+                                        className="btn p-1"
+                                        style={{ color: 'red' }}
+                                        onClick={() => atualizarEstadoHoras(hora.id_horas, 2, 'Tem certeza de que deseja recusar esta solicitação de horas?')}
                                     >
                                         <FaTimes size={20} />
                                     </button>

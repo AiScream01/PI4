@@ -10,7 +10,7 @@ export default function Ajudas() {
     useEffect(() => {
         const fetchAjudasPendentes = async () => {
             try {
-                const response = await fetch(`${url}ajudascusto/pendentes`); // URL para listar ajudas pendentes
+                const response = await fetch(`${url}ajudascusto/pendentes`);
 
                 if (!response.ok) {
                     throw new Error(`Erro HTTP! Status: ${response.status}`);
@@ -26,9 +26,21 @@ export default function Ajudas() {
         fetchAjudasPendentes();
     }, []);
 
-    const handleUpdateStatus = async (id_custo, novoEstado) => {
+    const handleUpdateStatus = async (id_custo, novoEstado, confirmacao) => {
+        const result = await Swal.fire({
+            title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
+            text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
         try {
-            const response = await fetch(`${url}ajudascusto/${id_custo}/estado`, {
+            const response = await fetch(`${url}ajudascusto/estado/${id_custo}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_estado: novoEstado })
@@ -42,6 +54,7 @@ export default function Ajudas() {
             }
         } catch (error) {
             Swal.fire('Erro!', 'Ocorreu um erro ao tentar atualizar o pedido.', 'error');
+        }
         }
     };
 
@@ -80,14 +93,14 @@ export default function Ajudas() {
                                         style={{ color: 'green' }}
                                         onClick={() => handleUpdateStatus(ajuda.id_custo, 1)} // 1 = Aceite
                                     >
-                                        <FaCheck size={20} />
+                                        <FaCheck />
                                     </button>
                                     <button
-                                        className="btn p-1"
+                                        className="btn p-1 ms-2"
                                         style={{ color: 'red' }}
-                                        onClick={() => handleUpdateStatus(ajuda.id_custo, 2)} // 2 = Recusado
+                                        onClick={() => handleUpdateStatus(ajuda.id_custo, 2)} // 2 = Rejeitado
                                     >
-                                        <FaTimes size={20} />
+                                        <FaTimes />
                                     </button>
                                 </td>
                             </tr>

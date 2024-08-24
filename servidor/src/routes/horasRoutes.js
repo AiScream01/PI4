@@ -5,7 +5,7 @@ const horasController = require('../controllers/horasController');
 // Listar todas as horas
 router.get('/', horasController.listarTodos);
 
-// Listar todas as horas
+// Listar todas as horas pendentes
 router.get('/pendentes', horasController.listarPendentes);
 
 // Listar horas por ID
@@ -17,8 +17,8 @@ router.post('/create', horasController.criar);
 // Atualizar horas por ID
 router.put('/update/:id_horas', horasController.atualizar);
 
-// Atualizar estado das horas
-router.put('/estado/update/:id_estado/:id_horas', horasController.atualizarEstadoHoras);
+// Atualizar o estado das horas por ID
+router.put('/estado/:id_horas', horasController.atualizarEstadoHoras);
 
 // Eliminar horas por ID
 router.delete('/delete/:id_horas', horasController.eliminar);

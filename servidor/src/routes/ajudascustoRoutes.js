@@ -17,8 +17,8 @@ router.post('/', ajudasCustoController.criar);
 // Rota para atualizar uma ajuda de custo por ID
 router.put('/:id_custo', ajudasCustoController.atualizar);
 
-// Rota para atualizar o estado da ajuda de custo
-router.put('/estado/update/:id_estado/:id_custo', ajudasCustoController.atualizarEstado);
+// Rota para atualizar o estado de uma ajuda de custo por ID
+router.put('/estado/:id_custo', ajudasCustoController.atualizarEstado);
 
 // Rota para eliminar uma ajuda de custo por ID
 router.delete('/:id_custo', ajudasCustoController.eliminar);
