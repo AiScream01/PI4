@@ -108,3 +108,25 @@ exports.eliminar = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Atualizar reuniao das férias por ID
+exports.atualizarEstado = async (req, res) => {
+    try {
+        const { id_reuniao } = req.params;
+        const { id_estado } = req.body;
+
+        // Atualizar o estado_reuniao com o novo id_estado
+        const [updated] = await EstadoReunioes.update(
+            { id_estado },
+            { where: { id_reuniao } }
+        );
+
+        if (updated) {
+            res.json({ message: 'Estado atualizado com sucesso' });
+        } else {
+            res.status(404).json({ message: 'Férias não encontradas' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes, FaFileDownload } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 
@@ -20,14 +21,32 @@ export default function Faltas() {
         fetchFaltas();
     }, []);
 
-    const atualizarEstadoFaltas = async (idFalta, novoEstado) => {
-        try {
-            const response = await axios.put(`${API_BASE_URL}faltas/estado/update/${novoEstado}/${idFalta}`);
-            console.log('Estado atualizado com sucesso:', response.data);
-        } catch (error) {
-            console.error('Erro ao atualizar estado:', error);
-        }
-    };
+    const atualizarEstadoFaltas = async (idFalta, novoEstado, confirmacao) => {
+            const result = await Swal.fire({
+                title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
+                text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await axios.put(`${API_BASE_URL}faltas/estado/${idFalta}`, { id_estado: novoEstado });
+                    console.log('Estado atualizado com sucesso:', response.data);
+
+                    setFaltasData(faltasData.filter(falta => falta.id_falta !== idFalta));
+
+                    Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+                } catch (error) {
+                    console.error('Erro ao atualizar estado:', error);
+                    Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
+                }
+            }
+        };
 
     return (
         <div className="container mt-5">

@@ -109,3 +109,25 @@ exports.listarPendentes = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Atualizar estado das faltas por ID
+exports.atualizarEstado = async (req, res) => {
+    try {
+        const { id_falta } = req.params;
+        const { id_estado } = req.body;
+
+        // Atualizar o estado_faltas com o novo id_estado
+        const [updated] = await EstadoFaltas.update(
+            { id_estado },
+            { where: { id_falta } }
+        );
+
+        if (updated) {
+            res.json({ message: 'Estado atualizado com sucesso' });
+        } else {
+            res.status(404).json({ message: 'Falta não encontrada' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

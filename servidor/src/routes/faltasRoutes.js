@@ -17,6 +17,9 @@ router.post('/create', faltasController.criar);
 // Atualizar uma falta por ID
 router.put('/update/:id_falta', faltasController.atualizar);
 
+// Atualizar o estado de uma falta por ID
+router.put('/estado/:id_falta', faltasController.atualizarEstado);
+
 // Eliminar uma falta por ID
 router.delete('/delete/:id_falta', faltasController.eliminar);
 

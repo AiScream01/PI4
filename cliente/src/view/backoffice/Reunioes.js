@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 
 export default function Reunioes() {
@@ -20,12 +21,30 @@ export default function Reunioes() {
         fetchReunioes();
     }, []);
 
-    const atualizarEstadoReuniao = async (idReuniao, novoEstado) => {
-        try {
-            const response = await axios.put(`${API_BASE_URL}reunioes/estado/update/${novoEstado}/${idReuniao}`);
-            console.log('Estado atualizado com sucesso:', response.data);
-        } catch (error) {
-            console.error('Erro ao atualizar estado:', error);
+    const atualizarEstadoReuniao = async (idReuniao, novoEstado, confirmacao) => {
+        const result = await Swal.fire({
+            title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
+            text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await axios.put(`${API_BASE_URL}reunioes/estado/${idReuniao}`, { id_estado: novoEstado });
+                console.log('Estado atualizado com sucesso:', response.data);
+
+                setReunioesData(reunioesData.filter(reuniao => reuniao.id_reuniao !== idReuniao));
+
+                Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+            } catch (error) {
+                console.error('Erro ao atualizar estado:', error);
+                Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
+            }
         }
     };
 
