@@ -92,18 +92,8 @@ exports.listarPendentes = async (req, res) => {
             where: { id_despesa: ids },
             include: [
                 {
-                    model: EstadoDespesa,
-                    include: [{
-                        model: Estado,
-                        where: {
-                            id_estado: 3 // Aqui colocamos o ID do estado "pendente"
-                        }
-                    }],
-                    required: true // Garante que somente despesas com estado pendente sejam retornadas
-                },
-                {
                     model: Utilizador,
-                    as: 'utilizador', // Certifique-se de que este é o nome correto da associação
+                    as: 'utilizador', // Certifique-se de que 'utilizador' é o alias correto
                     attributes: ['nome', 'foto']
                 }
             ]
@@ -111,6 +101,29 @@ exports.listarPendentes = async (req, res) => {
 
         // Retornamos as despesas pendentes
         res.json(despesasPendentes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+// Atualizar o estado de uma despesa por ID
+exports.atualizarEstado = async (req, res) => {
+    try {
+        const { id_despesa } = req.params;
+        const { id_estado } = req.body;
+
+        const despesa = await DespesasViaturaPessoal.findByPk(id_despesa);
+
+        if (!despesa) {
+            return res.status(404).json({ message: 'Despesa não encontrada' });
+        }
+
+        // Atualizar o estado da despesa
+        await EstadoDespesa.update({ id_estado }, { where: { id_despesa } });
+
+        const updatedDespesa = await DespesasViaturaPessoal.findByPk(id_despesa);
+        res.json(updatedDespesa);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 
@@ -10,7 +11,7 @@ export default function ViaturaPropria() {
     useEffect(() => {
         const fetchViaturaData = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}despesasviatura/pendentes`); // Ajuste o endpoint conforme necessário
+                const response = await axios.get(`${API_BASE_URL}despesasviatura/pendentes`);
                 setViaturaData(response.data);
             } catch (error) {
                 console.error('Erro ao buscar as despesas de viatura pessoal:', error);
@@ -20,18 +21,34 @@ export default function ViaturaPropria() {
         fetchViaturaData();
     }, []);
 
-    const atualizarEstadoDespesa = async (idDespesa, novoEstado) => {
-        try {
-            const response = await axios.put(`${API_BASE_URL}despesasviatura/estado/update/${novoEstado}/${idDespesa}`);
-            console.log('Estado atualizado com sucesso:', response.data);
-            // Atualize o estado local após a atualização
-            setViaturaData(viaturaData.map(despesa => 
-                despesa.id_despesa === idDespesa ? { ...despesa, estado: novoEstado } : despesa
-            ));
-        } catch (error) {
-            console.error('Erro ao atualizar estado da despesa:', error);
+    const atualizarEstadoDespesa = async (idDespesa, novoEstado, confirmacao) => {
+        const result = await Swal.fire({
+            title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
+            text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await axios.put(`${API_BASE_URL}despesasviatura/estado/${idDespesa}`, { id_estado: novoEstado });
+                console.log('Estado atualizado com sucesso:', response.data);
+
+                // Remove a despesa atualizada da lista local
+                setViaturaData(viaturaData.filter(despesa => despesa.id_despesa !== idDespesa));
+
+                Swal.fire('Sucesso!', 'A despesa foi atualizada.', 'success');
+            } catch (error) {
+                console.error('Erro ao atualizar estado:', error);
+                Swal.fire('Erro!', 'Não foi possível atualizar a despesa.', 'error');
+            }
         }
     };
+
 
     return (
         <div className="container mt-5">
@@ -53,7 +70,7 @@ export default function ViaturaPropria() {
                         {viaturaData.map((viatura) => (
                             <tr key={viatura.id_despesa}>
                                 <td>
-                                    <img src={viatura.imagem} alt="User" className="rounded-circle" width="40" height="40" />
+                                    <img src={viatura.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{viatura.utilizador.nome}</td>
                                 <td>{viatura.km}</td>
