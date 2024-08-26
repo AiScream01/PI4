@@ -16,7 +16,7 @@ const sequelize = new Sequelize(
                 rejectUnauthorized: false // Você pode definir como true se tiver um certificado CA válido
             }
         }
-    }                
+    }
                     //{
                     //    host: 'localhost',
                     //    port: 5432,

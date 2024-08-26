@@ -1,5 +1,5 @@
 const Utilizadores = require('../models/utilizadores');
-const bcrypt = require('bcrypt'); // Importação do bcrypt para hash da palavra-passe
+const bcrypt = require('bcryptjs'); // Importação do bcrypt para hash da palavra-passe
 
 // Listar todos os utilizadores
 exports.listarTodos = async (req, res) => {
