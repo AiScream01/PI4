@@ -39,7 +39,7 @@ export default function App() {
                 <Route path="/micro-site" element={<MicroSite />} />
                 {/* Rota padrão */}
                 <Route path="/" element={addSidebar(<PedidoFerias />)} />
-                
+
             </Routes>
         </Router>
     );
