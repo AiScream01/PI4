@@ -70,7 +70,7 @@ export default function EditarMicroSite() {
     };
 
     if (loading) {
-        return <p>Carregando...</p>;
+        return <p>A Carregar...</p>;
     }
 
     return (

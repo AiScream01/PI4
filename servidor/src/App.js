@@ -45,7 +45,6 @@ const despesasviaturaRoute = require('./routes/despesasviaturapessoalRoutes.js')
 //Ajudas de custo
 const ajudascustoRoute = require('./routes/ajudascustoRoutes.js')
 
-
 //Micro-site
 const micrositeRoute = require ('./routes/microSiteRoutes.js')
 
