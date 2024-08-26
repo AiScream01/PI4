@@ -46,6 +46,10 @@ const despesasviaturaRoute = require('./routes/despesasviaturapessoalRoutes.js')
 const ajudascustoRoute = require('./routes/ajudascustoRoutes.js')
 
 
+//Micro-site
+const micrositeRoute = require ('./routes/microSiteRoutes.js')
+
+
 
 // Configurações
 app.set("port", process.env.PORT || 3000);
@@ -78,6 +82,7 @@ app.use('/faltas', faltasRoute)
 app.use('/estados', estadosRoute)
 app.use('/despesasviatura', despesasviaturaRoute)
 app.use('/ajudascusto', ajudascustoRoute)
+app.use('/microsite', micrositeRoute)
 
 // Sincronizar com o banco de dados
 sequelize.sync()
