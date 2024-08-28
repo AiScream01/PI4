@@ -4,7 +4,6 @@ const sequelize = require("../models/database");
 const appMobileController = {};
 
 appMobileController.list = async (req, res) => {
-  
   const id_user_param = req.params.userId; // Pegando o ID do utilizador
 
   console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
@@ -94,7 +93,7 @@ appMobileController.list = async (req, res) => {
         despesas_viatura_pessoal.km,
         despesas_viatura_pessoal.comprovativo,
         despesas_viatura_pessoal.preco_portagens,
-        estado.tipo_estado
+        estado.estado
     FROM 
         despesas_viatura_pessoal
     JOIN 
@@ -107,16 +106,19 @@ appMobileController.list = async (req, res) => {
       type: Sequelize.QueryTypes.SELECT,
     });
 
-    //    // Consultar faltas
-    //    const query7 = `
-    //    SELECT
-    //        faltas.data_falta,
-    //        estados.tipo_estado
-    //    FROM faltas
-    //    LEFT JOIN relacao_faltas_estado ON relacao_faltas_estado.id_falta = faltas.id_falta
-    //    LEFT JOIN estados ON relacao_faltas_estado.id_estado = estados.id_estado
-    //    WHERE faltas.id_user = ${id_user_param};`;
-    //    const faltas = await sequelize.query(query7, { type: Sequelize.QueryTypes.SELECT });
+    // Consultar faltas
+    /*const query7 = `
+    SELECT
+        faltas.data,
+
+     estados.tipo_estado
+    FROM faltas
+    LEFT JOIN relacao_faltas_estado ON relacao_faltas_estado.id_falta = faltas.id_falta
+     LEFT JOIN estados ON relacao_faltas_estado.id_estado = estados.id_estado
+    WHERE faltas.id_user = ${id_user_param};`;
+    const faltas = await sequelize.query(query7, {
+      type: Sequelize.QueryTypes.SELECT,
+    });*/
     //
     //    // Consultar reuniões de RH
     //    const query8 = `
