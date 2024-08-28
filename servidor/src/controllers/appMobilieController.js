@@ -94,13 +94,13 @@ appMobileController.list = async (req, res) => {
         despesas_viatura_pessoal.km,
         despesas_viatura_pessoal.comprovativo,
         despesas_viatura_pessoal.preco_portagens,
-        estados.tipo_estado
+        estado.tipo_estado
     FROM 
         despesas_viatura_pessoal
     JOIN 
         estado_despesas ON despesas_viatura_pessoal.id_despesa = despesas_viatura_pessoal.id_despesa
     JOIN 
-        estados ON estado_despesas.id_estado = estados.id_estado
+        estado ON estado_despesas.id_estado = estados.id_estado
     WHERE 
     despesas_viatura_pessoal.id_user = ${id_user_param};`;
     const despesasViatura = await sequelize.query(query6, {
