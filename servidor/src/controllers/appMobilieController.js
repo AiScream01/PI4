@@ -1,41 +1,44 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../models/database');
+const Sequelize = require("sequelize");
+const sequelize = require("../models/database");
 
 const appMobileController = {};
 
 appMobileController.list = async (req, res) => {
+  //************************************************************************************************************************************************************/
+  //*******AQUI PAULA AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII PODES TESTAR NA NET COM O LINK https://pi4-api.onrender.com/appmobile/****/
+  //**********************PENSO QUE O ERRO SEJA DOS TOKENS QUE A GENTE NÃO ESTÁ A USAR PQ EU FICO COM NÓ NA CABEÇA QUANDO TENTO*********************************/
+  //******OBRIGADOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*****/
+  //************************************************************************************************************************************************************/
+  const id_user_param = req.params.userId; // Pegando o ID do utilizador
 
-    //************************************************************************************************************************************************************/
-    //*******AQUI PAULA AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII PODES TESTAR NA NET COM O LINK https://pi4-api.onrender.com/appmobile/****/
-    //**********************PENSO QUE O ERRO SEJA DOS TOKENS QUE A GENTE NÃO ESTÁ A USAR PQ EU FICO COM NÓ NA CABEÇA QUANDO TENTO*********************************/
-    //******OBRIGADOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*****/
-    //************************************************************************************************************************************************************/
-    const id_user_param = req.params.userId; // Pegando o ID do utilizador
+  console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
 
-    console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
+  try {
+    // Consultar dados do utilizador
+    const query1 = `SELECT * FROM utilizadores WHERE id_user = ${id_user_param}`;
+    const utilizador = await sequelize.query(query1, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
 
-    try {
-        // Consultar dados do utilizador
-        const query1 = `SELECT * FROM utilizadores WHERE id_user = ${id_user_param}`;
-        const utilizador = await sequelize.query(query1, { type: Sequelize.QueryTypes.SELECT });
-
-        // Consulta SQL
-        const query2 = `
-            SELECT
-                f.data_inicio,
-                f.data_fim,
-                e.estado
-            FROM
-                ferias f
-            LEFT JOIN
-                relacao_ferias_estado rfe ON f.id_ferias = rfe.id_ferias
-            LEFT JOIN
-                estados e ON rfe.id_estado = e.id_estado
-            WHERE
-                f.id_user = ${id_user_param};
+    // Consulta SQL
+    const query2 = `
+        SELECT
+            f.data_inicio,
+            f.data_fim,
+            e.estado
+        FROM
+            ferias f
+        JOIN
+            estado_ferias e
+        ON
+            f.id_ferias = e.id_ferias
+        WHERE
+            f.id_user = ${id_user_param};
         `;
-        const ferias = await sequelize.query(query2, { type: Sequelize.QueryTypes.SELECT });
-//
+    const ferias = await sequelize.query(query2, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+    //
     //    // Consultar ajudas de custo
     //    const query3 = `
     //    SELECT
@@ -51,7 +54,7 @@ appMobileController.list = async (req, res) => {
     //        WHERE id_ajuda_custo = ajudas_custo.id_ajuda_custo
     //    );`;
     //    const ajudas = await sequelize.query(query3, { type: Sequelize.QueryTypes.SELECT });
-//
+    //
     //    // Consultar horas
     //    const query4 = `
     //    SELECT
@@ -67,15 +70,15 @@ appMobileController.list = async (req, res) => {
     //        WHERE id_relatorio_horas = relatorio_horas.id_relatorio_horas
     //    );`;
     //    const horas = await sequelize.query(query4, { type: Sequelize.QueryTypes.SELECT });
-//
+    //
     //    // Consultar recibos de vencimento
     //    const query5 = `
     //    SELECT *
     //    FROM recibos_vencimento
-    //    WHERE id_user = ${id_user_param} 
+    //    WHERE id_user = ${id_user_param}
     //    AND confirmacao_submissao_recibo = true;`;
     //    const recibos = await sequelize.query(query5, { type: Sequelize.QueryTypes.SELECT });
-//
+    //
     //    // Consultar despesas viatura própria
     //    const query6 = `
     //    SELECT
@@ -91,7 +94,7 @@ appMobileController.list = async (req, res) => {
     //        WHERE id_despesa = despesas_viatura_propria.id_despesa
     //    );`;
     //    const despesasViatura = await sequelize.query(query6, { type: Sequelize.QueryTypes.SELECT });
-//
+    //
     //    // Consultar faltas
     //    const query7 = `
     //    SELECT
@@ -102,7 +105,7 @@ appMobileController.list = async (req, res) => {
     //    LEFT JOIN estados ON relacao_faltas_estado.id_estado = estados.id_estado
     //    WHERE faltas.id_user = ${id_user_param};`;
     //    const faltas = await sequelize.query(query7, { type: Sequelize.QueryTypes.SELECT });
-//
+    //
     //    // Consultar reuniões de RH
     //    const query8 = `
     //    SELECT
@@ -120,40 +123,43 @@ appMobileController.list = async (req, res) => {
     //    JOIN tipo_utilizador AS tipo_utilizador_2 ON pessoa_info_2.id_tipo = tipo_utilizador_2.id_tipo
     //    WHERE utilizador1.id_user = ${id_user_param} AND utilizador1.id_user < utilizador2.id_user;`;
     //    const reunioes = await sequelize.query(query8, { type: Sequelize.QueryTypes.SELECT });
-//
-        res.json({
-            success: true,
-            utilizador: utilizador,
-            ferias: ferias,
-    //        ajudas: ajudas,
-    //        horas: horas,
-    //        recibos: recibos,
-    //        despesasViatura: despesasViatura,
-    //        faltas: faltas,
-    //        reunioes: reunioes
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
+    //
+    res.json({
+      success: true,
+      utilizador: utilizador,
+      ferias: ferias,
+      //        ajudas: ajudas,
+      //        horas: horas,
+      //        recibos: recibos,
+      //        despesasViatura: despesasViatura,
+      //        faltas: faltas,
+      //        reunioes: reunioes
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
 
 appMobileController.listNoticiasParcerias = async (req, res) => {
-    try {
-        // Seleciona todos os campos da tabela 'protocolos_parcerias'
-        const queryParcerias = 'SELECT * FROM protocolos_parcerias';
-        const parcerias = await sequelize.query(queryParcerias, { type: Sequelize.QueryTypes.SELECT });
+  try {
+    // Seleciona todos os campos da tabela 'protocolos_parcerias'
+    const queryParcerias = "SELECT * FROM protocolos_parcerias";
+    const parcerias = await sequelize.query(queryParcerias, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
 
-        // Seleciona todos os campos da tabela 'noticias'
-        const queryNoticias = 'SELECT * FROM noticias';
-        const noticias = await sequelize.query(queryNoticias, { type: Sequelize.QueryTypes.SELECT });
+    // Seleciona todos os campos da tabela 'noticias'
+    const queryNoticias = "SELECT * FROM noticias";
+    const noticias = await sequelize.query(queryNoticias, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
 
-        // Retorna as informações obtidas em formato JSON
-        res.json({ success: true, parcerias: parcerias, noticias: noticias });
-    } catch (error) {
-        // Em caso de erro, retorna o status 500 e a mensagem de erro
-        res.status(500).json({ success: false, error: error.message });
-    }
+    // Retorna as informações obtidas em formato JSON
+    res.json({ success: true, parcerias: parcerias, noticias: noticias });
+  } catch (error) {
+    // Em caso de erro, retorna o status 500 e a mensagem de erro
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
-
 
 module.exports = appMobileController;
