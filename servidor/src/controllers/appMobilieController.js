@@ -121,9 +121,9 @@ appMobileController.list = async (req, res) => {
     //    WHERE utilizador1.id_user = ${id_user_param} AND utilizador1.id_user < utilizador2.id_user;`;
     //    const reunioes = await sequelize.query(query8, { type: Sequelize.QueryTypes.SELECT });
 //
-    //    res.json({
-    //        success: true,
-    //        utilizador: utilizador,
+        res.json({
+            success: true,
+            utilizador: utilizador,
     //        ferias: ferias,
     //        ajudas: ajudas,
     //        horas: horas,
@@ -131,7 +131,7 @@ appMobileController.list = async (req, res) => {
     //        despesasViatura: despesasViatura,
     //        faltas: faltas,
     //        reunioes: reunioes
-    //    });
+        });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
