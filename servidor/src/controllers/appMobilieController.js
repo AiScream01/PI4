@@ -39,7 +39,7 @@ appMobileController.list = async (req, res) => {
       type: Sequelize.QueryTypes.SELECT,
     });
 
-  // Consulta SQL Ajudas Custo
+    // Consulta SQL Ajudas Custo
     const query3 = `
     SELECT
         ajudas_custo.custo,
@@ -51,31 +51,35 @@ appMobileController.list = async (req, res) => {
    FROM 
       ajudas_custo
    JOIN 
-      estado_ajudas ON ajudas_custo.id_custo = estado_ajudas.id_estado
+      estado_ajudas ON ajudas_custo.id_custo = estado_ajudas.id_custo
   JOIN 
       estado ON estado_ajudas.id_estado = estado.id_estado
    WHERE 
    ajudas_custo.id_user = ${id_user_param};`;
-    
-   const ajudas = await sequelize.query(query3, {
+
+    const ajudas = await sequelize.query(query3, {
       type: Sequelize.QueryTypes.SELECT,
     });
 
-    //    // Consultar horas
-    //    const query4 = `
-    //    SELECT
-    //        relatorio_horas.mes,
-    //        estados.tipo_estado
-    //    FROM relatorio_horas
-    //    LEFT JOIN relacao_horas_estado ON relacao_horas_estado.id_relatorio_horas = relatorio_horas.id_relatorio_horas
-    //    LEFT JOIN estados ON relacao_horas_estado.id_estado = estados.id_estado
-    //    WHERE relatorio_horas.id_user = ${id_user_param}
-    //    AND relacao_horas_estado.data_estado_relatorio_horas = (
-    //        SELECT MAX(data_estado_relatorio_horas)
-    //        FROM relacao_horas_estado
-    //        WHERE id_relatorio_horas = relatorio_horas.id_relatorio_horas
-    //    );`;
-    //    const horas = await sequelize.query(query4, { type: Sequelize.QueryTypes.SELECT });
+    // Consultar SQL Horas
+    const query4 = `
+     SELECT
+          horas.id_horas,
+          horas.horas,
+          estado.estado
+
+      FROM 
+          horas
+      JOIN 
+          estado_horas ON horas.id_horas = estado_horas.id_horas
+      JOIN 
+          estado ON estado_horas.id_estado = estado.id_estado
+        WHERE 
+        horas.id_user = ${id_user_param}
+      );`;
+    const horas = await sequelize.query(query4, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
     //
     //    // Consultar recibos de vencimento
     //    const query5 = `
