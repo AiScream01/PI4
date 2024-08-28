@@ -22,18 +22,18 @@ appMobileController.list = async (req, res) => {
 
     // Consulta SQL
     const query2 = `
-        SELECT
-            f.data_inicio,
-            f.data_fim,
-            e.estado
-        FROM
-            ferias f
-        JOIN
-            estado_ferias e
-        ON
-            f.id_ferias = e.id_ferias
-        WHERE
-            f.id_user = ${id_user_param};
+    SELECT 
+        ferias.data_inicio,
+        ferias.data_fim,
+        estado.estado
+    FROM
+        ferias
+    JOIN
+        estado_ferias ON ferias.id_ferias = estado_ferias.id_ferias
+    JOIN
+        estado ON estado_ferias.id_estado = estado.id_estado
+    WHERE
+    ferias.id_user = ${id_user_param};
         `;
     const ferias = await sequelize.query(query2, {
       type: Sequelize.QueryTypes.SELECT,
