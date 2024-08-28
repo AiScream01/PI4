@@ -38,16 +38,28 @@ appMobileController.list = async (req, res) => {
     const ferias = await sequelize.query(query2, {
       type: Sequelize.QueryTypes.SELECT,
     });
-  
+
+  // Consulta SQL Ajudas Custo
     const query3 = `
     SELECT
-    ajudas_custo.custo,
-    estado.estado
-   FROM ajudas_custo
-   JOIN estado_ajudas ON ajudas_custo.id_custo = estado_ajudas.id_estado
-  JOIN estado ON estado_ajudas.id_estado = estado.id_estado
-   WHERE ajudas_custo.id_user = ${id_user_param};`;
-    const ajudas = await sequelize.query(query3, { type: Sequelize.QueryTypes.SELECT });
+        ajudas_custo.custo,
+        ajudas_custo.id_custo,
+        ajudas_custo.custo,
+        ajudas_custo.descricao,
+        ajudas_custo.comprovativo,
+        estado.estado
+   FROM 
+      ajudas_custo
+   JOIN 
+      estado_ajudas ON ajudas_custo.id_custo = estado_ajudas.id_estado
+  JOIN 
+      estado ON estado_ajudas.id_estado = estado.id_estado
+   WHERE 
+   ajudas_custo.id_user = ${id_user_param};`;
+    
+   const ajudas = await sequelize.query(query3, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
 
     //    // Consultar horas
     //    const query4 = `
@@ -122,7 +134,7 @@ appMobileController.list = async (req, res) => {
       success: true,
       utilizador: utilizador,
       ferias: ferias,
-      ajudas: ajudas
+      ajudas: ajudas,
       //        horas: horas,
       //        recibos: recibos,
       //        despesasViatura: despesasViatura,
