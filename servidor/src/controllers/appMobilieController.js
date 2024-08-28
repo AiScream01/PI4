@@ -39,7 +39,7 @@ appMobileController.list = async (req, res) => {
       type: Sequelize.QueryTypes.SELECT,
     });
   
-    const query3 = `
+    /*const query3 = `
     SELECT
     ajudas_custo.valor_ajuda,
     estados.tipo_estado
@@ -52,7 +52,7 @@ appMobileController.list = async (req, res) => {
    FROM relacao_ajudas_estado
    WHERE id_ajuda_custo = ajudas_custo.id_ajuda_custo
   );`;
-    const ajudas = await sequelize.query(query3, { type: Sequelize.QueryTypes.SELECT });
+    const ajudas = await sequelize.query(query3, { type: Sequelize.QueryTypes.SELECT });*/
 
     //    // Consultar horas
     //    const query4 = `
