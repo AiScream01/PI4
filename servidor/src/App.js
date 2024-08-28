@@ -8,6 +8,9 @@ const bcrypt = require('bcryptjs'); // Importação do bcrypt para hash da palav
 require('./models/associations');
 
 // Routes
+//APP mobile
+const appMobileRoutes = require('./routes/appMobileRoutes.js')
+
 //Utilizador
 const utilizadorRoutes = require('./routes/utilizadoresRoutes.js')
 //const tiposutilizadorRoutes = require('./routes/tipoutilizadorRoutes.js')
@@ -68,6 +71,8 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Adicione esta linha para servir arquivos estáticos
 
 // Rotas
+app.use('/appmobile', appMobileRoutes)
+
 app.use('/utilizador', utilizadorRoutes)
 //app.use('/tiposutilizador', tiposutilizadorRoutes)
 app.use('/reunioesutilizadores', reunioesutilizadoresRoutes)
