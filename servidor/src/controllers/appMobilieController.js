@@ -6,6 +6,8 @@ const appMobileController = {};
 appMobileController.list = async (req, res) => {
     const id_user_param = req.userId; // Pegando o ID do utilizador
 
+    console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
+
     try {
         // Consultar dados do utilizador
         const query1 = `SELECT * FROM utilizadores WHERE id_user = ${id_user_param}`;
