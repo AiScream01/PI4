@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const appMobileController = require('../controllers/appMobilieController');
-const { createTokens, validateToken } = require("../jwt");
+//const { createTokens, validateToken } = require("../jwt");
+//validateToken,
 
-
-router.get('/', validateToken, appMobileController.list);
+router.get('/', appMobileController.list);
 router.get('/noticiasparcerias', appMobileController.listNoticiasParcerias);
 
 module.exports = router;
