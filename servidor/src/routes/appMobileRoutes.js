@@ -5,6 +5,7 @@ const appMobileController = require('../controllers/appMobilieController');
 //validateToken,
 
 router.get('/', appMobileController.list);
+
 router.get('/noticiasparcerias', appMobileController.listNoticiasParcerias);
 
 module.exports = router;

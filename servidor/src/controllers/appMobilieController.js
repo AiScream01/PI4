@@ -4,6 +4,12 @@ const sequelize = require('../models/database');
 const appMobileController = {};
 
 appMobileController.list = async (req, res) => {
+
+    //************************************************************************************************************************************************************/
+    //*******AQUI PAULA AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII PODES TESTAR NA NET COM O LINK https://pi4-api.onrender.com/appmobile/****/
+    //**********************PENSO QUE O ERRO SEJA DOS TOKENS QUE A GENTE NÃO ESTÁ A USAR PQ EU FICO COM NÓ NA CABEÇA QUANDO TENTO*********************************/
+    //******OBRIGADOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*****/
+    //************************************************************************************************************************************************************/
     const id_user_param = req.userId; // Pegando o ID do utilizador
 
     console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
