@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const appMobileController = require('../controllers/appMobileController');
+const appMobileController = require('../controllers/appMobilieController');
 //const { createTokens, validateToken } = require("../jwt");
 //validateToken,
 
