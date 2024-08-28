@@ -96,7 +96,7 @@ appMobileController.list = async (req, res) => {
         despesas_viatura_pessoal.preco_portagens,
         estados.tipo_estado
     FROM 
-        despesas_viatura_propria
+        despesas_viatura_pessoal
     JOIN 
         estado_despesas_viatura_pessoal ON despesas_viatura_pessoal.id_despesa = despesas_viatura_pessoal.id_despesa
     JOIN 
