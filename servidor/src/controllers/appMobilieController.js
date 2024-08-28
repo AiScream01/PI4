@@ -107,18 +107,22 @@ appMobileController.list = async (req, res) => {
     });
 
     // Consultar faltas
-    /*const query7 = `
+    const query7 = `
     SELECT
         faltas.data,
-
-     estados.tipo_estado
-    FROM faltas
-    LEFT JOIN relacao_faltas_estado ON relacao_faltas_estado.id_falta = faltas.id_falta
-     LEFT JOIN estados ON relacao_faltas_estado.id_estado = estados.id_estado
-    WHERE faltas.id_user = ${id_user_param};`;
+        faltas.id_falta,
+        estado.estado
+    FROM 
+        faltas
+    JOIN 
+        estado_faltas ON faltas.id_falta = faltas.id_falta
+    JOIN 
+        estado ON estado_faltas.id_estado = estado.id_estado
+    WHERE 
+    faltas.id_user = ${id_user_param};`;
     const faltas = await sequelize.query(query7, {
       type: Sequelize.QueryTypes.SELECT,
-    });*/
+    });
     //
     //    // Consultar reuniões de RH
     //    const query8 = `
@@ -146,7 +150,7 @@ appMobileController.list = async (req, res) => {
       horas: horas,
       //        recibos: recibos,
       despesasViatura: despesasViatura,
-      //        faltas: faltas,
+      faltas: faltas
       //        reunioes: reunioes
     });
   } catch (error) {
