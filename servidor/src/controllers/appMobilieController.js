@@ -38,6 +38,7 @@ appMobileController.list = async (req, res) => {
     const ferias = await sequelize.query(query2, {
       type: Sequelize.QueryTypes.SELECT,
     });
+  
     const query3 = `
     SELECT
     ajudas_custo.valor_ajuda,
@@ -125,8 +126,8 @@ appMobileController.list = async (req, res) => {
     res.json({
       success: true,
       utilizador: utilizador,
-      ferias: ferias,
-      ajudas: ajudas
+      ferias: ferias
+      //ajudas: ajudas
       //        horas: horas,
       //        recibos: recibos,
       //        despesasViatura: despesasViatura,
