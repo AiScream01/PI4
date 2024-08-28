@@ -123,24 +123,27 @@ appMobileController.list = async (req, res) => {
     const faltas = await sequelize.query(query7, {
       type: Sequelize.QueryTypes.SELECT,
     });
-    //
-    //    // Consultar reuniões de RH
-    //    const query8 = `
-    //    SELECT
-    //        reuniao_rh.*,
-    //        pessoa_info_1.nome_utilizador AS nome_utilizador_1,
-    //        tipo_utilizador_1.tipo AS tipo_utilizador_1,
-    //        pessoa_info_2.nome_utilizador AS nome_utilizador_2,
-    //        tipo_utilizador_2.tipo AS tipo_utilizador_2
-    //    FROM reuniao_rh
-    //    JOIN relacao_utilizadores_reuniao AS utilizador1 ON reuniao_rh.id_reuniao = utilizador1.id_reuniao
-    //    JOIN utilizadores AS pessoa_info_1 ON utilizador1.id_user = pessoa_info_1.id_user
-    //    JOIN tipo_utilizador AS tipo_utilizador_1 ON pessoa_info_1.id_tipo = tipo_utilizador_1.id_tipo
-    //    JOIN relacao_utilizadores_reuniao AS utilizador2 ON reuniao_rh.id_reuniao = utilizador2.id_reuniao
-    //    JOIN utilizadores AS pessoa_info_2 ON utilizador2.id_user = pessoa_info_2.id_user
-    //    JOIN tipo_utilizador AS tipo_utilizador_2 ON pessoa_info_2.id_tipo = tipo_utilizador_2.id_tipo
-    //    WHERE utilizador1.id_user = ${id_user_param} AND utilizador1.id_user < utilizador2.id_user;`;
-    //    const reunioes = await sequelize.query(query8, { type: Sequelize.QueryTypes.SELECT });
+
+    // Consultar reuniões de RH
+    const query8 = `
+    SELECT
+        reunioes.id_reuniao,
+        reunioes.titulo,
+        reunioes.descricao,
+        reunioes.data,
+        estado.estado
+    FROM 
+        reunioes
+    JOIN 
+        estado_reuniao ON reunioes.id_reuniao = reunioes.id_reuniao
+    JOIN 
+        estado ON estado_reuniao.id_reuniao = estado.id_reuniao
+    WHERE 
+    reunioes.id_user = ${id_user_param};`;
+    const reunioes = await sequelize.query(query8, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+
     //
     res.json({
       success: true,
@@ -150,8 +153,8 @@ appMobileController.list = async (req, res) => {
       horas: horas,
       //        recibos: recibos,
       despesasViatura: despesasViatura,
-      faltas: faltas
-      //        reunioes: reunioes
+      faltas: faltas,
+      reunioes: reunioes
     });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
