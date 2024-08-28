@@ -75,8 +75,7 @@ appMobileController.list = async (req, res) => {
       JOIN 
           estado ON estado_horas.id_estado = estado.id_estado
         WHERE 
-        horas.id_user = ${id_user_param}
-      );`;
+        horas.id_user = ${id_user_param};`;
     const horas = await sequelize.query(query4, {
       type: Sequelize.QueryTypes.SELECT,
     });
