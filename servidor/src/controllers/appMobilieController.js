@@ -137,7 +137,7 @@ appMobileController.list = async (req, res) => {
     JOIN 
         estado_reuniao ON reunioes.id_reuniao = reunioes.id_reuniao
     JOIN 
-        estado ON estado_reuniao.id_reuniao = estado.id_reuniao
+        estado ON estado_reuniao.id_reuniao = estado.id_estado
     WHERE 
     reunioes.id_user = ${id_user_param};`;
     const reunioes = await sequelize.query(query8, {
