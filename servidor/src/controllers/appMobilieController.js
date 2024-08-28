@@ -10,7 +10,7 @@ appMobileController.list = async (req, res) => {
     //**********************PENSO QUE O ERRO SEJA DOS TOKENS QUE A GENTE NÃO ESTÁ A USAR PQ EU FICO COM NÓ NA CABEÇA QUANDO TENTO*********************************/
     //******OBRIGADOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*****/
     //************************************************************************************************************************************************************/
-    const id_user_param = req.userId; // Pegando o ID do utilizador
+    const id_user_param = req.params.userId; // Pegando o ID do utilizador
 
     console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
 

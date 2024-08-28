@@ -4,7 +4,7 @@ const appMobileController = require('../controllers/appMobilieController');
 //const { createTokens, validateToken } = require("../jwt");
 //validateToken,
 
-router.get('/', appMobileController.list);
+router.get('/:userId', appMobileController.list);
 
 router.get('/noticiasparcerias', appMobileController.listNoticiasParcerias);
 
