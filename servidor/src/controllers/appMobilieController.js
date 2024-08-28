@@ -20,7 +20,7 @@ appMobileController.list = async (req, res) => {
       type: Sequelize.QueryTypes.SELECT,
     });
 
-    // Consulta SQL
+    // Consulta SQL FERIAS
     const query2 = `
     SELECT 
         ferias.data_inicio,
@@ -38,23 +38,21 @@ appMobileController.list = async (req, res) => {
     const ferias = await sequelize.query(query2, {
       type: Sequelize.QueryTypes.SELECT,
     });
-    //
-    //    // Consultar ajudas de custo
-    //    const query3 = `
-    //    SELECT
-    //        ajudas_custo.valor_ajuda,
-    //        estados.tipo_estado
-    //    FROM ajudas_custo
-    //    LEFT JOIN relacao_ajudas_estado ON relacao_ajudas_estado.id_ajuda_custo = ajudas_custo.id_ajuda_custo
-    //    LEFT JOIN estados ON relacao_ajudas_estado.id_estado = estados.id_estado
-    //    WHERE ajudas_custo.id_user = ${id_user_param}
-    //    AND relacao_ajudas_estado.data_estado_ajudascusto = (
-    //        SELECT MAX(data_estado_ajudascusto)
-    //        FROM relacao_ajudas_estado
-    //        WHERE id_ajuda_custo = ajudas_custo.id_ajuda_custo
-    //    );`;
-    //    const ajudas = await sequelize.query(query3, { type: Sequelize.QueryTypes.SELECT });
-    //
+    const query3 = `
+    SELECT
+    ajudas_custo.valor_ajuda,
+    estados.tipo_estado
+   FROM ajudas_custo
+   LEFT JOIN relacao_ajudas_estado ON relacao_ajudas_estado.id_ajuda_custo = ajudas_custo.id_ajuda_custo
+  LEFT JOIN estados ON relacao_ajudas_estado.id_estado = estados.id_estado
+   WHERE ajudas_custo.id_user = ${id_user_param}
+   AND relacao_ajudas_estado.data_estado_ajudascusto = (
+  SELECT MAX(data_estado_ajudascusto)
+   FROM relacao_ajudas_estado
+   WHERE id_ajuda_custo = ajudas_custo.id_ajuda_custo
+  );`;
+    const ajudas = await sequelize.query(query3, { type: Sequelize.QueryTypes.SELECT });
+
     //    // Consultar horas
     //    const query4 = `
     //    SELECT
@@ -128,7 +126,7 @@ appMobileController.list = async (req, res) => {
       success: true,
       utilizador: utilizador,
       ferias: ferias,
-      //        ajudas: ajudas,
+      ajudas: ajudas
       //        horas: horas,
       //        recibos: recibos,
       //        despesasViatura: despesasViatura,
