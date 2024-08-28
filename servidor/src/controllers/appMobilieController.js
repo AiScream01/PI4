@@ -139,7 +139,7 @@ appMobileController.list = async (req, res) => {
       utilizador: utilizador,
       ferias: ferias,
       ajudas: ajudas,
-      //        horas: horas,
+      horas: horas
       //        recibos: recibos,
       //        despesasViatura: despesasViatura,
       //        faltas: faltas,
