@@ -19,22 +19,22 @@ appMobileController.list = async (req, res) => {
         const query1 = `SELECT * FROM utilizadores WHERE id_user = ${id_user_param}`;
         const utilizador = await sequelize.query(query1, { type: Sequelize.QueryTypes.SELECT });
 
-    //    // Consultar férias
-    //    const query2 = `
-    //    SELECT
-    //        ferias.data_comeco,
-    //        ferias.data_fim,
-    //        estados.tipo_estado
-    //    FROM ferias
-    //    LEFT JOIN relacao_ferias_estado ON relacao_ferias_estado.id_ferias = ferias.id_ferias
-    //    LEFT JOIN estados ON relacao_ferias_estado.id_estado = estados.id_estado
-    //    WHERE ferias.id_user = ${id_user_param}
-    //    AND relacao_ferias_estado.data_estado_ferias = (
-    //        SELECT MAX(data_estado_ferias)
-    //        FROM relacao_ferias_estado
-    //        WHERE id_ferias = ferias.id_ferias
-    //    );`;
-    //    const ferias = await sequelize.query(query2, { type: Sequelize.QueryTypes.SELECT });
+        // Consulta SQL
+        const query2 = `
+            SELECT
+                f.data_inicio,
+                f.data_fim,
+                e.estado
+            FROM
+                ferias f
+            LEFT JOIN
+                relacao_ferias_estado rfe ON f.id_ferias = rfe.id_ferias
+            LEFT JOIN
+                estados e ON rfe.id_estado = e.id_estado
+            WHERE
+                f.id_user = ${id_user_param};
+        `;
+        const ferias = await sequelize.query(query2, { type: Sequelize.QueryTypes.SELECT });
 //
     //    // Consultar ajudas de custo
     //    const query3 = `
@@ -124,7 +124,7 @@ appMobileController.list = async (req, res) => {
         res.json({
             success: true,
             utilizador: utilizador,
-    //        ferias: ferias,
+            ferias: ferias,
     //        ajudas: ajudas,
     //        horas: horas,
     //        recibos: recibos,
