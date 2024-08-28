@@ -56,6 +56,7 @@ appMobileController.list = async (req, res) => {
       type: Sequelize.QueryTypes.SELECT,
     });
 
+
     // Consultar SQL Horas
     const query4 = `
      SELECT
@@ -84,7 +85,7 @@ appMobileController.list = async (req, res) => {
     AND confirmacao_submissao_recibo = true;`;
     const recibos = await sequelize.query(query5, { type: Sequelize.QueryTypes.SELECT });*/
 
-    // Consultar despesas viatura própria
+    // Consultar despesas viatura pessoal
     const query6 = `
     SELECT
         despesas_viatura_pessoal.id_despesa,
@@ -124,7 +125,7 @@ appMobileController.list = async (req, res) => {
       type: Sequelize.QueryTypes.SELECT,
     });
 
-    // Consultar reuniões de RH
+    // Consultar reuniões
     const query8 = `
     SELECT
         reunioes.id_reuniao,
@@ -151,7 +152,7 @@ appMobileController.list = async (req, res) => {
       ferias: ferias,
       ajudas: ajudas,
       horas: horas,
-      //        recibos: recibos,
+      //recibos: recibos,
       despesasViatura: despesasViatura,
       faltas: faltas,
       reunioes: reunioes
