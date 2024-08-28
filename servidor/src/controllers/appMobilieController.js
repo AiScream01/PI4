@@ -4,11 +4,7 @@ const sequelize = require("../models/database");
 const appMobileController = {};
 
 appMobileController.list = async (req, res) => {
-  //************************************************************************************************************************************************************/
-  //*******AQUI PAULA AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII PODES TESTAR NA NET COM O LINK https://pi4-api.onrender.com/appmobile/****/
-  //**********************PENSO QUE O ERRO SEJA DOS TOKENS QUE A GENTE NÃO ESTÁ A USAR PQ EU FICO COM NÓ NA CABEÇA QUANDO TENTO*********************************/
-  //******OBRIGADOWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW*****/
-  //************************************************************************************************************************************************************/
+  
   const id_user_param = req.params.userId; // Pegando o ID do utilizador
 
   console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
@@ -79,31 +75,38 @@ appMobileController.list = async (req, res) => {
     const horas = await sequelize.query(query4, {
       type: Sequelize.QueryTypes.SELECT,
     });
-    //
-    //    // Consultar recibos de vencimento
-    //    const query5 = `
-    //    SELECT *
-    //    FROM recibos_vencimento
-    //    WHERE id_user = ${id_user_param}
-    //    AND confirmacao_submissao_recibo = true;`;
-    //    const recibos = await sequelize.query(query5, { type: Sequelize.QueryTypes.SELECT });
-    //
-    //    // Consultar despesas viatura própria
-    //    const query6 = `
-    //    SELECT
-    //        despesas_viatura_propria.data_deslocacao,
-    //        estados.tipo_estado
-    //    FROM despesas_viatura_propria
-    //    LEFT JOIN relacao_despesas_estado ON relacao_despesas_estado.id_despesa = despesas_viatura_propria.id_despesa
-    //    LEFT JOIN estados ON relacao_despesas_estado.id_estado = estados.id_estado
-    //    WHERE despesas_viatura_propria.id_user = ${id_user_param}
-    //    AND relacao_despesas_estado.data_estado_despesas = (
-    //        SELECT MAX(data_estado_despesas)
-    //        FROM relacao_despesas_estado
-    //        WHERE id_despesa = despesas_viatura_propria.id_despesa
-    //    );`;
-    //    const despesasViatura = await sequelize.query(query6, { type: Sequelize.QueryTypes.SELECT });
-    //
+
+    //Consultar recibos de vencimento
+    /*const query5 = `
+    SELECT 
+        recibos_vencimento.
+    FROM recibos_vencimento
+    WHERE id_user = ${id_user_param}
+    AND confirmacao_submissao_recibo = true;`;
+    const recibos = await sequelize.query(query5, { type: Sequelize.QueryTypes.SELECT });*/
+
+    // Consultar despesas viatura própria
+    const query6 = `
+    SELECT
+        despesas_viatura_pessoal.id_despesa,
+        despesas_viatura_pessoal.ponto_partida,
+        despesas_viatura_pessoal.ponto_chegada,
+        despesas_viatura_pessoal.km,
+        despesas_viatura_pessoal.comprovativo,
+        despesas_viatura_pessoal.preco_portagens,
+        estados.tipo_estado
+    FROM 
+        despesas_viatura_propria
+    JOIN 
+        estado_despesas_viatura_pessoal ON despesas_viatura_pessoal.id_despesa = despesas_viatura_pessoal.id_despesa
+    JOIN 
+        estados ON estado_despesas.id_estado = estados.id_estado
+    WHERE 
+    despesas_viatura_pessoal.id_user = ${id_user_param};`;
+    const despesasViatura = await sequelize.query(query6, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+
     //    // Consultar faltas
     //    const query7 = `
     //    SELECT
@@ -138,9 +141,9 @@ appMobileController.list = async (req, res) => {
       utilizador: utilizador,
       ferias: ferias,
       ajudas: ajudas,
-      horas: horas
+      horas: horas,
       //        recibos: recibos,
-      //        despesasViatura: despesasViatura,
+      despesasViatura: despesasViatura,
       //        faltas: faltas,
       //        reunioes: reunioes
     });
