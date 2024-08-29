@@ -161,7 +161,7 @@ exports.list = async (req, res) => {
   }
 };
 
-exports.listNoticiasParcerias = async (res) => {
+exports.listNoticiasParcerias = async (req, res) => {
   try {
     // Seleciona todos os campos da tabela 'protocolos_parcerias'
     const queryParcerias = "SELECT * FROM protocolos_parcerias";
