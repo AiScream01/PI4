@@ -163,36 +163,38 @@ exports.list = async (req, res) => {
 
 exports.listNoticiasParcerias = async (req, res) => {
   try {
-    // Log the start of the function
     console.log("Starting listNoticiasParcerias...");
 
     // Seleciona todos os campos da tabela 'protocolos_parcerias'
     const queryParcerias = "SELECT * FROM protocolos_parcerias";
-    console.log('Running query for parcerias:', queryParcerias);
-
+    console.log('Executing query for parcerias:', queryParcerias);
+    
     const parcerias = await sequelize.query(queryParcerias, {
-      type: QueryTypes.SELECT, // Corrected QueryTypes usage
+      type: QueryTypes.SELECT,
     });
 
-    // Log the number of records fetched for parcerias
     console.log(`Fetched ${parcerias.length} records from protocolos_parcerias`);
 
     // Seleciona todos os campos da tabela 'noticias'
     const queryNoticias = "SELECT * FROM noticias";
-    console.log('Running query for noticias:', queryNoticias);
-
+    console.log('Executing query for noticias:', queryNoticias);
+    
     const noticias = await sequelize.query(queryNoticias, {
-      type: QueryTypes.SELECT, // Corrected QueryTypes usage
+      type: QueryTypes.SELECT,
     });
 
-    // Log the number of records fetched for noticias
     console.log(`Fetched ${noticias.length} records from noticias`);
 
-    // Retorna as informações obtidas em formato JSON
+    // Checking for unexpected column or manipulation
+    if (parcerias.some(item => item.noticiasparcerias !== undefined) || 
+        noticias.some(item => item.noticiasparcerias !== undefined)) {
+      console.error('Unexpected "noticiasparcerias" column found in data.');
+    }
+
+    // Return fetched data
     res.json({ success: true, parcerias: parcerias, noticias: noticias });
 
   } catch (error) {
-    // Em caso de erro, retorna o status 500 e a mensagem de erro
     console.error('Error fetching data:', error.message);
     res.status(500).json({ success: false, error: error.message });
   }
