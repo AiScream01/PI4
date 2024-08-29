@@ -8,6 +8,4 @@ router.get('/:userId', appMobileController.list2);
 
 router.get('/noticiasparcerias', appMobileController.listNoticiasParcerias);
 
-router.get('/parcerias', appMobileController.list2);
-
 module.exports = router;
