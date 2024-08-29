@@ -1,9 +1,8 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../models/database");
 
-const appMobileController = {};
 
-appMobileController.list = async (req, res) => {
+exports.list = async (req, res) => {
   const id_user_param = req.params.userId; // Pegando o ID do utilizador
 
   console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
@@ -162,7 +161,7 @@ appMobileController.list = async (req, res) => {
   }
 };
 
-appMobileController.listNoticiasParcerias = async (res) => {
+exports.listNoticiasParcerias = async (res) => {
   try {
     // Seleciona todos os campos da tabela 'protocolos_parcerias'
     const queryParcerias = "SELECT * FROM protocolos_parcerias";
@@ -201,5 +200,3 @@ appMobileController.list2 = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-module.exports = appMobileController;
