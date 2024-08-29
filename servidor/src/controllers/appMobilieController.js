@@ -162,7 +162,7 @@ appMobileController.list = async (req, res) => {
   }
 };
 
-appMobileController.listNoticiasParcerias = async (req, res) => {
+appMobileController.listNoticiasParcerias = async (res) => {
   try {
     // Seleciona todos os campos da tabela 'protocolos_parcerias'
     const queryParcerias = "SELECT * FROM protocolos_parcerias";
