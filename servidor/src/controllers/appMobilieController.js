@@ -161,60 +161,25 @@ exports.list = async (req, res) => {
   }
 };
 
-const { QueryTypes } = require('sequelize'); // Ensure to import QueryTypes from sequelize
-
+//Consultar Noticias e Parcerias
 exports.listNoticiasParcerias = async (req, res) => {
   try {
-    console.log("Starting listNoticiasParcerias...");
-
-    // Assume that 'id_user_param' might be a parameter you want to filter with; modify as needed.
-    const id_user_param = req.params.userId;
-
-    // Query for 'protocolos_parcerias' table
-    const queryParcerias = `
-      SELECT 
-        protocolos_parcerias.id_parceria,
-        protocolos_parcerias.logotipo,
-        protocolos_parcerias.titulo,
-        protocolos_parcerias.descricao,
-        protocolos_parcerias.categoria
-      FROM 
-        protocolos_parcerias;
-    `;
-
-    console.log('Executing query for parcerias:', queryParcerias);
-
+    // Seleciona todos os campos da tabela 'protocolos_parcerias'
+    const queryParcerias = "SELECT * FROM protocolos_parcerias";
     const parcerias = await sequelize.query(queryParcerias, {
-      type: QueryTypes.SELECT,
+      type: Sequelize.QueryTypes.SELECT,
     });
 
-    console.log(`Fetched ${parcerias.length} records from protocolos_parcerias`);
-
-    // Query for 'noticias' table
-    const queryNoticias = `
-      SELECT 
-        noticias.id_noticia,
-        noticias.titulo,
-        noticias.descricao,
-        noticias.data,
-        noticias.imagem
-      FROM 
-        noticias;
-    `;
-
-    console.log('Executing query for noticias:', queryNoticias);
-
+    // Seleciona todos os campos da tabela 'noticias'
+    const queryNoticias = "SELECT * FROM noticias";
     const noticias = await sequelize.query(queryNoticias, {
-      type: QueryTypes.SELECT,
+      type: Sequelize.QueryTypes.SELECT,
     });
 
-    console.log(`Fetched ${noticias.length} records from noticias`);
-
-    // Return fetched data
+    // Retorna as informações obtidas em formato JSON
     res.json({ success: true, parcerias: parcerias, noticias: noticias });
-
   } catch (error) {
-    console.error('Error fetching data:', error.message);
+    // Em caso de erro, retorna o status 500 e a mensagem de erro
     res.status(500).json({ success: false, error: error.message });
   }
 };
