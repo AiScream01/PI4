@@ -161,35 +161,54 @@ exports.list = async (req, res) => {
   }
 };
 
+const { QueryTypes } = require('sequelize'); // Ensure to import QueryTypes from sequelize
+
 exports.listNoticiasParcerias = async (req, res) => {
   try {
     console.log("Starting listNoticiasParcerias...");
 
-    // Seleciona todos os campos da tabela 'protocolos_parcerias'
-    const queryParcerias = "SELECT * FROM protocolos_parcerias";
+    // Assume that 'id_user_param' might be a parameter you want to filter with; modify as needed.
+    const id_user_param = req.params.userId;
+
+    // Query for 'protocolos_parcerias' table
+    const queryParcerias = `
+      SELECT 
+        protocolos_parcerias.id_parceria,
+        protocolos_parcerias.logotipo,
+        protocolos_parcerias.titulo,
+        protocolos_parcerias.descricao,
+        protocolos_parcerias.categoria
+      FROM 
+        protocolos_parcerias;
+    `;
+
     console.log('Executing query for parcerias:', queryParcerias);
-    
+
     const parcerias = await sequelize.query(queryParcerias, {
       type: QueryTypes.SELECT,
     });
 
     console.log(`Fetched ${parcerias.length} records from protocolos_parcerias`);
 
-    // Seleciona todos os campos da tabela 'noticias'
-    const queryNoticias = "SELECT * FROM noticias";
+    // Query for 'noticias' table
+    const queryNoticias = `
+      SELECT 
+        noticias.id_noticia,
+        noticias.titulo,
+        noticias.descricao,
+        noticias.data,
+        noticias.imagem
+      FROM 
+        noticias;
+    `;
+
     console.log('Executing query for noticias:', queryNoticias);
-    
+
     const noticias = await sequelize.query(queryNoticias, {
       type: QueryTypes.SELECT,
     });
 
     console.log(`Fetched ${noticias.length} records from noticias`);
-
-    // Checking for unexpected column or manipulation
-    if (parcerias.some(item => item.noticiasparcerias !== undefined) || 
-        noticias.some(item => item.noticiasparcerias !== undefined)) {
-      console.error('Unexpected "noticiasparcerias" column found in data.');
-    }
 
     // Return fetched data
     res.json({ success: true, parcerias: parcerias, noticias: noticias });
