@@ -182,6 +182,24 @@ appMobileController.listNoticiasParcerias = async (res) => {
     // Em caso de erro, retorna o status 500 e a mensagem de erro
     res.status(500).json({ success: false, error: error.message });
   }
+
+};
+
+appMobileController.list2 = async (res) => {
+  try {
+    // Seleciona todos os campos da tabela 'protocolos_parcerias'
+    const queryParcerias = "SELECT * FROM protocolos_parcerias";
+    const parcerias = await sequelize.query(queryParcerias, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+
+
+    // Retorna as informações obtidas em formato JSON
+    res.json({ success: true, parcerias: parcerias });
+  } catch (error) {
+    // Em caso de erro, retorna o status 500 e a mensagem de erro
+    res.status(500).json({ success: false, error: error.message });
+  }
 };
 
 module.exports = appMobileController;
