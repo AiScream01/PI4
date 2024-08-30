@@ -61,9 +61,10 @@ exports.criar = async (req, res) => {
             id_user
         });
 
+
         // Criar o registro na tabela estado_ferias com id_estado 3
         await EstadoFerias.create({
-            id_ferias: ferias.id, // O id do registro de férias recém-criado
+            id_ferias: ferias.id_ferias, // O id do registro de férias recém-criado
             id_estado: 3 // O id do estado que você deseja definir
         });
 
