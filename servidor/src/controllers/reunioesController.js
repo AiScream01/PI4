@@ -65,7 +65,7 @@ exports.listarPorId = async (req, res) => {
 };
 
 // Criar nova reunião
-exports.criarReuniao = async (req, res) => {
+exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
         const { titulo, descricao, data, id_user } = req.body;

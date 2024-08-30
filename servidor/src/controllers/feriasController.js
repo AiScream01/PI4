@@ -72,7 +72,7 @@ exports.criar = async (req, res) => {
     } catch (error) {
         // Log do erro para debug
         console.error('Erro ao criar férias:', error);
-        
+
         // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }

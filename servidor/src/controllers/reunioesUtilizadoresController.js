@@ -31,7 +31,7 @@ exports.listarPorIds = async (req, res) => {
 };
 
 // Criar associação entre usuário e reunião
-exports.criarAssociacaoReuniaoUsuario = async (req, res) => {
+exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
         const { id_user, id_reuniao } = req.body;

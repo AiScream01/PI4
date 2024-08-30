@@ -26,7 +26,7 @@ exports.listarPorId = async (req, res) => {
 };
 
 // Criar novo recibo de vencimento
-exports.criarRecibo = async (req, res) => {
+exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
         const { recibo, id_user, data, hora } = req.body;
