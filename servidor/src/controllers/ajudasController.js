@@ -87,6 +87,12 @@ exports.criar = async (req, res) => {
             id_user
         });
 
+        // Criar o registro na tabela estado_ajudas_custo com id_estado 3
+        await EstadoAjudas.create({
+            id_custo: ajudaCusto.id_custo, // O id do registro de ajuda de custo recém-criado
+            id_estado: 3 // O id do estado que você deseja definir
+        });
+
         // Responder com o objeto criado e status 201
         res.status(201).json(ajudaCusto);
     } catch (error) {

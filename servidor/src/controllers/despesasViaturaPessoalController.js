@@ -43,6 +43,12 @@ exports.criar = async (req, res) => {
             id_user
         });
 
+        // Criar o registro na tabela estado_despesas com id_estado 3
+        await EstadoDespesa.create({
+            id_despesa: despesaViaturaPessoal.id_despesa, // O id do registro de despesaViaturaPessoal recém-criado
+            id_estado: 3 // O id do estado que você deseja definir
+        });
+
         // Responder com o objeto criado e status 201
         res.status(201).json(despesaViaturaPessoal);
     } catch (error) {
