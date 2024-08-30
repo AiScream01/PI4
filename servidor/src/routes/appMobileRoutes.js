@@ -6,6 +6,6 @@ const appMobileController = require('../controllers/appMobilieController');
 
 router.get('/:userId', appMobileController.list);
 
-router.get('/noticiasparcerias', appMobileController.listNoticiasParcerias);
+router.get('/noticiasparcerias', appMobileController.NoticiasParcerias);
 
 module.exports = router;

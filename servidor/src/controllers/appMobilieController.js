@@ -162,7 +162,7 @@ exports.list = async (req, res) => {
 };
 
 //Consultar Noticias e Parcerias
-exports.listNoticiasParcerias = async (req, res) => {
+exports.NoticiasParcerias = async (req, res) => {
   try {
     // Seleciona todos os campos da tabela 'protocolos_parcerias'
     const queryParcerias = "SELECT * FROM protocolos_parcerias";
