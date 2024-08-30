@@ -6,6 +6,7 @@ exports.list = async (req, res) => {
   const id_user_param = req.params.userId; // Pegando o ID do utilizador
 
   console.log("ID User:", id_user_param); // Adiciona este log para ver o valor
+  console.log("ENTREI EM LIST E VAI BOMBAR")
 
   try {
     // Consultar dados do utilizador
@@ -164,6 +165,7 @@ exports.list = async (req, res) => {
 //Consultar Noticias e Parcerias
 exports.NoticiasParcerias = async (req, res) => {
   try {
+    console.log("ENTREI EM NOTICIAS E VAI BOMBAR")
     // Seleciona todos os campos da tabela 'protocolos_parcerias'
     const queryParcerias = "SELECT * FROM protocolos_parcerias";
     const parcerias = await sequelize.query(queryParcerias, {
