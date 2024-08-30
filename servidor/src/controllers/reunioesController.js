@@ -65,14 +65,30 @@ exports.listarPorId = async (req, res) => {
 };
 
 // Criar nova reunião
-exports.criar = async (req, res) => {
+exports.criarReuniao = async (req, res) => {
     try {
-        const reuniao = await Reunioes.create(req.body);
-        res.status(201).json(reuniao);
+        // Extrair campos do corpo da requisição
+        const { titulo, descricao, data, id_user } = req.body;
+
+        // Criar o registro de reunião na base de dados
+        const novaReuniao = await Reunioes.create({
+            titulo,
+            descricao,
+            data,
+            id_user
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novaReuniao);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar reunião:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar reunião por ID
 exports.atualizar = async (req, res) => {

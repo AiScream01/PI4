@@ -76,12 +76,28 @@ exports.listarPorId = async (req, res) => {
 // Criar nova ajuda de custo
 exports.criar = async (req, res) => {
     try {
-        const ajudaCusto = await AjudasCusto.create(req.body);
+        // Extrair campos do corpo da requisição
+        const { custo, descricao, comprovativo, id_user } = req.body;
+
+        // Criar o registro de ajuda de custo na base de dados
+        const ajudaCusto = await AjudasCusto.create({
+            custo,
+            descricao,
+            comprovativo,
+            id_user
+        });
+
+        // Responder com o objeto criado e status 201
         res.status(201).json(ajudaCusto);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar ajuda de custo:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar ajuda de custo por ID
 exports.atualizar = async (req, res) => {

@@ -28,12 +28,27 @@ exports.listarPorId = async (req, res) => {
 // Criar novo log
 exports.criar = async (req, res) => {
     try {
-        const log = await Logs.create(req.body);
-        res.status(201).json(log);
+        // Extrair campos do corpo da requisição
+        const { acao, data, responsavel } = req.body;
+
+        // Criar o registro de log na base de dados
+        const novoLog = await Logs.create({
+            acao,
+            data,
+            responsavel
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novoLog);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar log:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar log por ID
 exports.atualizar = async (req, res) => {

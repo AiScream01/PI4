@@ -27,15 +27,33 @@ exports.listarPorId = async (req, res) => {
     }
 };
 
-// Criar uma nova despesa
+// Criar nova despesa de viatura pessoal
 exports.criar = async (req, res) => {
     try {
-        const despesa = await DespesasViaturaPessoal.create(req.body);
-        res.status(201).json(despesa);
+        // Extrair campos do corpo da requisição
+        const { km, ponto_partida, ponto_chegada, preco_portagens, comprovativo, id_user } = req.body;
+
+        // Criar o registro de despesa de viatura pessoal na base de dados
+        const despesaViaturaPessoal = await DespesasViaturaPessoal.create({
+            km,
+            ponto_partida,
+            ponto_chegada,
+            preco_portagens,
+            comprovativo,
+            id_user
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(despesaViaturaPessoal);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar despesa de viatura pessoal:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar uma despesa por ID
 exports.atualizar = async (req, res) => {

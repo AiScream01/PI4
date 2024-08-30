@@ -25,15 +25,28 @@ exports.listarPorId = async (req, res) => {
     }
 };
 
-// Criar um novo estado
+// Criar novo estado
 exports.criar = async (req, res) => {
     try {
-        const estado = await Estado.create(req.body);
-        res.status(201).json(estado);
+        // Extrair campos do corpo da requisição
+        const { estado } = req.body;
+
+        // Criar o registro de estado na base de dados
+        const novoEstado = await Estado.create({
+            estado
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novoEstado);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar estado:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar um estado por ID
 exports.atualizar = async (req, res) => {

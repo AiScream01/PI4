@@ -26,11 +26,26 @@ exports.listarPorId = async (req, res) => {
 };
 
 // Criar novo recibo de vencimento
-exports.criar = async (req, res) => {
+exports.criarRecibo = async (req, res) => {
     try {
-        const recibo = await RecibosVencimento.create(req.body);
-        res.status(201).json(recibo);
+        // Extrair campos do corpo da requisição
+        const { recibo, id_user, data, hora } = req.body;
+
+        // Criar o registro de recibo na base de dados
+        const novoRecibo = await RecibosVencimento.create({
+            recibo,
+            id_user,
+            data,
+            hora
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novoRecibo);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar recibo de vencimento:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };

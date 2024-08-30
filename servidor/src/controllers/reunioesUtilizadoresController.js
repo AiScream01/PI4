@@ -30,12 +30,25 @@ exports.listarPorIds = async (req, res) => {
     }
 };
 
-// Criar novo registro de reunião e utilizador
-exports.criar = async (req, res) => {
+// Criar associação entre usuário e reunião
+exports.criarAssociacaoReuniaoUsuario = async (req, res) => {
     try {
-        const reuniaoUtilizador = await ReunioesUtilizadores.create(req.body);
-        res.status(201).json(reuniaoUtilizador);
+        // Extrair campos do corpo da requisição
+        const { id_user, id_reuniao } = req.body;
+
+        // Criar o registro de associação na base de dados
+        const novaAssociacao = await ReunioesUtilizadores.create({
+            id_user,
+            id_reuniao
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novaAssociacao);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar associação entre reunião e usuário:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };

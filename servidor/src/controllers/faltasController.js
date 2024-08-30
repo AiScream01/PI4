@@ -28,15 +28,29 @@ exports.listarPorId = async (req, res) => {
     }
 };
 
-// Criar uma nova falta
+// Criar nova falta
 exports.criar = async (req, res) => {
     try {
-        const falta = await Faltas.create(req.body);
-        res.status(201).json(falta);
+        // Extrair campos do corpo da requisição
+        const { data, id_user } = req.body;
+
+        // Criar o registro de falta na base de dados
+        const novaFalta = await Faltas.create({
+            data,
+            id_user
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novaFalta);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar falta:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar uma falta por ID
 exports.atualizar = async (req, res) => {

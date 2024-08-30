@@ -66,15 +66,29 @@ exports.listarPorId = async (req, res) => {
     }
 };
 
-// Criar novas horas
+// Criar novo registro de horas
 exports.criar = async (req, res) => {
     try {
-        const horas = await Horas.create(req.body);
-        res.status(201).json(horas);
+        // Extrair campos do corpo da requisição
+        const { horas, id_user } = req.body;
+
+        // Criar o registro de horas na base de dados
+        const novoRegistroHoras = await Horas.create({
+            horas,
+            id_user
+        });
+
+        // Responder com o objeto criado e status 201
+        res.status(201).json(novoRegistroHoras);
     } catch (error) {
+        // Log do erro para debug
+        console.error('Erro ao criar registro de horas:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
+
 
 // Atualizar horas por ID
 exports.atualizar = async (req, res) => {
