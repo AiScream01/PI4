@@ -51,9 +51,23 @@ exports.listarPorId = async (req, res) => {
 // Criar novas férias
 exports.criar = async (req, res) => {
     try {
-        const ferias = await Ferias.create(req.body);
+        // Verifica se todos os campos necessários estão presentes no corpo da requisição
+        const { id_user, data_inicio, data_fim } = req.body;
+
+        if (!id_user || !data_inicio || !data_fim) {
+            return res.status(400).json({ error: 'Campos obrigatórios ausentes.' });
+        }
+
+        // Cria um novo registro de férias
+        const ferias = await Ferias.create({
+            id_user,
+            data_inicio,
+            data_fim
+        });
+
         res.status(201).json(ferias);
     } catch (error) {
+        console.error('Erro ao criar férias:', error);
         res.status(500).json({ error: error.message });
     }
 };
