@@ -41,6 +41,7 @@ exports.criar = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 // Atualizar parceria por ID
 exports.atualizar = async (req, res) => {
     try {

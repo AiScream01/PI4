@@ -51,10 +51,23 @@ exports.listarPorId = async (req, res) => {
 // Criar novas férias
 exports.criar = async (req, res) => {
     try {
-        const ferias = await Ferias.create(req.body);
+        // Extrair campos do corpo da requisição
+        const { data_inicio, data_fim, id_user } = req.body;
+
+        // Criar o registro de férias na base de dados
+        const ferias = await Ferias.create({
+            data_inicio,
+            data_fim,
+            id_user
+        });
+
+        // Responder com o objeto criado e status 201
         res.status(201).json(ferias);
     } catch (error) {
+        // Log do erro para debug
         console.error('Erro ao criar férias:', error);
+        
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
