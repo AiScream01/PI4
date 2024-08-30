@@ -12,7 +12,7 @@ router.get('/pendentes', ajudasCustoController.listarPendentes);
 router.get('/:id_custo', ajudasCustoController.listarPorId);
 
 // Rota para criar uma nova ajuda de custo
-router.post('/', ajudasCustoController.criar);
+router.post('/create', ajudasCustoController.criar);
 
 // Rota para atualizar uma ajuda de custo por ID
 router.put('/:id_custo', ajudasCustoController.atualizar);
