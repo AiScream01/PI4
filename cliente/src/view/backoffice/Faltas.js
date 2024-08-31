@@ -52,7 +52,7 @@ export default function Faltas() {
         <div className="container mt-5">
             <h1 className="mb-4">Faltas Pendentes</h1>
             <div className="table-responsive">
-                <table className="table align-middle" style={{boxShadow: '10px 10px 15px grey'}}>
+                <table className="table align-middle" style={{boxShadow: '5px 5px 15px grey'}}>
                     <thead className="table-light">
                         <tr>
                             <th scope="col"></th>

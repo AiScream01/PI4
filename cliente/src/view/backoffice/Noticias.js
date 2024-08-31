@@ -183,7 +183,7 @@ export default function Noticias() {
           <FaPlus /> Adicionar Notícia
         </button>
       </div>
-      <table className="table table-striped text-center align-middle" style={{boxShadow: '10px 10px 15px grey'}}>
+      <table className="table table-striped text-center align-middle" style={{boxShadow: '5px 5px 15px grey'}}>
         <thead>
           <tr>
             <th>Imagem</th>
