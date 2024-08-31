@@ -77,7 +77,7 @@ export default function Ajudas() {
                         {ajudasData.map((ajuda) => (
                             <tr key={ajuda.id_custo}>
                                 <td>
-                                    <img src={'https://hubpessoas.pt/wp-content/uploads/2024/01/Revista_PESSOAS24_Capa.jpg'} alt="User" className="rounded-circle" width="40" height="40" />
+                                    <img src={ajuda.utilizador.foto} alt="User"  className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{ajuda.utilizador.nome}</td>
                                 <td>{ajuda.custo}</td>

@@ -141,7 +141,7 @@ export default function Parcerias() {
                     <div className="col-6 col-md-3 mb-4" key={parceria.id_parceria}>
                         <div className="text-center">
                             <img
-                                src={parceria.logotipo || 'https://via.placeholder.com/150'} // Adicione uma imagem padrão se necessário
+                                src={parceria.logotipo} // Adicione uma imagem padrão se necessário
                                 alt={parceria.titulo}
                                 className="img-fluid mb-2"
                                 style={{ maxHeight: '150px', objectFit: 'cover' }}

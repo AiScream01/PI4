@@ -214,7 +214,7 @@ export default function Utilizadores() {
               <tr key={usuario.id_user}>
                 <td>
                   <img
-                    src={usuario.imagem || "https://via.placeholder.com/50"}
+                    src={usuario.imagem}
                     alt="User"
                     className="rounded-circle"
                     width="50"

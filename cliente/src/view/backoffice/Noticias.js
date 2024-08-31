@@ -198,7 +198,7 @@ export default function Noticias() {
             <tr key={noticia.id_noticia}>
               <td>
                 <img
-                  src={noticia.imagem || "https://via.placeholder.com/150"}
+                  src={noticia.imagem}
                   alt={noticia.titulo}
                   className="img-fluid"
                   style={{ maxHeight: "75px", objectFit: "cover" }}
