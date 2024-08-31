@@ -140,7 +140,8 @@ export default function Parcerias() {
 <br></br>
             <div className="row">
                 {parceriasData.map((parceria) => (
-                    <div className="col-6 col-md-3 mb-4" key={parceria.id_parceria}>
+                    <div className="col-6 col-md-3 mb-4" style={{margin: 'auto'}}
+                    key={parceria.id_parceria}>
                         <div className="text-center">
                             <img
                                 src={'https://via.placeholder.com/150'} // Adicione uma imagem padrão se necessário
@@ -162,29 +163,7 @@ export default function Parcerias() {
                         </div>
                     </div>
                 ))}
-                {parceriasData.map((parceria) => (
-                    <div className="col-6 col-md-3 mb-4" key={parceria.id_parceria}>
-                        <div className="text-center">
-                            <img
-                                src={'https://via.placeholder.com/150'} // Adicione uma imagem padrão se necessário
-                                alt={parceria.titulo}
-                                className="img-fluid mb-2"
-                                style={{ maxHeight: '150px', objectFit: 'cover' }}
-                            />
-                            <div className="mb-2">
-                                <strong>{parceria.titulo}</strong> {/* Nome da parceria */}
-                            </div>
-                            <div>
-                                <button className="btn p-1 me-2" style={{ color: 'blue' }} onClick={() => handleEdit(parceria)}>
-                                    <FaEdit size={20} />
-                                </button>
-                                <button className="btn p-1" style={{ color: 'red' }} onClick={() => handleDelete(parceria.id_parceria)}>
-                                    <FaTrash size={20} />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+                
             </div>
             </div>
             {/* Modal de Edição */}
