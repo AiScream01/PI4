@@ -136,14 +136,14 @@ export default function Parcerias() {
         <FaPlus /> Adicionar Parceria
     </button>
 </div>
-<div className='justify-content-top align-items-center border rounded-2 d-flex flex-column ' style={{width: "80%", backgroundColor: '#FFFFFF'}}>
-
+<div className='justify-content-top align-items-center border rounded-2 d-flex flex-column ' style={{width: "100%", backgroundColor: '#FFFFFF'}}>
+<br></br>
             <div className="row">
                 {parceriasData.map((parceria) => (
                     <div className="col-6 col-md-3 mb-4" key={parceria.id_parceria}>
                         <div className="text-center">
                             <img
-                                src={parceria.logotipo} // Adicione uma imagem padrão se necessário
+                                src={'https://via.placeholder.com/150'} // Adicione uma imagem padrão se necessário
                                 alt={parceria.titulo}
                                 className="img-fluid mb-2"
                                 style={{ maxHeight: '150px', objectFit: 'cover' }}
