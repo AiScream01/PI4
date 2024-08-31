@@ -49,8 +49,8 @@ export default function PedidoFerias() {
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Pedidos de Férias Pendentes</h1>
-            <div className="table-responsive" style={{boxShadow: '10px 10px 15px grey'}}>
-                <table className="table align-middle">
+            <div className="table-responsive" >
+                <table className="table align-middle" style={{boxShadow: '10px 10px 15px grey'}}>
                     <thead className="table-light">
                         <tr>
                             <th scope="col"></th>
