@@ -174,7 +174,7 @@ export default function Noticias() {
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="mb-0">Notícias</h2>
+        <h1 className="mb-0">Notícias</h1>
         <button
           className="btn btn-primary"
           onClick={() => setShowAddModal(true)}

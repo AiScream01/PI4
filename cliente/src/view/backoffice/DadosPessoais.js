@@ -26,7 +26,7 @@ export default function DadosPessoais() {
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4">Dados Pessoais</h2>
+            <h1 className="mb-4">Dados Pessoais</h1>
             <div className="table-responsive">
                 <table className="table align-middle">
                     <thead className="table-light">

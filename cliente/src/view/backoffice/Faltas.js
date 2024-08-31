@@ -50,7 +50,7 @@ export default function Faltas() {
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4">Faltas Pendentes</h2>
+            <h1 className="mb-4">Faltas Pendentes</h1>
             <div className="table-responsive">
                 <table className="table align-middle">
                     <thead className="table-light">
