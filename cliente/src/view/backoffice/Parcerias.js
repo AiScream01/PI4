@@ -136,7 +136,7 @@ export default function Parcerias() {
         <FaPlus /> Adicionar Parceria
     </button>
 </div>
-<div className='justify-content-top align-items-center border rounded-2 d-flex flex-column ' style={{width: "100%", backgroundColor: '#FFFFFF', boxShadow: '10px 10px 15px grey'}}>
+<div className='justify-content-top align-items-center border rounded-2 d-flex flex-column ' style={{width: "100%",  boxShadow: '10px 10px 15px grey',backgroundColor: '#FFFFFF'}}>
 <br></br>
             <div className="row">
                 {parceriasData.map((parceria) => (
