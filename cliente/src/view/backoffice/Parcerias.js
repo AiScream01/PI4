@@ -136,6 +136,8 @@ export default function Parcerias() {
         <FaPlus /> Adicionar Parceria
     </button>
 </div>
+<div className='justify-content-top align-items-center border rounded-2 d-flex flex-column ' style={{width: "80%", backgroundColor: '#FFFFFF'}}>
+
             <div className="row">
                 {parceriasData.map((parceria) => (
                     <div className="col-6 col-md-3 mb-4" key={parceria.id_parceria}>
@@ -161,7 +163,7 @@ export default function Parcerias() {
                     </div>
                 ))}
             </div>
-
+            </div>
             {/* Modal de Edição */}
             {showEditModal && (
                 <div className="modal show" style={{ display: 'block' }}>
