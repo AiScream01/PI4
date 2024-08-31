@@ -77,7 +77,7 @@ export default function Ajudas() {
                         {ajudasData.map((ajuda) => (
                             <tr key={ajuda.id_custo}>
                                 <td>
-                                    <img src={ajuda.utilizador.foto} alt="User" placeplaceholder={'https://via.placeholder.com/50'} className="rounded-circle" width="40" height="40" />
+                                    <img src={ajuda.utilizador.foto} alt="User" placeholder={'https://via.placeholder.com/50'} className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{ajuda.utilizador.nome}</td>
                                 <td>{ajuda.custo}</td>
