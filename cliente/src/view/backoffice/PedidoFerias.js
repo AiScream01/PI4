@@ -48,7 +48,7 @@ export default function PedidoFerias() {
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4">Pedidos de Férias Pendentes</h2>
+            <h2 className="mb-4" style={"font-family:Cantarell;"}>Pedidos de Férias Pendentes</h2>
             <div className="table-responsive">
                 <table className="table align-middle">
                     <thead className="table-light">
