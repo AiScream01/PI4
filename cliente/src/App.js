@@ -26,7 +26,7 @@ export default function App() {
         <Router>
             <Routes>
                 <Route path="/pedido-ferias" element={addSidebar(<PedidoFerias />)} />
-                <Route path="/login" element={<Login/>} />
+                <Route path="/login" element={addSidebar(<Login />)}/>
                 <Route path="/horas" element={addSidebar(<Horas />)} />
                 <Route path="/ajudas" element={addSidebar(<Ajudas />)} />
                 <Route path="/viatura-propria" element={addSidebar(<ViaturaPropria />)} />
