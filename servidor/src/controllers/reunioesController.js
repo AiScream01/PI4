@@ -79,7 +79,7 @@ exports.criar = async (req, res) => {
         });
 
         // Criar o registro na tabela estado_reunioes com id_estado 3
-        await EstadoDespesa.create({
+        await EstadoReunioes.create({
             id_reuniao: novaReuniao.id_reuniao, // O id do registro de Reunioes recém-criado
             id_estado: 3 // O id do estado que você deseja definir
         });
