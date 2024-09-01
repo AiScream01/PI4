@@ -72,7 +72,7 @@ exports.criar = async (req, res) => {
         const { titulo, descricao, data, id_user, nome_usuario_reuniao } = req.body;
 
         // Buscar o id_user pelo nome do utilizador
-        const usuario = await Utilizadores.findOne({ where: { nome: nome_usuario_reuniao } });
+        const usuario = await Utilizador.findOne({ where: { nome: nome_usuario_reuniao } });
 
         if (!usuario) {
             return res.status(404).json({ error: 'Usuário não encontrado' });
