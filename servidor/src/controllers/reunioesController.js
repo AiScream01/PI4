@@ -1,7 +1,8 @@
 const Reunioes = require('../models/reunioes');
 const EstadoReunioes = require('../models/estado_reuniao');
 const Estado = require('../models/estado'); // Supondo que exista um model para estado
-const Utilizador = require ('../models/utilizadores.js')
+const UtilizadorReuniao = require('../models/reunioes_utilizadores');
+const Utilizador = require ('../models/utilizadores.js');
 
 // Listar todas as reuniões
 exports.listarTodos = async (req, res) => {
@@ -68,7 +69,16 @@ exports.listarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
-        const { titulo, descricao, data, id_user } = req.body;
+        const { titulo, descricao, data, id_user, nome_usuario_reuniao } = req.body;
+
+        // Buscar o id_user pelo nome do utilizador
+        const usuario = await Utilizadores.findOne({ where: { nome: nome_usuario_reuniao } });
+
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        const id_user_reuniao = usuario.id_user;
 
         // Criar o registro de reunião na base de dados
         const novaReuniao = await Reunioes.create({
@@ -84,12 +94,18 @@ exports.criar = async (req, res) => {
             id_estado: 3 // O id do estado que você deseja definir
         });
 
+        // Criar o registro na tabela UtilizadorReuniao
+        await UtilizadorReuniao.create({
+            id_reuniao: novaReuniao.id_reuniao, // O id da reunião recém-criada
+            id_user: id_user_reuniao // O id do usuário com quem a reunião será realizada
+        });
+
         // Responder com o objeto criado e status 201
         res.status(201).json(novaReuniao);
     } catch (error) {
         // Log do erro para debug
         console.error('Erro ao criar reunião:', error);
-        
+
         // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
