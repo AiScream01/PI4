@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 import olisipoLogo from '../../assets/Olisipo_LogoWhite.svg';
-import fundoOlisipo from '../../assets/fundo_olisipo.png'; // Certifique-se de ajustar o caminho conforme necessário
-import url from '../../config';
+import fundoOlisipo from '../../assets/fundo_olisipo.png'; 
+import url from '../../config'; // Certifique-se de ajustar o caminho conforme necessário
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './login.css'; // Arquivo CSS adicional para personalização
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -19,7 +21,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, palavrapasse: palavrapasse }),
+        body: JSON.stringify({ email, palavrapasse }),
       });
 
       const data = await response.json();
@@ -46,94 +48,37 @@ const Login = () => {
   };
 
   return (
-    <div style={styles.container}>
-      <div style={styles.logoContainer}>
-        <img src={olisipoLogo} alt="Olisipo Logo" style={styles.logo} />
+    <div className="login-container d-flex align-items-center justify-content-center">
+      <div className="login-box p-5 shadow">
+        <div className="text-center mb-4">
+          <img src={olisipoLogo} alt="Olisipo Logo" className="login-logo mb-4" />
+        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group mb-3">
+            <input 
+              type="email" 
+              className="form-control" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              placeholder="Digite o seu email" 
+              required 
+            />
+          </div>
+          <div className="form-group mb-4">
+            <input 
+              type="password" 
+              className="form-control" 
+              value={palavrapasse} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="Digite a sua palavra-passe" 
+              required 
+            />
+          </div>
+          <button type="submit" className="btn btn-success w-100">Entrar</button>
+        </form>
       </div>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div style={styles.inputGroup}>
-          <input 
-            type="email" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            placeholder="Digite o seu email" 
-            required
-            style={styles.input}
-          />
-        </div>
-        <div style={styles.inputGroup}>
-          <input 
-            type="password" 
-            value={palavrapasse} 
-            onChange={(e) => setPassword(e.target.value)} 
-            placeholder="Digite a sua palavra-passe" 
-            required
-            style={styles.input}
-          />
-        </div>
-        <button type="submit" style={styles.button}>Entrar</button>
-      </form>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    backgroundImage: `url(${fundoOlisipo})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    padding: '20px',
-    boxSizing: 'border-box',
-  },
-  logoContainer: {
-    marginBottom: '30px',
-  },
-  logo: {
-    width: '150px',
-    height: 'auto',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
-    maxWidth: '400px',
-    padding: '30px',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: '15px',
-    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
-  },
-  inputGroup: {
-    marginBottom: '20px',
-    width: '100%',
-  },
-  input: {
-    width: '100%',
-    padding: '15px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    border: '1px solid #ccc',
-    boxSizing: 'border-box',
-  },
-  button: {
-    width: '100%',
-    padding: '15px',
-    fontSize: '16px',
-    borderRadius: '5px',
-    border: 'none',
-    backgroundColor: '#1ED700',
-    color: '#fff',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-  },
-  buttonHover: {
-    backgroundColor: '#18B800',
-  },
 };
 
 export default Login;

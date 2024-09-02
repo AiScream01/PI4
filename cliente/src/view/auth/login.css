@@ -1,0 +1,27 @@
+.login-container {
+    height: 100vh;
+    background-image: url('../../assets/fundo_olisipo.png');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .login-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .login-logo {
+    width: 150px;
+  }
+  
+  .btn-success {
+    background-color: #1ED700;
+    border: none;
+  }
+  
+  .btn-success:hover {
+    background-color: #18B800;
+  }
+  
