@@ -24,53 +24,21 @@ export default function Parcerias() {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append('logotipo', file);
-
-    // Enviar o arquivo para o backend
-    fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.filePath) {
-            // Atualize o estado com o caminho do arquivo retornado pelo backend
-            setNewParceria(prevState => ({
-                ...prevState,
-                logotipo: data.filePath // Aqui o caminho completo é retornado
-            }));
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    setNewParceria(prevState => ({
+      ...prevState,
+      logotipo: file
+    }));
   };
+  
 
   const handleFileUploadForEdit = (event) => {
     const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append('logotipo', file);
-
-    // Enviar o arquivo para o backend
-    fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.filePath) {
-            // Atualize o estado com o caminho do arquivo retornado pelo backend
-            setSelectedParceria(prevState => ({
-                ...prevState,
-                logotipo: data.filePath // Aqui o caminho completo é retornado
-            }));
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    setSelectedParceria(prevState => ({
+      ...prevState,
+      logotipo: file
+    }));
   };
+  
 
   useEffect(() => {
     const fetchParcerias = async () => {
@@ -138,49 +106,38 @@ export default function Parcerias() {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(
-        API_BASE_URL +
-          `protocolosparceria/update/${selectedParceria.id_parceria}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(selectedParceria),
-        }
-      );
-
+      const formData = new FormData();
+      formData.append("titulo", selectedParceria.titulo);
+      formData.append("descricao", selectedParceria.descricao);
+      formData.append("categoria", selectedParceria.categoria);
+  
+      if (selectedParceria.logotipo) {
+        formData.append("logotipo", selectedParceria.logotipo); // Adicionar o arquivo de imagem
+      }
+  
+      const response = await fetch(API_BASE_URL + `protocolosparceria/update/${selectedParceria.id_parceria}`, {
+        method: "PUT",
+        body: formData,
+      });
+  
       if (response.ok) {
         const updatedParceria = await response.json();
         setParceriasData(
-          parceriasData.map((parceria) =>
-            parceria.id_parceria === selectedParceria.id_parceria
-              ? updatedParceria
-              : parceria
+          parceriasData.map(parceria =>
+            parceria.id_parceria === selectedParceria.id_parceria ? updatedParceria : parceria
           )
         );
         setShowEditModal(false);
-        Swal.fire(
-          "Sucesso!",
-          "Os dados da parceria foram atualizados.",
-          "success"
-        );
+        Swal.fire("Sucesso!", "Os dados da parceria foram atualizados.", "success");
       } else {
-        Swal.fire(
-          "Erro!",
-          "Não foi possível atualizar os dados da parceria.",
-          "error"
-        );
+        Swal.fire("Erro!", "Não foi possível atualizar os dados da parceria.", "error");
       }
     } catch (error) {
       console.error("Erro ao atualizar a parceria:", error);
-      Swal.fire(
-        "Erro!",
-        "Ocorreu um erro ao tentar atualizar a parceria.",
-        "error"
-      );
+      Swal.fire("Erro!", "Ocorreu um erro ao tentar atualizar a parceria.", "error");
     }
   };
+  
 
   const handleSaveAdd = async () => {
     try {
@@ -188,15 +145,14 @@ export default function Parcerias() {
       formData.append("titulo", newParceria.titulo);
       formData.append("descricao", newParceria.descricao);
       formData.append("categoria", newParceria.categoria);
-      if (newParceria.logotipo) {
-        formData.append("logotipo", newParceria.logotipo); // Certifique-se de que logotipo é um arquivo
-      }
 
-      console.log('Arquivo logotipo:', newParceria.logotipo);
+      if (newParceria.logotipo) {
+        formData.append("logotipo", newParceria.logotipo); // Adicionar o arquivo de imagem
+      }
 
       const response = await fetch(API_BASE_URL + "protocolosparceria/create", {
         method: "POST",
-        body: formData, // Enviar o FormData com o arquivo
+        body: formData,
       });
 
       if (response.ok) {
@@ -205,22 +161,13 @@ export default function Parcerias() {
         setShowAddModal(false);
         Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
       } else {
-        Swal.fire(
-          "Erro!",
-          "Não foi possível adicionar a nova parceria.",
-          "error"
-        );
+        Swal.fire("Erro!", "Não foi possível adicionar a nova parceria.", "error");
       }
     } catch (error) {
       console.error("Erro ao adicionar a parceria:", error);
-      Swal.fire(
-        "Erro!",
-        "Ocorreu um erro ao tentar adicionar a parceria.",
-        "error"
-      );
+      Swal.fire("Erro!", "Ocorreu um erro ao tentar adicionar a parceria.", "error");
     }
   };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setSelectedParceria({ ...selectedParceria, [name]: value });

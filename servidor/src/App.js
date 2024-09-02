@@ -2,7 +2,6 @@ const express = require("express");
 const path = require('path');
 const app = express();
 const sequelize = require('./models/database');
-const bcrypt = require('bcryptjs'); // Importação do bcrypt para hash da palavra-passe
 
 // Importa o arquivo de associações
 require('./models/associations');
@@ -69,6 +68,7 @@ app.use((req, res, next) => {
 // Middlewares
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Adicione esta linha para servir arquivos estáticos
+
 
 // Rotas
 app.use('/appmobile', appMobileRoutes)
