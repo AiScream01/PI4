@@ -27,7 +27,7 @@ router.get('/:id_parceria', protocolosParceriasController.listarPorId);
 router.post('/create', upload.single('logotipo'), protocolosParceriasController.criar);
 
 // Atualizar parceria por ID
-router.put('/update/:id_parceria', protocolosParceriasController.atualizar);
+router.put('/update/:id_parceria', upload.single('logotipo'), protocolosParceriasController.atualizar);
 
 // Eliminar parceria por ID
 router.delete('/delete/:id_parceria', protocolosParceriasController.eliminar);

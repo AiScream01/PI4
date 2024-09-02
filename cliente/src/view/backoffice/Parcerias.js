@@ -19,7 +19,7 @@ export default function Parcerias() {
     titulo: "",
     descricao: "",
     categoria: "",
-    logotipo: "",
+    logotipo: null, // Alterado para null para suportar arquivos
   });
 
   const handleFileUpload = (event) => {
@@ -45,7 +45,32 @@ export default function Parcerias() {
     .catch((error) => {
         console.error('Error:', error);
     });
-};
+  };
+
+  const handleFileUploadForEdit = (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('logotipo', file);
+
+    // Enviar o arquivo para o backend
+    fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.filePath) {
+            // Atualize o estado com o caminho do arquivo retornado pelo backend
+            setSelectedParceria(prevState => ({
+                ...prevState,
+                logotipo: data.filePath // Aqui o caminho completo é retornado
+            }));
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+  };
 
   useEffect(() => {
     const fetchParcerias = async () => {
@@ -159,35 +184,42 @@ export default function Parcerias() {
 
   const handleSaveAdd = async () => {
     try {
-        const response = await fetch(API_BASE_URL + "protocolosparceria/create", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newParceria),
-        });
+      const formData = new FormData();
+      formData.append("titulo", newParceria.titulo);
+      formData.append("descricao", newParceria.descricao);
+      formData.append("categoria", newParceria.categoria);
+      if (newParceria.logotipo) {
+        formData.append("logotipo", newParceria.logotipo); // Certifique-se de que logotipo é um arquivo
+      }
 
-        if (response.ok) {
-            const createdParceria = await response.json();
-            setParceriasData([...parceriasData, createdParceria]);
-            setShowAddModal(false);
-            Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
-        } else {
-            Swal.fire(
-                "Erro!",
-                "Não foi possível adicionar a nova parceria.",
-                "error"
-            );
-        }
-    } catch (error) {
-        console.error("Erro ao adicionar a parceria:", error);
+      console.log('Arquivo logotipo:', newParceria.logotipo);
+
+      const response = await fetch(API_BASE_URL + "protocolosparceria/create", {
+        method: "POST",
+        body: formData, // Enviar o FormData com o arquivo
+      });
+
+      if (response.ok) {
+        const createdParceria = await response.json();
+        setParceriasData([...parceriasData, createdParceria]);
+        setShowAddModal(false);
+        Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
+      } else {
         Swal.fire(
-            "Erro!",
-            "Ocorreu um erro ao tentar adicionar a parceria.",
-            "error"
+          "Erro!",
+          "Não foi possível adicionar a nova parceria.",
+          "error"
         );
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar a parceria:", error);
+      Swal.fire(
+        "Erro!",
+        "Ocorreu um erro ao tentar adicionar a parceria.",
+        "error"
+      );
     }
-};
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -219,7 +251,7 @@ export default function Parcerias() {
           backgroundColor: "#FFFFFF",
         }}
       >
-        <br></br>
+        <br />
         <div className="row">
           {parceriasData.map((parceria) => (
             <div
@@ -229,7 +261,7 @@ export default function Parcerias() {
             >
               <div className="text-center">
                 <img
-                  src={"https://via.placeholder.com/150"} // Adicione uma imagem padrão se necessário
+                  src={API_BASE_URL + parceria.logotipo || "https://via.placeholder.com/150"} // Adicione a URL base correta
                   alt={parceria.titulo}
                   className="img-fluid mb-2"
                   style={{ maxHeight: "150px", objectFit: "cover" }}
@@ -312,16 +344,23 @@ export default function Parcerias() {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="logotipo" className="form-label">
-                    Logotipo URL
+                    Atualizar Logotipo
                   </label>
                   <input
-                    type="text"
+                    type="file"
                     className="form-control"
                     id="logotipo"
                     name="logotipo"
-                    value={selectedParceria.logotipo}
-                    onChange={handleInputChange}
+                    onChange={handleFileUploadForEdit}
                   />
+                  {selectedParceria.logotipo && (
+                    <img
+                      src={API_BASE_URL + selectedParceria.logotipo} // A URL base deve ser correta
+                      alt="Logotipo Atual"
+                      className="img-fluid mt-2"
+                      style={{ maxHeight: "150px", objectFit: "cover" }}
+                    />
+                  )}
                 </div>
               </div>
               <div className="modal-footer">
@@ -406,7 +445,7 @@ export default function Parcerias() {
                     className="form-control"
                     id="logotipo"
                     name="logotipo"
-                    onChange={handleFileUpload}
+                    onChange={e => setNewParceria({ ...newParceria, logotipo: e.target.files[0] })}
                   />
                 </div>
               </div>
