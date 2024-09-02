@@ -1,49 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
-import Swal from "sweetalert2"; // Importa o SweetAlert2
-import API_BASE_URL from "../../config"; // Ajuste o caminho conforme necessário
+import Swal from "sweetalert2";
+import API_BASE_URL from "../../config";
+import axios from "axios";
 
 export default function Parcerias() {
+  // Estado para armazenar a lista de parcerias
   const [parceriasData, setParceriasData] = useState([]);
+
+  // Estados para o modal de edição
   const [showEditModal, setShowEditModal] = useState(false);
+  const [idParceria, setIdParceria] = useState("");
+  const [tituloEdit, setTituloEdit] = useState("");
+  const [descricaoEdit, setDescricaoEdit] = useState("");
+  const [categoriaEdit, setCategoriaEdit] = useState("");
+  const [logotipoEdit, setLogotipoEdit] = useState(null);
+
+  // Estados para o modal de adição
   const [showAddModal, setShowAddModal] = useState(false);
-  const [selectedParceria, setSelectedParceria] = useState({
-    id_parceria: "",
-    titulo: "",
-    descricao: "",
-    categoria: "",
-    logotipo: "",
-  });
-  const [newParceria, setNewParceria] = useState({
-    titulo: "",
-    descricao: "",
-    categoria: "",
-    logotipo: null, // Alterado para null para suportar arquivos
-  });
+  const [tituloAdd, setTituloAdd] = useState("");
+  const [descricaoAdd, setDescricaoAdd] = useState("");
+  const [categoriaAdd, setCategoriaAdd] = useState("");
+  const [logotipoAdd, setLogotipoAdd] = useState(null);
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    setNewParceria(prevState => ({
-      ...prevState,
-      logotipo: file
-    }));
-  };
-  
-
-  const handleFileUploadForEdit = (event) => {
-    const file = event.target.files[0];
-    setSelectedParceria(prevState => ({
-      ...prevState,
-      logotipo: file
-    }));
-  };
-  
-
+  // Efeito para buscar parcerias
   useEffect(() => {
     const fetchParcerias = async () => {
       try {
-        const response = await fetch(API_BASE_URL + "protocolosparceria/"); // Ajuste a URL conforme necessário
+        const response = await fetch(API_BASE_URL + "protocolosparceria/");
         if (!response.ok) {
           throw new Error("Erro ao buscar parcerias");
         }
@@ -57,6 +42,61 @@ export default function Parcerias() {
     fetchParcerias();
   }, []);
 
+  // Função para lidar com a mudança de arquivos
+  const handleFileChange = (e, isEdit = false) => {
+    const file = e.target.files[0];
+    if (isEdit) {
+      setLogotipoEdit(file);
+    } else {
+      setLogotipoAdd(file);
+    }
+  };
+
+  // Função para enviar os dados do formulário
+  const handleSubmit = async (e, isEdit = false) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      if (isEdit) {
+        formData.append("titulo", tituloEdit);
+        formData.append("descricao", descricaoEdit);
+        formData.append("categoria", categoriaEdit);
+        if (logotipoEdit) {
+          formData.append("logotipo", logotipoEdit);
+        }
+        await axios.put(API_BASE_URL + `protocolosparceria/update/${idParceria}`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        setParceriasData(
+          parceriasData.map(parceria =>
+            parceria.id_parceria === idParceria
+              ? { ...parceria, titulo: tituloEdit, descricao: descricaoEdit, categoria: categoriaEdit }
+              : parceria
+          )
+        );
+        setShowEditModal(false);
+        Swal.fire("Sucesso!", "A parceria foi atualizada.", "success");
+      } else {
+        formData.append("titulo", tituloAdd);
+        formData.append("descricao", descricaoAdd);
+        formData.append("categoria", categoriaAdd);
+        if (logotipoAdd) {
+          formData.append("logotipo", logotipoAdd);
+        }
+        await axios.post(API_BASE_URL + "protocolosparceria/create", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        setParceriasData([...parceriasData, { titulo: tituloAdd, descricao: descricaoAdd, categoria: categoriaAdd }]);
+        setShowAddModal(false);
+        Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
+      }
+    } catch (error) {
+      console.error(isEdit ? "Erro ao atualizar a parceria:" : "Erro ao adicionar a parceria:", error);
+      Swal.fire("Erro!", "Ocorreu um erro ao tentar salvar a parceria.", "error");
+    }
+  };
+
+  // Função para excluir uma parceria
   const handleDelete = async (id_parceria) => {
     const result = await Swal.fire({
       title: "Tem a certeza?",
@@ -71,172 +111,73 @@ export default function Parcerias() {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(
-          API_BASE_URL + `protocolosparceria/delete/${id_parceria}`,
-          {
-            method: "DELETE",
-          }
-        );
+        const response = await fetch(API_BASE_URL + `protocolosparceria/delete/${id_parceria}`, {
+          method: "DELETE",
+        });
 
         if (response.ok) {
           Swal.fire("Apagado!", "A parceria foi apagada.", "success");
           setParceriasData(
-            parceriasData.filter(
-              (parceria) => parceria.id_parceria !== id_parceria
-            )
+            parceriasData.filter((parceria) => parceria.id_parceria !== id_parceria)
           );
         } else {
           Swal.fire("Erro!", "Não foi possível apagar a parceria.", "error");
         }
       } catch (error) {
         console.error("Erro ao apagar a parceria:", error);
-        Swal.fire(
-          "Erro!",
-          "Ocorreu um erro ao tentar apagar a parceria.",
-          "error"
-        );
+        Swal.fire("Erro!", "Ocorreu um erro ao tentar apagar a parceria.", "error");
       }
     }
-  };
-
-  const handleEdit = (parceria) => {
-    setSelectedParceria(parceria);
-    setShowEditModal(true);
-  };
-
-  const handleSaveEdit = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("titulo", selectedParceria.titulo);
-      formData.append("descricao", selectedParceria.descricao);
-      formData.append("categoria", selectedParceria.categoria);
-  
-      if (selectedParceria.logotipo) {
-        formData.append("logotipo", selectedParceria.logotipo); // Adicionar o arquivo de imagem
-      }
-  
-      const response = await fetch(API_BASE_URL + `protocolosparceria/update/${selectedParceria.id_parceria}`, {
-        method: "PUT",
-        body: formData,
-      });
-  
-      if (response.ok) {
-        const updatedParceria = await response.json();
-        setParceriasData(
-          parceriasData.map(parceria =>
-            parceria.id_parceria === selectedParceria.id_parceria ? updatedParceria : parceria
-          )
-        );
-        setShowEditModal(false);
-        Swal.fire("Sucesso!", "Os dados da parceria foram atualizados.", "success");
-      } else {
-        Swal.fire("Erro!", "Não foi possível atualizar os dados da parceria.", "error");
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar a parceria:", error);
-      Swal.fire("Erro!", "Ocorreu um erro ao tentar atualizar a parceria.", "error");
-    }
-  };
-  
-
-  const handleSaveAdd = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("titulo", newParceria.titulo);
-      formData.append("descricao", newParceria.descricao);
-      formData.append("categoria", newParceria.categoria);
-
-      if (newParceria.logotipo) {
-        formData.append("logotipo", newParceria.logotipo); // Adicionar o arquivo de imagem
-      }
-
-      const response = await fetch(API_BASE_URL + "protocolosparceria/create", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        const createdParceria = await response.json();
-        setParceriasData([...parceriasData, createdParceria]);
-        setShowAddModal(false);
-        Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
-      } else {
-        Swal.fire("Erro!", "Não foi possível adicionar a nova parceria.", "error");
-      }
-    } catch (error) {
-      console.error("Erro ao adicionar a parceria:", error);
-      Swal.fire("Erro!", "Ocorreu um erro ao tentar adicionar a parceria.", "error");
-    }
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedParceria({ ...selectedParceria, [name]: value });
-  };
-
-  const handleNewInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewParceria({ ...newParceria, [name]: value });
   };
 
   return (
-    <div className="container mt-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="mb-0">Parcerias</h1>
-        <button
-          className="btn btn-primary"
-          onClick={() => setShowAddModal(true)}
-          style={{ backgroundColor: "#1ED700", borderColor: "#1ED700" }}
-        >
-          <FaPlus /> Adicionar Parceria
-        </button>
-      </div>
-      <div
-        className="justify-content-top align-items-center border rounded-2 d-flex flex-column "
-        style={{
-          width: "100%",
-          boxShadow: "10px 10px 15px grey",
-          backgroundColor: "#FFFFFF",
-        }}
+    <div className="container mt-4" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
+      <h3 className="mb-4">Parcerias</h3>
+      <button
+        className="btn btn-primary mb-4"
+        onClick={() => setShowAddModal(true)}
+        style={{ backgroundColor: "#1ED700", borderColor: "#1ED700" }}
       >
-        <br />
-        <div className="row">
-          {parceriasData.map((parceria) => (
-            <div
-              className="col-6 col-md-3 mb-4"
-              style={{ margin: "auto" }}
-              key={parceria.id_parceria}
-            >
-              <div className="text-center">
-                <img
-                  src={API_BASE_URL + parceria.logotipo || "https://via.placeholder.com/150"} // Adicione a URL base correta
-                  alt={parceria.titulo}
-                  className="img-fluid mb-2"
-                  style={{ maxHeight: "150px", objectFit: "cover" }}
-                />
-                <div className="mb-2">
-                  <strong>{parceria.titulo}</strong> {/* Nome da parceria */}
-                </div>
-                <div>
-                  <button
-                    className="btn p-1 me-2"
-                    style={{ color: "blue" }}
-                    onClick={() => handleEdit(parceria)}
-                  >
-                    <FaEdit size={20} />
-                  </button>
-                  <button
-                    className="btn p-1"
-                    style={{ color: "red" }}
-                    onClick={() => handleDelete(parceria.id_parceria)}
-                  >
-                    <FaTrash size={20} />
-                  </button>
-                </div>
+        <FaPlus /> Adicionar Parceria
+      </button>
+      <div className="row">
+        {parceriasData.map((parceria) => (
+          <div className="col-md-4 mb-4" key={parceria.id_parceria}>
+            <div className="text-center border rounded p-3" style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
+              <img
+                src={API_BASE_URL + parceria.logotipo || "https://via.placeholder.com/150"}
+                alt={parceria.titulo}
+                className="img-fluid mb-2"
+                style={{ maxHeight: "150px", objectFit: "cover" }}
+              />
+              <div className="mb-2">
+                <strong>{parceria.titulo}</strong>
               </div>
+              <button
+                className="btn p-1 me-2"
+                style={{ color: "blue" }}
+                onClick={() => { 
+                  setIdParceria(parceria.id_parceria);
+                  setTituloEdit(parceria.titulo);
+                  setDescricaoEdit(parceria.descricao);
+                  setCategoriaEdit(parceria.categoria);
+                  setShowEditModal(true); 
+                }}
+              >
+                <FaEdit size={20} />
+              </button>
+              <button
+                className="btn p-1"
+                style={{ color: "red" }}
+                onClick={() => handleDelete(parceria.id_parceria)}
+              >
+                <FaTrash size={20} />
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
+
       {/* Modal de Edição */}
       {showEditModal && (
         <div className="modal show" style={{ display: "block" }}>
@@ -244,88 +185,57 @@ export default function Parcerias() {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Editar Parceria</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowEditModal(false)}
-                ></button>
+                <button type="button" className="btn-close" onClick={() => setShowEditModal(false)}></button>
               </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label htmlFor="titulo" className="form-label">
-                    Título
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="titulo"
-                    name="titulo"
-                    value={selectedParceria.titulo}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="descricao" className="form-label">
-                    Descrição
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="descricao"
-                    name="descricao"
-                    value={selectedParceria.descricao}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="categoria" className="form-label">
-                    Categoria
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="categoria"
-                    name="categoria"
-                    value={selectedParceria.categoria}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="logotipo" className="form-label">
-                    Atualizar Logotipo
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="logotipo"
-                    name="logotipo"
-                    onChange={handleFileUploadForEdit}
-                  />
-                  {selectedParceria.logotipo && (
-                    <img
-                      src={API_BASE_URL + selectedParceria.logotipo} // A URL base deve ser correta
-                      alt="Logotipo Atual"
-                      className="img-fluid mt-2"
-                      style={{ maxHeight: "150px", objectFit: "cover" }}
+              <form onSubmit={(e) => handleSubmit(e, true)}>
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label htmlFor="tituloEdit" className="form-label">Título</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="tituloEdit"
+                      value={tituloEdit}
+                      onChange={(e) => setTituloEdit(e.target.value)}
+                      required
                     />
-                  )}
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="descricaoEdit" className="form-label">Descrição</label>
+                    <textarea
+                      className="form-control"
+                      id="descricaoEdit"
+                      value={descricaoEdit}
+                      onChange={(e) => setDescricaoEdit(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="categoriaEdit" className="form-label">Categoria</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="categoriaEdit"
+                      value={categoriaEdit}
+                      onChange={(e) => setCategoriaEdit(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="logotipoEdit" className="form-label">Atualizar Logotipo</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="logotipoEdit"
+                      onChange={(e) => handleFileChange(e, true)}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowEditModal(false)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleSaveEdit}
-                >
-                  Salvar
-                </button>
-              </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={() => setShowEditModal(false)}>Cancelar</button>
+                  <button type="submit" className="btn btn-primary">Salvar mudanças</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -337,81 +247,58 @@ export default function Parcerias() {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Adicionar Nova Parceria</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowAddModal(false)}
-                ></button>
+                <h5 className="modal-title">Adicionar Parceria</h5>
+                <button type="button" className="btn-close" onClick={() => setShowAddModal(false)}></button>
               </div>
-              <div className="modal-body">
-                <div className="mb-3">
-                  <label htmlFor="titulo" className="form-label">
-                    Título
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="titulo"
-                    name="titulo"
-                    value={newParceria.titulo}
-                    onChange={handleNewInputChange}
-                  />
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <div className="modal-body">
+                  <div className="mb-3">
+                    <label htmlFor="tituloAdd" className="form-label">Título</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="tituloAdd"
+                      value={tituloAdd}
+                      onChange={(e) => setTituloAdd(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="descricaoAdd" className="form-label">Descrição</label>
+                    <textarea
+                      className="form-control"
+                      id="descricaoAdd"
+                      value={descricaoAdd}
+                      onChange={(e) => setDescricaoAdd(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="categoriaAdd" className="form-label">Categoria</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="categoriaAdd"
+                      value={categoriaAdd}
+                      onChange={(e) => setCategoriaAdd(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="logotipoAdd" className="form-label">Logotipo</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="logotipoAdd"
+                      onChange={(e) => handleFileChange(e)}
+                    />
+                  </div>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="descricao" className="form-label">
-                    Descrição
-                  </label>
-                  <textarea
-                    className="form-control"
-                    id="descricao"
-                    name="descricao"
-                    value={newParceria.descricao}
-                    onChange={handleNewInputChange}
-                  />
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancelar</button>
+                  <button type="submit" className="btn btn-primary">Adicionar</button>
                 </div>
-                <div className="mb-3">
-                  <label htmlFor="categoria" className="form-label">
-                    Categoria
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="categoria"
-                    name="categoria"
-                    value={newParceria.categoria}
-                    onChange={handleNewInputChange}
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="logotipo" className="form-label">
-                    Upload do Logotipo
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="logotipo"
-                    name="logotipo"
-                    onChange={handleFileUpload}
-                  />
-                </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowAddModal(false)}
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary"
-                  onClick={handleSaveAdd}
-                >
-                  Adicionar
-                </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>

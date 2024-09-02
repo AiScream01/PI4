@@ -18,6 +18,7 @@ router.put('/update/:id', utilizadoresController.atualizar);
 // Eliminar um utilizador por ID
 router.delete('/delete/:id', utilizadoresController.eliminar);
 
+//Fazer login
 router.post('/login', utilizadoresController.login);
 
 module.exports = router;
