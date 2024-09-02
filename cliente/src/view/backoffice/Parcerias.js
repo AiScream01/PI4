@@ -61,6 +61,8 @@ export default function Parcerias() {
         formData.append("titulo", tituloEdit);
         formData.append("descricao", descricaoEdit);
         formData.append("categoria", categoriaEdit);
+        console.log("logotipoEdit",logotipoEdit);
+        console.log("logotipoEdit",logotipoAdd);
         if (logotipoEdit) {
           formData.append("logotipo", logotipoEdit);
         }
@@ -77,16 +79,19 @@ export default function Parcerias() {
         setShowEditModal(false);
         Swal.fire("Sucesso!", "A parceria foi atualizada.", "success");
       } else {
+        console.log("logotipo",logotipoAdd);
         formData.append("titulo", tituloAdd);
         formData.append("descricao", descricaoAdd);
         formData.append("categoria", categoriaAdd);
         if (logotipoAdd) {
           formData.append("logotipo", logotipoAdd);
         }
-        await axios.post(API_BASE_URL + "protocolosparceria/create", formData, {
+        const response = await axios.post(API_BASE_URL + "protocolosparceria/create", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        setParceriasData([...parceriasData, { titulo: tituloAdd, descricao: descricaoAdd, categoria: categoriaAdd }]);
+        
+        console.log('data1', response);
+        setParceriasData([...parceriasData,  response?.data ]);
         setShowAddModal(false);
         Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
       }
@@ -145,7 +150,7 @@ export default function Parcerias() {
           <div className="col-md-4 mb-4" key={parceria.id_parceria}>
             <div className="text-center border rounded p-3" style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
               <img
-                src={API_BASE_URL + parceria.logotipo || "https://via.placeholder.com/150"}
+                src={API_BASE_URL + 'uploads/'+ parceria.logotipo || "https://via.placeholder.com/150"}
                 alt={parceria.titulo}
                 className="img-fluid mb-2"
                 style={{ maxHeight: "150px", objectFit: "cover" }}

@@ -54,7 +54,7 @@ const micrositeRoute = require ('./routes/microSiteRoutes.js')
 
 
 // Configurações
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3001);
 
 // Configurar CORS
 app.use((req, res, next) => {
@@ -67,8 +67,8 @@ app.use((req, res, next) => {
 
 // Middlewares
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Adicione esta linha para servir arquivos estáticos
-
+console.log(express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Rotas
 app.use('/appmobile', appMobileRoutes)
