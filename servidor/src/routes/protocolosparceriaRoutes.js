@@ -7,7 +7,7 @@ const protocolosParceriasController = require('../controllers/protocolosParceria
 // Configuração do multer para armazenar os arquivos no diretório 'src/uploads'
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.join(__dirname, '../uploads'));
+      cb(null, path.join(__dirname, 'uploads'));
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + path.extname(file.originalname));
