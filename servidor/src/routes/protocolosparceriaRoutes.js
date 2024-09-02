@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const path = require('path');
 const protocolosParceriasController = require('../controllers/protocolosParceriasController');
 
 // Configuração do multer para armazenar os arquivos no diretório 'src/uploads'
@@ -23,7 +24,7 @@ router.get('/', protocolosParceriasController.listarTodos);
 router.get('/:id_parceria', protocolosParceriasController.listarPorId);
 
 // Criar nova parceria
-router.post('/create', upload.single('imagemuser'), protocolosParceriasController.criar);
+router.post('/create', upload.single('logotipo'), protocolosParceriasController.criar);
 
 // Atualizar parceria por ID
 router.put('/update/:id_parceria', protocolosParceriasController.atualizar);
