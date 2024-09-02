@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 import olisipoLogo from '../../assets/Olisipo_LogoWhite.svg';
-import url from '../../config'; // Certifique-se de ajustar o caminho conforme necessário
+import fundoOlisipo from '../../assets/fundo_olisipo.png'; // Certifique-se de ajustar o caminho conforme necessário
+import url from '../../config';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,9 +25,7 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Verificar se o usuário é Admin
         if (data.role === 'Admin') {
-          //window.localStorage.setItem("isLogedIn", true);
           window.localStorage.setItem("userId", data.id);
           window.localStorage.setItem("userRole", data.role);
 
@@ -34,13 +33,10 @@ const Login = () => {
             navigate('/pedido-ferias');
           });
 
-          console.log("ID", data.id, "role", data.role);
         } else {
-          // Se o usuário não for Admin, exibir mensagem de erro
           swal("Acesso negado", "Você deve ser administrador para ter acesso ao backoffice.", "error");
         }
       } else {
-        // Exibir mensagem de erro se a resposta não for ok
         swal("Erro", data.error || 'Erro ao fazer login. Por favor, tente novamente.', "error");
       }
     } catch (error) {
@@ -51,10 +47,11 @@ const Login = () => {
 
   return (
     <div style={styles.container}>
-      <h2>Login</h2>
+      <div style={styles.logoContainer}>
+        <img src={olisipoLogo} alt="Olisipo Logo" style={styles.logo} />
+      </div>
       <form onSubmit={handleSubmit} style={styles.form}>
         <div style={styles.inputGroup}>
-          <label>Email:</label>
           <input 
             type="email" 
             value={email} 
@@ -65,12 +62,11 @@ const Login = () => {
           />
         </div>
         <div style={styles.inputGroup}>
-          <label>Palavra-passe:</label>
           <input 
             type="password" 
             value={palavrapasse} 
             onChange={(e) => setPassword(e.target.value)} 
-            placeholder="Digite a palavrapasse" 
+            placeholder="Digite a sua palavra-passe" 
             required
             style={styles.input}
           />
@@ -83,38 +79,61 @@ const Login = () => {
 
 const styles = {
   container: {
-    maxWidth: '400px',
-    margin: '0 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100vh',
+    backgroundImage: `url(${fundoOlisipo})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
     padding: '20px',
-    textAlign: 'center',
-    border: '1px solid #ccc',
-    borderRadius: '10px',
-    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#f9f9f9',
+    boxSizing: 'border-box',
+  },
+  logoContainer: {
+    marginBottom: '30px',
+  },
+  logo: {
+    width: '150px',
+    height: 'auto',
   },
   form: {
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    maxWidth: '400px',
+    padding: '30px',
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '15px',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)',
   },
   inputGroup: {
-    marginBottom: '15px',
+    marginBottom: '20px',
+    width: '100%',
   },
   input: {
     width: '100%',
-    padding: '10px',
+    padding: '15px',
     fontSize: '16px',
     borderRadius: '5px',
     border: '1px solid #ccc',
+    boxSizing: 'border-box',
   },
   button: {
-    padding: '10px',
+    width: '100%',
+    padding: '15px',
     fontSize: '16px',
     borderRadius: '5px',
     border: 'none',
-    backgroundColor: '#007BFF',
+    backgroundColor: '#1ED700',
     color: '#fff',
     cursor: 'pointer',
-  }
+    transition: 'background-color 0.3s ease',
+  },
+  buttonHover: {
+    backgroundColor: '#18B800',
+  },
 };
 
 export default Login;
