@@ -6,9 +6,9 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import SideBar from "./view/components/SideBar";
 
 // Importar componentes para as diferentes páginas
+import Login from './view/auth/login';
 import PedidoFerias from "./view/backoffice/PedidoFerias";
 import Horas from "./view/backoffice/Horas";
-import Login from "./view/backoffice/Login";
 import Ajudas from "./view/backoffice/AjudasCusto"
 import ViaturaPropria from "./view/backoffice/ViaturaPropria";
 import Faltas from "./view/backoffice/Faltas";
@@ -21,12 +21,12 @@ import Utilizadores from "./view/backoffice/Utilizadores";
 import MicroSite from "./view/backoffice/MicroSite";
 import EditarMicroSite from './view/backoffice/EditarMicroSite';
 
+
 export default function App() {
     return (
         <Router>
             <Routes>
                 <Route path="/pedido-ferias" element={addSidebar(<PedidoFerias />)} />
-                <Route path="/login" element={addSidebar(<Login />)}/>
                 <Route path="/horas" element={addSidebar(<Horas />)} />
                 <Route path="/ajudas" element={addSidebar(<Ajudas />)} />
                 <Route path="/viatura-propria" element={addSidebar(<ViaturaPropria />)} />
@@ -40,7 +40,7 @@ export default function App() {
                 <Route path="/micro-site-editar" element={addSidebar(<EditarMicroSite />)} />
                 <Route path="/micro-site" element={<MicroSite />} />
                 {/* Rota padrão */}
-                <Route path="/" element={addSidebar(<PedidoFerias />)} />
+                <Route path="/" element={addSidebar(<Login />)} />
 
             </Routes>
         </Router>
