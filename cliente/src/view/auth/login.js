@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
-import olisipoLogo from '../../assets/Olisipo_LogoWhite.svg';
+import Logo_Olisipo_preto from '../../assets/Logo_Olisipo_preto';
 import fundoOlisipo from '../../assets/fundo_olisipo.png'; 
 import url from '../../config'; // Certifique-se de ajustar o caminho conforme necessário
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -51,7 +51,7 @@ const Login = () => {
     <div className="login-container d-flex align-items-center justify-content-center">
       <div className="login-box p-5 shadow">
         <div className="text-center mb-4">
-          <img src={olisipoLogo} alt="Olisipo Logo" className="login-logo mb-4" />
+          <img src={Logo_Olisipo_preto} alt="Olisipo Logo" className="login-logo mb-4" />
         </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group mb-3">
