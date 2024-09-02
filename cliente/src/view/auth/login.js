@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
-import Logo_Olisipo_preto from '../../assets/Logo_Olisipo_preto';
+import Logo_Olisipo_preto from '../../assets/Logo_Olisipo_preto.png';
 import fundoOlisipo from '../../assets/fundo_olisipo.png'; 
 import url from '../../config'; // Certifique-se de ajustar o caminho conforme necessário
 import 'bootstrap/dist/css/bootstrap.min.css';
