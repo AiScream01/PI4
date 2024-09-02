@@ -91,3 +91,28 @@ exports.eliminar = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// Login de um utilizador
+exports.login = async (req, res) => {
+  try {
+    const { email, palavrapasse } = req.body;
+
+    const user = await Utilizadores.findOne({ where: { email } });
+    if (!user) {
+      return res.status(401).json({ error: 'Utilizador não encontrado' });
+    }
+
+    const senhaCorreta = await bcrypt.compare(palavrapasse, user.palavrapasse);
+
+    if (!senhaCorreta) {
+      return res.status(401).json({ error: 'Credenciais inválidas' });
+    }
+
+    const token = jwt.sign({ id: user.id_user, email: user.email, role: user.role }, 'seuSegredoJWT', { expiresIn: '1h' });
+
+    res.status(200).json({ message: 'Login bem-sucedido', token, role: user.role, id: user.id_user });
+  } catch (error) {
+    console.error('Erro ao realizar login:', error);
+    res.status(500).json({ error: 'Erro ao realizar login' });
+  }
+};
