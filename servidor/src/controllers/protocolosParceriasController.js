@@ -28,7 +28,7 @@ exports.listarPorId = async (req, res) => {
 // Criar nova parceria
 exports.criar = async (req, res) => {
     try {
-        const { titulo, descricao, categoria, logotipo } = req.body;
+        const { titulo, descricao, categoria} = req.body;
         const parceria = await ProtocolosParcerias.create({
             titulo,
             descricao,
