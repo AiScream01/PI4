@@ -33,7 +33,7 @@ exports.criar = async (req, res) => {
             titulo,
             descricao,
             categoria,
-            logotipo
+            logotipo: req.file ? req.file.filename : null,
         });
         res.status(201).json(parceria);
     } catch (error) {
