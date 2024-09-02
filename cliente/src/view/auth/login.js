@@ -18,7 +18,7 @@ const Login = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, pass: palavrapasse }),
+        body: JSON.stringify({ email, palavrapasse: palavrapasse }),
       });
 
       const data = await response.json();
@@ -59,18 +59,18 @@ const Login = () => {
             type="email" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
-            placeholder="Digite seu email" 
+            placeholder="Digite o seu email" 
             required
             style={styles.input}
           />
         </div>
         <div style={styles.inputGroup}>
-          <label>Password:</label>
+          <label>Palavra-passe:</label>
           <input 
             type="password" 
             value={palavrapasse} 
             onChange={(e) => setPassword(e.target.value)} 
-            placeholder="Digite sua senha" 
+            placeholder="Digite a palavrapasse" 
             required
             style={styles.input}
           />

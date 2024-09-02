@@ -100,7 +100,7 @@ exports.login = async (req, res) => {
 
     // Verifique se os campos obrigatórios estão presentes
     if (!email || !palavrapasse) {
-      return res.status(400).json({ error: "Email e senha são obrigatórios" });
+      return res.status(400).json({ error: "Email e palavrapasse são obrigatórios!" });
     }
 
     // Procura o utilizador pelo email
