@@ -445,7 +445,7 @@ export default function Parcerias() {
                     className="form-control"
                     id="logotipo"
                     name="logotipo"
-                    onChange={e => setNewParceria({ ...newParceria, logotipo: e.target.files[0] })}
+                    onChange={handleFileUpload}
                   />
                 </div>
               </div>
