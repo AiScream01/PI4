@@ -62,20 +62,20 @@ export default function Parcerias() {
         formData.append("descricao", descricaoEdit);
         formData.append("categoria", categoriaEdit);
         console.log("logotipoEdit",logotipoEdit);
-        console.log("logotipoEdit",logotipoAdd);
+        console.log("logotipoAdd",logotipoAdd);
         if (logotipoEdit) {
           formData.append("logotipo", logotipoEdit);
         }
-        await axios.put(API_BASE_URL + `protocolosparceria/update/${idParceria}`, formData, {
+        const response = await axios.put(API_BASE_URL + `protocolosparceria/update/${idParceria}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        setParceriasData(
-          parceriasData.map(parceria =>
-            parceria.id_parceria === idParceria
-              ? { ...parceria, titulo: tituloEdit, descricao: descricaoEdit, categoria: categoriaEdit }
-              : parceria
-          )
-        );
+        setParceriasData(parceriasData.map(parceria => 
+          parceria.id_parceria === idParceria ? 
+            { ...parceria, ...response?.data } 
+            : parceria
+        ));
+        
+        console.log(parceriasData)
         setShowEditModal(false);
         Swal.fire("Sucesso!", "A parceria foi atualizada.", "success");
       } else {

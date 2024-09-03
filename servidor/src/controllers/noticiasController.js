@@ -27,13 +27,14 @@ exports.listarPorId = async (req, res) => {
 
 // Criar nova notícia
 exports.criar = async (req, res) => {
+    console.log(req.body)
     try {
-        const { titulo, descricao, data, imagem } = req.body;
+        const { titulo, descricao, data } = req.body;
         const noticia = await Noticias.create({
             titulo,
             descricao,
             data,
-            imagem
+            imagem: req.file ? req.file.filename : null,
         });
         res.status(201).json(noticia);
     } catch (error) {
@@ -46,6 +47,9 @@ exports.criar = async (req, res) => {
 exports.atualizar = async (req, res) => {
     try {
         const { id_noticia } = req.params;
+        if(req.file){
+            req.body.imagem = req.file.filename; 
+        }
         const [updated] = await Noticias.update(req.body, {
             where: { id_noticia }
         });

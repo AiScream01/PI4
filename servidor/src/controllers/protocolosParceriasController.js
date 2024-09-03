@@ -46,15 +46,15 @@ exports.criar = async (req, res) => {
 exports.atualizar = async (req, res) => {
     try {
         const { id_parceria } = req.params;
-        if(req.body?.logotipo){ //isto é igual a (req.body != null && req.body.logotipo != null)
-            req.body.logotipo = req.file ? req.file.filename : null; 
+        if(req.file){
+            req.body.logotipo = req.file.filename; 
         }
         const [updated] = await ProtocolosParcerias.update(req.body, {
             where: { id_parceria }
         });
         if (updated) {
             const updatedParceria = await ProtocolosParcerias.findByPk(id_parceria);
-            res.json(updatedParceria);
+            res.status(201).json(updatedParceria);
         } else {
             res.status(404).json({ message: 'Parceria não encontrada' });
         }
