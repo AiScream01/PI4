@@ -69,16 +69,16 @@ exports.listarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
-        const { titulo, descricao, data, id_user, nome_usuario_reuniao } = req.body;
+        const { titulo, descricao, data, id_user, nome_utilizador_reuniao } = req.body;
 
         // Buscar o id_user pelo nome do utilizador
-        const usuario = await Utilizador.findOne({ where: { nome: nome_usuario_reuniao } });
+        const utilizador = await Utilizador.findOne({ where: { nome: nome_utilizador_reuniao } });
 
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
+        if (!utilizador) {
+            return res.status(404).json({ error: 'Utilizador não encontrado' });
         }
 
-        const id_user_reuniao = usuario.id_user;
+        const id_user_reuniao = utilizador.id_user;
 
         // Criar o registro de reunião na base de dados
         const novaReuniao = await Reunioes.create({
@@ -97,7 +97,7 @@ exports.criar = async (req, res) => {
         // Criar o registro na tabela UtilizadorReuniao
         await UtilizadorReuniao.create({
             id_reuniao: novaReuniao.id_reuniao, // O id da reunião recém-criada
-            id_user: id_user_reuniao // O id do usuário com quem a reunião será realizada
+            id_user: id_user_reuniao // O id do utilizador com quem a reunião será realizada
         });
 
         // Responder com o objeto criado e status 201
@@ -110,6 +110,7 @@ exports.criar = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
 
 
 // Atualizar reunião por ID
