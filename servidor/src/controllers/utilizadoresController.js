@@ -15,6 +15,7 @@ exports.listarTodos = async (req, res) => {
 // Listar um utilizador por ID
 exports.listarPorId = async (req, res) => {
   try {
+    const { id_user } = req.params;
     const utilizador = await Utilizadores.findByPk(req.params.id);
     if (utilizador) {
       res.json(utilizador);
@@ -32,22 +33,31 @@ exports.criar = async (req, res) => {
     // Adicione log para ver o corpo da requisição
     console.log("Dados recebidos:", req.body);
 
+    // Validar a entrada
+    const { nome, email, role, palavrapasse } = req.body;
+        
+    if (!nome || !email || !palavrapasse) {
+      return res.status(400).json({ error: 'Nome, email e palavrapasse são obrigatórios.' });
+    }
+
     // Criptografa a senha usando bcrypt
     const hashedPassword = await bcrypt.hash(req.body.palavrapasse, 10);
 
-    // Substitui a senha no corpo da requisição pela versão criptografada
-    const utilizadorData = {
-      ...req.body,
-      palavrapasse: hashedPassword,
-    };
+
 
     // Adicione log para verificar os dados antes de criar o utilizador
-    console.log("Dados do utilizador a serem criados:", utilizadorData);
+    console.log("Dados do utilizador a serem criados:", {nome, email, role});
 
     // Cria o utilizador no banco de dados
-    const utilizador = await Utilizadores.create(utilizadorData);
+    const utilizadorData = await Utilizadores.create({
+      nome,
+      email,
+      role,
+      foto: req.file ? req.file.filename : null,
+      palavrapasse: hashedPassword,
+    });
 
-    res.status(201).json(utilizador);
+    res.status(201).json(utilizadorData);
   } catch (error) {
     console.error("Erro ao criar utilizador:", error);
     res.status(500).json({ error: error.message });
@@ -59,6 +69,10 @@ exports.atualizar = async (req, res) => {
   try {
     // Verifica se a senha foi fornecida para atualização e a criptografa se necessário
     const updateData = { ...req.body };
+    if (req.file) {
+      updateData.foto = req.file.filename; 
+    }
+    
     if (updateData.palavrapasse) {
       updateData.palavrapasse = await bcrypt.hash(updateData.palavrapasse, 10);
     }
