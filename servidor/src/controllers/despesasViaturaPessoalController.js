@@ -2,6 +2,7 @@ const DespesasViaturaPessoal = require('../models/despesas_viatura_pessoal');
 const EstadoDespesa = require('../models/estado_despesas'); // Ajuste o caminho conforme necessário
 const Estado = require('../models/estado'); // Ajuste o caminho conforme necessário
 const Utilizador = require ('../models/utilizadores.js')
+const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as despesas de viatura pessoal
 exports.listarTodos = async (req, res) => {
@@ -135,8 +136,9 @@ exports.listarPendentes = async (req, res) => {
 exports.atualizarEstado = async (req, res) => {
     try {
         const { id_despesa } = req.params;
-        const { id_estado } = req.body;
+        const { id_estado, fcmToken } = req.body; // fcmToken vem da app Flutter
 
+        // Verificar se a despesa existe
         const despesa = await DespesasViaturaPessoal.findByPk(id_despesa);
 
         if (!despesa) {
@@ -146,7 +148,27 @@ exports.atualizarEstado = async (req, res) => {
         // Atualizar o estado da despesa
         await EstadoDespesa.update({ id_estado }, { where: { id_despesa } });
 
+        // Buscar a despesa atualizada
         const updatedDespesa = await DespesasViaturaPessoal.findByPk(id_despesa);
+
+        // Enviar notificação push se a atualização foi bem-sucedida
+        const message = {
+            notification: {
+                title: 'Estado de Despesa Atualizado',
+                body: `A despesa ${id_despesa} foi atualizada para o estado ${id_estado}`,
+            },
+            token: fcmToken, // Token do dispositivo que irá receber a notificação
+        };
+
+        admin.messaging().send(message)
+            .then((response) => {
+                console.log('Notificação enviada com sucesso:', response);
+            })
+            .catch((error) => {
+                console.log('Erro ao enviar notificação:', error);
+            });
+
+        // Responder com a despesa atualizada
         res.json(updatedDespesa);
     } catch (error) {
         res.status(500).json({ error: error.message });

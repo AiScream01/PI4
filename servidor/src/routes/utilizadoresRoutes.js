@@ -16,10 +16,10 @@ const storage = multer.diskStorage({
         cb(null, Date.now() + path.extname(file.originalname));
     },
   });
-  
-  // Initialize multer with the storage configuration
-  const upload = multer({ storage: storage });
-  
+
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
+
 // Listar todos os utilizadores
 router.get('/', utilizadoresController.listarTodos);
 

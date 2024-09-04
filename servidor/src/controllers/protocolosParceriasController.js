@@ -1,4 +1,5 @@
 const ProtocolosParcerias = require('../models/protocolos_parcerias');
+const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as parcerias
 exports.listarTodos = async (req, res) => {
@@ -28,13 +29,34 @@ exports.listarPorId = async (req, res) => {
 // Criar nova parceria
 exports.criar = async (req, res) => {
     try {
-        const { titulo, descricao, categoria} = req.body;
+        const { titulo, descricao, categoria } = req.body;
         const parceria = await ProtocolosParcerias.create({
             titulo,
             descricao,
             categoria,
             logotipo: req.file ? req.file.filename : null,
         });
+
+        // Definir a mensagem da notificação
+        const message = {
+            notification: {
+                title: 'Nova Parceria',
+                body: `Título: ${titulo} - Categoria: ${categoria} - ${descricao}`,
+            },
+            // Aqui você pode enviar para todos os dispositivos ou usar um tópico específico
+            // Exemplo: topic: 'partnerships' se você estiver usando tópicos para notificações
+            topic: 'all', // Enviar para todos os dispositivos inscritos no tópico 'all'
+        };
+
+        // Enviar a notificação através do Firebase Cloud Messaging
+        admin.messaging().send(message)
+            .then((response) => {
+                console.log('Notificação enviada com sucesso:', response);
+            })
+            .catch((error) => {
+                console.log('Erro ao enviar notificação:', error);
+            });
+
         res.status(201).json(parceria);
     } catch (error) {
         console.error('Erro ao criar parceria:', error); // Log do erro para debug

@@ -2,6 +2,7 @@ const AjudasCusto = require('../models/ajudas_custo');
 const Utilizadores = require('../models/utilizadores');
 const EstadoAjudas = require('../models/estado_ajudas'); // Certifique-se de que o modelo existe
 const Estado = require('../models/estado'); // Certifique-se de que o modelo existe
+const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as ajudas de custo
 exports.listarTodos = async (req, res) => {
@@ -172,20 +173,42 @@ exports.eliminar = async (req, res) => {
 // Atualizar estado das ajudas de custo por ID
 exports.atualizarEstado = async (req, res) => {
     try {
-        const { id_custo } = req.params;
-        const { id_estado } = req.body;
-
-        const [updated] = await EstadoAjudas.update(
-            { id_estado },
-            { where: { id_custo } }
-        );
-
-        if (updated) {
-            res.json({ message: 'Estado atualizado com sucesso' });
-        } else {
-            res.status(404).json({ message: 'Ajuda de custo não encontrada' });
-        }
+      const { id_custo } = req.params;
+      const { id_estado, fcmToken } = req.body; // fcmToken vem da app Flutter
+  
+      // Atualiza o estado da ajuda de custo com o novo id_estado
+      const [updated] = await EstadoAjudas.update(
+        { id_estado },
+        { where: { id_custo } }
+      );
+  
+      if (updated) {
+        // Se a atualização for bem-sucedida, envia a push notification
+        const message = {
+          notification: {
+            title: 'Estado Atualizado',
+            body: `O estado da ajuda de custo ${id_custo} foi atualizado para ${id_estado}`,
+          },
+          token: fcmToken, // Token do dispositivo que irá receber a notificação
+        };
+  
+        // Envia a notificação através do Firebase Cloud Messaging
+        admin.messaging().send(message)
+          .then((response) => {
+            console.log('Notificação enviada com sucesso:', response);
+          })
+          .catch((error) => {
+            console.log('Erro ao enviar notificação:', error);
+          });
+  
+        // Resposta de sucesso
+        res.json({ message: 'Estado atualizado e notificação enviada com sucesso' });
+      } else {
+        // Caso não encontre a ajuda de custo
+        res.status(404).json({ message: 'Ajuda de custo não encontrada' });
+      }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+      // Tratamento de erros
+      res.status(500).json({ error: error.message });
     }
-};
+  };

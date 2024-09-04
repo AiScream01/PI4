@@ -3,6 +3,7 @@ const EstadoReunioes = require('../models/estado_reuniao');
 const Estado = require('../models/estado'); // Supondo que exista um model para estado
 const UtilizadorReuniao = require('../models/reunioes_utilizadores');
 const Utilizador = require ('../models/utilizadores.js');
+const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as reuniões
 exports.listarTodos = async (req, res) => {
@@ -148,11 +149,11 @@ exports.eliminar = async (req, res) => {
     }
 };
 
-// Atualizar reuniao das férias por ID
+// Atualizar estado da reunião das férias por ID
 exports.atualizarEstado = async (req, res) => {
     try {
         const { id_reuniao } = req.params;
-        const { id_estado } = req.body;
+        const { id_estado, fcmToken } = req.body; // fcmToken vem da app Flutter
 
         // Atualizar o estado_reuniao com o novo id_estado
         const [updated] = await EstadoReunioes.update(
@@ -161,9 +162,26 @@ exports.atualizarEstado = async (req, res) => {
         );
 
         if (updated) {
-            res.json({ message: 'Estado atualizado com sucesso' });
+            // Enviar notificação push se a atualização foi bem-sucedida
+            const message = {
+                notification: {
+                    title: 'Estado da Reunião Atualizado',
+                    body: `O estado da reunião ${id_reuniao} foi atualizado para ${id_estado}`,
+                },
+                token: fcmToken, // Token do dispositivo que irá receber a notificação
+            };
+
+            admin.messaging().send(message)
+                .then((response) => {
+                    console.log('Notificação enviada com sucesso:', response);
+                })
+                .catch((error) => {
+                    console.log('Erro ao enviar notificação:', error);
+                });
+
+            res.json({ message: 'Estado atualizado e notificação enviada com sucesso' });
         } else {
-            res.status(404).json({ message: 'Férias não encontradas' });
+            res.status(404).json({ message: 'Reunião não encontrada' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });

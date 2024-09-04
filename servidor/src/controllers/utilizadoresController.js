@@ -35,7 +35,7 @@ exports.criar = async (req, res) => {
 
     // Validar a entrada
     const { nome, email, role, palavrapasse } = req.body;
-        
+
     if (!nome || !email || !palavrapasse) {
       return res.status(400).json({ error: 'Nome, email e palavrapasse são obrigatórios.' });
     }

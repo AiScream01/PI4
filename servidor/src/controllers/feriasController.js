@@ -3,6 +3,7 @@ const Ferias = require('../models/ferias');
 const EstadoFerias = require('../models/estado_ferias');
 const Estado = require('../models/estado');
 const Utilizador = require('../models/utilizadores')
+const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as férias com o estado correspondente
 exports.listarTodos = async (req, res) => {
@@ -156,7 +157,7 @@ exports.listarPendentes = async (req, res) => {
 exports.atualizarEstado = async (req, res) => {
     try {
         const { id_ferias } = req.params;
-        const { id_estado } = req.body;
+        const { id_estado, fcmToken } = req.body; // fcmToken vem da app Flutter
 
         // Atualizar o estado_ferias com o novo id_estado
         const [updated] = await EstadoFerias.update(
@@ -165,7 +166,24 @@ exports.atualizarEstado = async (req, res) => {
         );
 
         if (updated) {
-            res.json({ message: 'Estado atualizado com sucesso' });
+            // Enviar notificação push se a atualização foi bem-sucedida
+            const message = {
+                notification: {
+                    title: 'Estado das Férias Atualizado',
+                    body: `O estado das férias ${id_ferias} foi atualizado para ${id_estado}`,
+                },
+                token: fcmToken, // Token do dispositivo que irá receber a notificação
+            };
+
+            admin.messaging().send(message)
+                .then((response) => {
+                    console.log('Notificação enviada com sucesso:', response);
+                })
+                .catch((error) => {
+                    console.log('Erro ao enviar notificação:', error);
+                });
+
+            res.json({ message: 'Estado atualizado e notificação enviada com sucesso' });
         } else {
             res.status(404).json({ message: 'Férias não encontradas' });
         }

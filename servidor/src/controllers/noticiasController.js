@@ -1,4 +1,5 @@
 const Noticias = require('../models/noticias');
+const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as notícias
 exports.listarTodos = async (req, res) => {
@@ -27,7 +28,6 @@ exports.listarPorId = async (req, res) => {
 
 // Criar nova notícia
 exports.criar = async (req, res) => {
-    console.log(req.body)
     try {
         const { titulo, descricao, data } = req.body;
         const noticia = await Noticias.create({
@@ -36,13 +36,33 @@ exports.criar = async (req, res) => {
             data,
             imagem: req.file ? req.file.filename : null,
         });
+
+        // Definir a mensagem da notificação
+        const message = {
+            notification: {
+                title: 'Nova Notícia',
+                body: `Título: ${titulo} - ${descricao}`,
+            },
+            // Aqui você pode enviar para todos os dispositivos, ou usar um tópico específico
+            // Exemplo: topic: 'news' se você estiver usando tópicos para notificações
+            topic: 'all', // Enviar para todos os dispositivos inscritos no tópico 'all'
+        };
+
+        // Enviar a notificação através do Firebase Cloud Messaging
+        admin.messaging().send(message)
+            .then((response) => {
+                console.log('Notificação enviada com sucesso:', response);
+            })
+            .catch((error) => {
+                console.log('Erro ao enviar notificação:', error);
+            });
+
         res.status(201).json(noticia);
     } catch (error) {
         console.error('Erro ao criar notícia:', error);
         res.status(500).json({ error: error.message });
     }
 };
-
 // Atualizar notícia por ID
 exports.atualizar = async (req, res) => {
     try {
