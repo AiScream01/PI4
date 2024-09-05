@@ -79,20 +79,22 @@ exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
         const { custo, descricao, id_user } = req.body;
-        const comprovativo = req.file ? req.file.path : ''; // Caminho do arquivo PDF
+
+        // Se houver um arquivo PDF carregado, gerar o caminho correto
+        const comprovativo = req.file ? `/uploads/${req.file.filename}` : ''; // Caminho do arquivo PDF
 
         // Criar o registo de ajuda de custo na base de dados
         const ajudaCusto = await AjudasCusto.create({
             custo,
             descricao,
-            comprovativo,
+            comprovativo, // Salvar o caminho do PDF
             id_user
         });
 
         // Criar o registo na tabela estado_ajudas_custo com id_estado 3
         await EstadoAjudas.create({
             id_custo: ajudaCusto.id_custo, // O id do registo de ajuda de custo recém-criado
-            id_estado: 3 
+            id_estado: 3
         });
 
         // Responder com o objeto criado e status 201
@@ -101,6 +103,7 @@ exports.criar = async (req, res) => {
         // Log do erro para debug
         console.error('Erro ao criar ajuda de custo:', error);
 
+        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
