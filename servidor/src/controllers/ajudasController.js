@@ -78,9 +78,10 @@ exports.listarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
-        const { custo, descricao, comprovativo, id_user } = req.body;
+        const { custo, descricao, id_user } = req.body;
+        const comprovativo = req.file ? req.file.path : ''; // Caminho do arquivo PDF
 
-        // Criar o registro de ajuda de custo na base de dados
+        // Criar o registo de ajuda de custo na base de dados
         const ajudaCusto = await AjudasCusto.create({
             custo,
             descricao,
@@ -88,10 +89,10 @@ exports.criar = async (req, res) => {
             id_user
         });
 
-        // Criar o registro na tabela estado_ajudas_custo com id_estado 3
+        // Criar o registo na tabela estado_ajudas_custo com id_estado 3
         await EstadoAjudas.create({
-            id_custo: ajudaCusto.id_custo, // O id do registro de ajuda de custo recém-criado
-            id_estado: 3 // O id do estado que você deseja definir
+            id_custo: ajudaCusto.id_custo, // O id do registo de ajuda de custo recém-criado
+            id_estado: 3 
         });
 
         // Responder com o objeto criado e status 201
@@ -99,18 +100,22 @@ exports.criar = async (req, res) => {
     } catch (error) {
         // Log do erro para debug
         console.error('Erro ao criar ajuda de custo:', error);
-        
-        // Responder com status 500 e a mensagem de erro
+
         res.status(500).json({ error: error.message });
     }
 };
 
 
-// Atualizar ajuda de custo por ID
 exports.atualizar = async (req, res) => {
     try {
         const { id_custo } = req.params;
-        const [updated] = await AjudasCusto.update(req.body, {
+        const updateData = { ...req.body };
+
+        if (req.file) {
+            updateData.comprovativo = req.file.path;
+        }
+
+        const [updated] = await AjudasCusto.update(updateData, {
             where: { id_custo }
         });
         if (updated) {
