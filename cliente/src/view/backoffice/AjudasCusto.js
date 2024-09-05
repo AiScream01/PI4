@@ -83,7 +83,7 @@ export default function Ajudas() {
                                 <td>{ajuda.custo}</td>
                                 <td>{ajuda.descricao}</td>
                                 <td>
-                                    <a href={`/path/to/comprovativos/${ajuda.comprovativo}`} download className="text-decoration-none">
+                                    <a href={API_BASE_URL + 'uploads/'+ ajuda.comprovativo} download className="text-decoration-none">
                                         <FaFilePdf className="me-2" /> {ajuda.comprovativo}
                                     </a>
                                 </td>
