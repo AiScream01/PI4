@@ -42,8 +42,8 @@ export default function Faltas() {
 
                     Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
                 } catch (error) {
-                    console.error('Erro ao atualizar estado:', error);
-                    Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
+                    alert('Erro ao atualizar estado:' + error);
+                    Swal.fire('Erro!', 'Não foi possível atualizar o pedido.' + error, 'error');
                 }
             }
         };

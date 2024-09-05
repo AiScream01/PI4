@@ -40,8 +40,8 @@ export default function Horas() {
                 setHorasData(horasData.filter(hora => hora.id_horas !== idHoras));
                 Swal.fire('Sucesso!', 'O estado das horas foi atualizado.', 'success');
             } catch (error) {
-                console.error('Erro ao atualizar estado:', error);
-                Swal.fire('Erro!', 'Não foi possível atualizar o estado.', 'error');
+                alert('Erro ao atualizar estado:' + error);
+                Swal.fire('Erro!', 'Não foi possível atualizar o estado.' + error, 'error');
             }
         }
     };
