@@ -65,7 +65,7 @@ export default function Horas() {
                         {horasData.map((hora) => (
                             <tr key={hora.id_horas}>
                                 <td>
-                                    <img src={hora.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
+                                    <img src={API_BASE_URL + 'uploads/'+ hora.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{hora.utilizador.nome}</td>
                                 <td>{hora.horas}</td>

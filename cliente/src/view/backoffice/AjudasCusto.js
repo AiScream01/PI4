@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import url from '../../config'; // Certifique-se de ajustar o caminho conforme necessário
+import API_BASE_URL from "../../config";
 
 export default function Ajudas() {
     const [ajudasData, setAjudasData] = useState([]);
@@ -10,7 +10,7 @@ export default function Ajudas() {
     useEffect(() => {
         const fetchAjudasPendentes = async () => {
             try {
-                const response = await fetch(`${url}ajudascusto/pendentes`);
+                const response = await fetch(API_BASE_URL + "ajudascusto/pendentes");
 
                 if (!response.ok) {
                     throw new Error(`Erro HTTP! Status: ${response.status}`);
@@ -41,7 +41,7 @@ export default function Ajudas() {
 
         if (result.isConfirmed) {
         try {
-            const response = await fetch(`${url}ajudascusto/estado/${id_custo}`, {
+            const response = await fetch(API_BASE_URL + `ajudascusto/estado/${id_custo}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_estado: novoEstado })
@@ -77,7 +77,7 @@ export default function Ajudas() {
                         {ajudasData.map((ajuda) => (
                             <tr key={ajuda.id_custo}>
                                 <td>
-                                    <img src={ajuda.utilizador.foto} alt="User"  className="rounded-circle" width="40" height="40" />
+                                    <img src={API_BASE_URL + 'uploads/'+ ajuda.utilizador.foto} alt="User"  className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{ajuda.utilizador.nome}</td>
                                 <td>{ajuda.custo}</td>

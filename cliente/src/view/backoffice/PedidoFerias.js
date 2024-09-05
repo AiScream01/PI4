@@ -64,7 +64,7 @@ export default function PedidoFerias() {
                         {feriasData.map((item) => (
                             <tr key={item.id_ferias}>
                                 <td>
-                                    <img src={item.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
+                                    <img src={API_BASE_URL + 'uploads/' + item.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{item.utilizador?.nome || 'N/A'}</td> {/* Supondo que 'utilizador' é um objeto com o nome */}
                                 <td>{item.data_inicio}</td>

@@ -67,7 +67,7 @@ export default function ViaturaPropria() {
                         {viaturaData.map((viatura) => (
                             <tr key={viatura.id_despesa}>
                                 <td>
-                                    <img src={viatura.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
+                                    <img src={API_BASE_URL + 'uploads/'+ viatura.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{viatura.utilizador.nome}</td>
                                 <td>{viatura.km}</td>

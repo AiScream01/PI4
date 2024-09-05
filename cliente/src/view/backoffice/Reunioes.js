@@ -65,7 +65,7 @@ export default function Reunioes() {
                         {reunioesData.map((reuniao) => (
                             <tr key={reuniao.id_reuniao}>
                                 <td>
-                                    <img src={reuniao.utilizador.foto} alt="User" className="rounded-circle" width="50" height="50" />
+                                    <img src={API_BASE_URL + 'uploads/'+ reuniao.utilizador.foto} alt="User" className="rounded-circle" width="50" height="50" />
                                 </td>
                                 <td>{reuniao.utilizador.nome}</td>
                                 <td>{new Date(reuniao.data).toLocaleDateString()}</td>

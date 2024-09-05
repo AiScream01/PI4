@@ -71,7 +71,7 @@ export default function Faltas() {
                         {faltasData.map((falta) => (
                             <tr key={falta.id_falta}>
                                 <td>
-                                    <img src={falta.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
+                                    <img src={API_BASE_URL + 'uploads/'+ falta.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{falta.utilizador.nome}</td>
                                 <td>{new Date(falta.data).toLocaleDateString()}</td>
