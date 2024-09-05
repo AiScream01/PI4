@@ -42,7 +42,7 @@ export default function App() {
                 <Route path="/utilizadores" element={addSidebar(<Utilizadores />)} />
                 <Route path="/micro-site-editar" element={addSidebar(<EditarMicroSite />)} />
                 <Route path="/micro-site" element={<MicroSite />} />
-                <Route element={addSidebar(<PedidoFerias/>)}/>
+                <Route element={addSidebar(<Login/>)}/>
             </Routes>
         </Router>
     );
