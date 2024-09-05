@@ -34,18 +34,15 @@ export default function ViaturaPropria() {
         });
 
         if (result.isConfirmed) {
-            try {
-                const response = await axios.put(`${API_BASE_URL}despesasviatura/estado/${idDespesa}`, { id_estado: novoEstado });
-                console.log('Estado atualizado com sucesso:', response.data);
+            const response = await fetch(`${API_BASE_URL}despesasviatura/estado/${idDespesa}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_estado: novoEstado })
+            });
+            setViaturaData(viaturaData.filter(despesa => despesa.id_despesa !== idDespesa));
 
-                // Remove a despesa atualizada da lista local
-                setViaturaData(viaturaData.filter(despesa => despesa.id_despesa !== idDespesa));
-
-                Swal.fire('Sucesso!', 'A despesa foi atualizada.', 'success');
-            } catch (error) {
-                console.error('Erro ao atualizar estado:', error);
-                Swal.fire('Erro!', 'Não foi possível atualizar a despesa.', 'error');
-            }
+            Swal.fire('Sucesso!', 'A despesa foi atualizada.', 'success');
+           
         }
     };
 

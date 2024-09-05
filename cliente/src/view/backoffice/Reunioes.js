@@ -34,17 +34,16 @@ export default function Reunioes() {
         });
 
         if (result.isConfirmed) {
-            try {
-                const response = await axios.put(`${API_BASE_URL}reunioes/estado/${idReuniao}`, { id_estado: novoEstado });
-                console.log('Estado atualizado com sucesso:', response.data);
-
+            
+                const response = await fetch(`${API_BASE_URL}reunioes/estado/${idReuniao}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_estado: novoEstado })
+                });
                 setReunioesData(reunioesData.filter(reuniao => reuniao.id_reuniao !== idReuniao));
-
+    
                 Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-            } catch (error) {
-                console.error('Erro ao atualizar estado:', error);
-                Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
-            }
+            
         }
     };
 

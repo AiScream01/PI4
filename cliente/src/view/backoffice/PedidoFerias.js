@@ -34,15 +34,15 @@ export default function PedidoFerias() {
         });
 
         if (result.isConfirmed) {
-            try {
-                const response = await axios.put(`${API_BASE_URL}ferias/estado/${idFerias}`, { id_estado: novoEstado });
-                console.log('Estado atualizado com sucesso:', response.data);
-                setFeriasData(feriasData.filter(feria => feria.id_ferias !== idFerias));
-                Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-            } catch (error) {
-                console.error('Erro ao atualizar estado:', error);
-                Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
-            }
+            const response = await fetch(`${API_BASE_URL}ferias/estado/${idFerias}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_estado: novoEstado })
+            });
+            setFeriasData(feriasData.filter(feria => feria.id_ferias !== idFerias));
+
+            Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+            
         }
     };
 
