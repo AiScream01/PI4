@@ -7,7 +7,7 @@ const ajudasCustoController = require('../controllers/ajudasController');
 // Configuração do multer para PDFs
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '..', 'uploads/')); // Mesmo destino das imagens
+        cb(null, path.join(__dirname, '..', 'uploads')); // Mesmo destino das imagens
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + path.extname(file.originalname)); // Gerar um nome único para o arquivo
