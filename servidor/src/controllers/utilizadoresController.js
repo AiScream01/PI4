@@ -108,13 +108,55 @@ exports.eliminar = async (req, res) => {
 };
 
 // Login de um utilizador
+//exports.login = async (req, res) => {
+//  try {
+//    const { email, palavrapasse } = req.body;
+//
+//    // Verifique se os campos obrigatórios estão presentes
+//    if (!email || !palavrapasse) {
+//      return res.status(400).json({ error: "Email e palavrapasse são obrigatórios!" });
+//    }
+//
+//    // Procura o utilizador pelo email
+//    const user = await Utilizadores.findOne({ where: { email } });
+//    if (!user) {
+//      return res.status(401).json({ error: "Utilizador não encontrado" });
+//    }
+//
+//    // Verifica se a senha fornecida corresponde ao hash armazenado
+//    const senhaCorreta = await bcrypt.compare(palavrapasse, user.palavrapasse);
+//    if (!senhaCorreta) {
+//      return res.status(401).json({ error: "Credenciais inválidas" });
+//    }
+//
+//    // Gera o token JWT com os dados do utilizador
+//    const token = jwt.sign(
+//      { id: user.id_user, email: user.email, role: user.role },
+//      "seuSegredoJWT", // Substitua por um segredo mais seguro em produção
+//      { expiresIn: "1h" }
+//    );
+//
+//    // Retorna o token e informações adicionais do utilizador
+//    res.status(200).json({
+//      message: "Login bem-sucedido",
+//      token,
+//      role: user.role,
+//      id: user.id_user,
+//    });
+//  } catch (error) {
+//    console.error("Erro ao realizar login:", error);
+//    res.status(500).json({ error: "Erro ao realizar login" });
+//  }
+//};
+
+// Login de um utilizador
 exports.login = async (req, res) => {
   try {
     const { email, palavrapasse } = req.body;
 
     // Verifique se os campos obrigatórios estão presentes
     if (!email || !palavrapasse) {
-      return res.status(400).json({ error: "Email e palavrapasse são obrigatórios!" });
+      return res.status(400).json({ error: "Email e senha são obrigatórios!" });
     }
 
     // Procura o utilizador pelo email
@@ -129,19 +171,11 @@ exports.login = async (req, res) => {
       return res.status(401).json({ error: "Credenciais inválidas" });
     }
 
-    // Gera o token JWT com os dados do utilizador
-    const token = jwt.sign(
-      { id: user.id_user, email: user.email, role: user.role },
-      "seuSegredoJWT", // Substitua por um segredo mais seguro em produção
-      { expiresIn: "1h" }
-    );
-
-    // Retorna o token e informações adicionais do utilizador
+    // Retorna o id do usuário e informações adicionais
     res.status(200).json({
       message: "Login bem-sucedido",
-      token,
-      role: user.role,
-      id: user.id_user,
+      id: user.id_user,  // Ajuste para corresponder ao campo retornado pelo Flutter
+      role: user.role
     });
   } catch (error) {
     console.error("Erro ao realizar login:", error);
