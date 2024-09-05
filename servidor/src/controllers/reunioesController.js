@@ -155,11 +155,6 @@ exports.atualizarEstado = async (req, res) => {
         const { id_reuniao } = req.params;
         const { id_estado, fcmToken } = req.body; // fcmToken vem da app Flutter
 
-        // Logs para verificar os valores recebidos
-        console.log('ID da reunião recebido:', id_reuniao);
-        console.log('ID do estado recebido:', id_estado);
-        console.log('FCM Token recebido:', fcmToken);
-
         // Atualizar o estado_reuniao com o novo id_estado
         const [updated] = await EstadoReunioes.update(
             { id_estado },
