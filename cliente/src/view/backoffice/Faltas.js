@@ -35,9 +35,14 @@ export default function Faltas() {
 
             if (result.isConfirmed) {
                 try {
-                    const response = await axios.put(`${API_BASE_URL}faltas/estado/${idFalta}`, { id_estado: novoEstado });
-                    console.log('Estado atualizado com sucesso:', response.data);
-
+                    //const response = await axios.put(`${API_BASE_URL}faltas/estado/${idFalta}`, { id_estado: novoEstado });
+                   // console.log('Estado atualizado com sucesso:', response.data);
+                   alert(idFalta)
+                    const response = await fetch(`${API_BASE_URL}faltas/estado/${idFalta}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id_estado: novoEstado })
+                    });
                     setFaltasData(faltasData.filter(falta => falta.id_falta !== idFalta));
 
                     Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
