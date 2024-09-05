@@ -17,6 +17,7 @@ export default function Ajudas() {
                 }
 
                 const data = await response.json();
+                
                 setAjudasData(data);
             } catch (error) {
                 console.error('Erro ao buscar ajudas de custo:', error);
@@ -47,12 +48,15 @@ export default function Ajudas() {
             });
 
             if (response.ok) {
+                alert("data");
                 setAjudasData(ajudasData.filter(ajuda => ajuda.id_custo !== id_custo));
                 Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
             } else {
+                alert("erro");
                 Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
             }
         } catch (error) {
+            alert("erro2");
             Swal.fire('Erro!', 'Ocorreu um erro ao tentar atualizar o pedido.', 'error');
         }
         }
