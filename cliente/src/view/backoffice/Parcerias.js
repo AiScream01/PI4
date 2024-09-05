@@ -148,7 +148,7 @@ export default function Parcerias() {
       <div className="row">
         {parceriasData.map((parceria) => (
           <div className="col-md-4 mb-4" key={parceria.id_parceria}>
-            <div className="text-center border rounded p-3" style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}>
+            <div className="text-center border rounded p-3" style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.2)", backgroundColor: "white" }}>
               <img
                 src={API_BASE_URL + 'uploads/'+ parceria.logotipo || "https://via.placeholder.com/150"}
                 alt={parceria.titulo}
