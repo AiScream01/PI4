@@ -34,15 +34,16 @@ export default function Horas() {
         });
 
         if (result.isConfirmed) {
-            try {
-                const response = await axios.put(`${API_BASE_URL}horas/estado/${idHoras}`, { id_estado: novoEstado });
-                console.log('Estado atualizado com sucesso:', response.data);
-                setHorasData(horasData.filter(hora => hora.id_horas !== idHoras));
-                Swal.fire('Sucesso!', 'O estado das horas foi atualizado.', 'success');
-            } catch (error) {
-                alert('Erro ao atualizar estado:' + error);
-                Swal.fire('Erro!', 'Não foi possível atualizar o estado.' + error, 'error');
-            }
+
+            const response = await fetch(`${API_BASE_URL}horas/estado/${idHoras}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_estado: novoEstado })
+            });
+            setHorasData(horasData.filter(hora => hora.id_horas !== idHoras));
+
+            Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+            
         }
     };
 
