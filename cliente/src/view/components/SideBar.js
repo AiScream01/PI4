@@ -83,6 +83,11 @@ export default function SideBar() {
                         Micro-Site
                     </Link>
                 </li>
+                <li className="nav-item">
+                    <Link to="/alterar-perfil" className="nav-link" style={getLinkStyle('/alterar-perfil')}>
+                        Alterar Perfil
+                    </Link>
+                </li>
             </ul>
             <hr />
             <div className="dropdown">

@@ -1,6 +1,7 @@
 const Utilizadores = require("../models/utilizadores");
 const bcrypt = require("bcryptjs"); // Importação do bcrypt para hash da palavra-passe
 const jwt = require("jsonwebtoken");
+const Solicacoes = require('../models/solicitacoes'); // Adicione esta linha para importar o modelo de solicitações
 
 // Listar todos os utilizadores
 exports.listarTodos = async (req, res) => {
@@ -70,11 +71,21 @@ exports.atualizar = async (req, res) => {
     // Verifica se a senha foi fornecida para atualização e a criptografa se necessário
     const updateData = { ...req.body };
     if (req.file) {
-      updateData.foto = req.file.filename; 
+      updateData.foto = req.file.filename;
     }
-    
+
     if (updateData.palavrapasse) {
       updateData.palavrapasse = await bcrypt.hash(updateData.palavrapasse, 10);
+    }
+
+    // Verifica se há uma solicitação pendente para este utilizador
+    const solicitaçãoPendente = await Solicacoes.findOne({
+      where: { user_id: req.params.id, estado: 'pendente' }
+    });
+
+    if (solicitaçãoPendente) {
+      // Caso haja uma solicitação pendente, retorne um erro ou uma mensagem apropriada
+      return res.status(400).json({ message: 'Há uma solicitação pendente para atualizar os dados deste utilizador.' });
     }
 
     const [updated] = await Utilizadores.update(updateData, {
