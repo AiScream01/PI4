@@ -34,10 +34,10 @@ export default function Faltas() {
             });
 
             if (result.isConfirmed) {
-                try {
+                //try {
                     //const response = await axios.put(`${API_BASE_URL}faltas/estado/${idFalta}`, { id_estado: novoEstado });
                    // console.log('Estado atualizado com sucesso:', response.data);
-                   alert(idFalta)
+                 
                     const response = await fetch(`${API_BASE_URL}faltas/estado/${idFalta}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
@@ -46,10 +46,10 @@ export default function Faltas() {
                     setFaltasData(faltasData.filter(falta => falta.id_falta !== idFalta));
 
                     Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-                } catch (error) {
-                    alert('Erro ao atualizar estado:' + error);
+                /*} catch (error) {
+                    
                     Swal.fire('Erro!', 'Não foi possível atualizar o pedido.' + error, 'error');
-                }
+                }*/
             }
         };
 
