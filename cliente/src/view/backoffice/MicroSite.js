@@ -14,9 +14,10 @@ export default function MicroSite() {
     });
 
     useEffect(() => {
-        // Substitua o URL abaixo pela URL da sua API
+        console.log('API_BASE_URL:', API_BASE_URL); // Verifica o valor da URL da API
         axios.get(`${API_BASE_URL}microsite/1`) // Supondo que o ID do registro desejado seja 1
             .then(response => {
+                console.log('Dados recebidos:', response.data); // Verifica os dados recebidos
                 setMicrosite(response.data);
             })
             .catch(error => {
@@ -31,8 +32,8 @@ export default function MicroSite() {
             </header>
             <div className="container d-flex">
                 <div className="texto">
-                    <h1 className="title">{microsite.titulo}</h1>
-                    <h2 className="texto-content">{microsite.texto}</h2>
+                    <h1 className="title">{microsite.titulo || 'Título não disponível'}</h1>
+                    <h2 className="texto-content">{microsite.texto || 'Texto não disponível'}</h2>
                 </div>
                 <div className="instalar">
                     <h1>Instala-me</h1>
