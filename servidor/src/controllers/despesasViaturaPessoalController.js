@@ -32,7 +32,10 @@ exports.listarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
-        const { km, ponto_partida, ponto_chegada, preco_portagens, comprovativo, id_user } = req.body;
+        const { km, ponto_partida, ponto_chegada, preco_portagens, id_user } = req.body;
+
+        // Se houver um arquivo PDF carregado, gerar o caminho correto
+        const comprovativo = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
 
         // Criar o registro de despesa de viatura pessoal na base de dados
         const despesaViaturaPessoal = await DespesasViaturaPessoal.create({
