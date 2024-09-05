@@ -81,7 +81,7 @@ exports.criar = async (req, res) => {
         const { custo, descricao, id_user } = req.body;
 
         // Se houver um arquivo PDF carregado, gerar o caminho correto
-        const comprovativo = req.file ? `/uploads/${req.file.filename}` : ''; // Caminho do arquivo PDF
+        const comprovativo = req.file ?req.file.filename : ''; // Caminho do arquivo PDF
 
         // Criar o registo de ajuda de custo na base de dados
         const ajudaCusto = await AjudasCusto.create({
