@@ -149,7 +149,7 @@ exports.eliminar = async (req, res) => {
     }
 };
 
-// Atualizar estado da reunião das férias por ID
+// Atualizar estado da reunião por ID
 exports.atualizarEstado = async (req, res) => {
     try {
         const { id_reuniao } = req.params;
