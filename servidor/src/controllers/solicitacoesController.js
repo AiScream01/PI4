@@ -4,11 +4,17 @@ const bcrypt = require('bcryptjs');
 
 exports.listarSolicitacoes = async (req, res) => {
   try {
-    const solicitacoes = await Solicacoes.findAll();
+    const solicitacoes = await Solicitacoes.findAll({
+        include: [{
+            model: Utilizadores,
+            as: 'utilizador', // O alias deve corresponder ao nome definido na associação
+            attributes: ['nome', 'foto'] // Adicione os atributos que deseja buscar
+        }]
+    });
     res.json(solicitacoes);
-  } catch (error) {
+} catch (error) {
     res.status(500).json({ error: error.message });
-  }
+}
 };
 
 exports.adicionarSolicitacao = async (req, res) => {
