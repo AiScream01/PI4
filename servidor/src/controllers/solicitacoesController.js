@@ -7,7 +7,6 @@ exports.listarSolicitacoes = async (req, res) => {
     const solicitacoes = await Solicitacoes.findAll({
         include: [{
             model: Utilizadores,
-            as: 'utilizador', // O alias deve corresponder ao nome definido na associação
             attributes: ['nome', 'foto'] // Adicione os atributos que deseja buscar
         }]
     });
