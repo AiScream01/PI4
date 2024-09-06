@@ -19,7 +19,7 @@ const Faltas = sequelize.define('Faltas', {
     },
     horas: {
         type: DataTypes.INTEGER, // Para armazenar o número de horas
-        allowNull: false
+        allowNull: true
     },
     justificacao: {
         type: DataTypes.STRING,
