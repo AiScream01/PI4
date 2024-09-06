@@ -60,7 +60,6 @@ export default function ViaturaPropria() {
                             <th scope="col">Ponto de Partida</th>
                             <th scope="col">Ponto de Chegada</th>
                             <th scope="col">Portagens</th>
-                            <th scope="col">Comprovativo</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
