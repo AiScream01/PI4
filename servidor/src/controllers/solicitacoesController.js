@@ -42,11 +42,19 @@ exports.adicionarSolicitacao = async (req, res) => {
 exports.aceitarSolicitacao = async (req, res) => {
   try {
     const { id } = req.params;
-    const solicitacao = await Solicitacoes.findOne({ where: { user_id: id, estado: 'pendente' } });
+
+    // Adicione logs para depuração
+    console.log(`Procurando solicitação com ID: ${id}`);
+
+    // Verifique se a solicitação existe
+    const solicitacao = await Solicitacoes.findOne({ where: { id: id, estado: 'pendente' } });
+
+    // Adicione logs para depuração
+    console.log('Solicitação encontrada:', solicitacao);
 
     if (solicitacao) {
       await Utilizadores.update(solicitacao.dados, {
-        where: { id_user: id }
+        where: { id_user: solicitacao.user_id } // Verifique se o campo correto está sendo utilizado
       });
       solicitacao.estado = 'aceito';
       await solicitacao.save();
@@ -55,6 +63,7 @@ exports.aceitarSolicitacao = async (req, res) => {
       res.status(404).json({ message: 'Solicitação não encontrada' });
     }
   } catch (error) {
+    console.error('Erro ao aceitar solicitação:', error); // Adicione logs para depuração
     res.status(500).json({ error: error.message });
   }
 };

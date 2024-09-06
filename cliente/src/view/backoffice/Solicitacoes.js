@@ -33,10 +33,11 @@ export default function Solicitacoes() {
             confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
             cancelButtonText: 'Cancelar'
         });
-
+    
         if (result.isConfirmed) {
             try {
-                const response = await axios.put(`${API_BASE_URL}solicitacoes/${id_solicitacao}/${novoEstado}`);
+                const url = `${API_BASE_URL}solicitacoes/aceitar/${id_solicitacao}`;
+                const response = await axios.put(url);
                 
                 if (response.status === 200) {
                     setSolicitacoesData(solicitacoesData.filter(solicitacao => solicitacao.id !== id_solicitacao));

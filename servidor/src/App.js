@@ -8,7 +8,7 @@ require('./models/associations');
 
 // Routes
 //Soliciatações
-const solicacoesRoutes = require('./routes/solicitacoesRoutes.js');
+const solicitacoesRoutes = require('./routes/solicitacoesRoutes'); // Certifique-se de que o caminho está correto
 
 //APP mobile
 const appMobileRoutes = require('./routes/appMobileRoutes.js')
@@ -77,7 +77,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/appmobile', appMobileRoutes)
 
 //Solicitações para alterar perfil
-app.use('/solicitacoes', solicacoesRoutes);
+app.use('/solicitacoes', solicitacoesRoutes); // A rota deve começar com /solicitacoes
 
 app.use('/utilizador', utilizadorRoutes)
 //app.use('/tiposutilizador', tiposutilizadorRoutes)
