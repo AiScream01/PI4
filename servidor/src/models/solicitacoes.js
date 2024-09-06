@@ -1,7 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./database');
 
-const Solicacoes = sequelize.define('Solicacoes', {
+const Solicitacoes = sequelize.define('Solicitacoes', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+},
   user_id: {
     type: DataTypes.INTEGER,
     allowNull: false
@@ -22,4 +27,4 @@ const Solicacoes = sequelize.define('Solicacoes', {
   }
 });
 
-module.exports = Solicacoes;
+module.exports = Solicitacoes;

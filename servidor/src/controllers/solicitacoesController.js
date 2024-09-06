@@ -41,10 +41,10 @@ exports.adicionarSolicitacao = async (req, res) => {
 
 exports.aceitarSolicitacao = async (req, res) => {
   try {
-    const { id } = req.params;
+    const {id} = req.params;
 
     // Adicione logs para depuração
-    console.log(`Procurando solicitação com ID: ${id}`);
+    console.log(`A procura de solicitação com ID: ${id}`);
 
     // Verifique se a solicitação existe
     const solicitacao = await Solicitacoes.findOne({ where: { id: id, estado: 'pendente' } });
