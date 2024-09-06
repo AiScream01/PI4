@@ -1,4 +1,4 @@
-const Solicacoes = require('../models/solicitacoes');
+const Solicitacoes = require('../models/solicitacoes');
 const Utilizadores = require('../models/utilizadores'); // Se ainda não foi importado
 const bcrypt = require('bcryptjs');
 
