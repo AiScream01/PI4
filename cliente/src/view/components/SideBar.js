@@ -113,6 +113,15 @@ export default function SideBar() {
         </li>
         <li className="nav-item">
           <Link
+            to="/solicitacoes"
+            className="nav-link"
+            style={getLinkStyle("/solicitacoes")}
+          >
+            Solicitações
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link
             to="/micro-site-editar"
             className="nav-link"
             style={getLinkStyle("/micro-site-editar")}
@@ -127,15 +136,6 @@ export default function SideBar() {
             style={getLinkStyle("/micro-site")}
           >
             Micro-Site
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link
-            to="/solicitacoes"
-            className="nav-link"
-            style={getLinkStyle("/solicitacoes")}
-          >
-            Solicitações
           </Link>
         </li>
       </ul>
