@@ -30,7 +30,7 @@ export default function App() {
                 {/* Rota padrão sem side bar*/}
                 <Route path="/" element={(<Login />)} />
 
-                <Route path="/solicitacoes" element={<Solicitacoes />} />
+                <Route path="/solicitacoes" element={addSidebar(<Solicitacoes />)} />
                 <Route path="/pedido-ferias" element={addSidebar(<PedidoFerias />)} />
                 <Route path="/horas" element={addSidebar(<Horas />)} />
                 <Route path="/ajudas" element={addSidebar(<Ajudas />)} />
