@@ -18,6 +18,7 @@ import Parcerias from "./view/backoffice/Parcerias";
 import NotificacaoPush from "./view/backoffice/NotificacaoPush";
 import Reunioes from "./view/backoffice/Reunioes";
 import Utilizadores from "./view/backoffice/Utilizadores";
+import Solicitacoes from "./view/backoffice/Solicitacoes";
 import MicroSite from "./view/backoffice/MicroSite";
 import EditarMicroSite from './view/backoffice/EditarMicroSite';
 
@@ -29,6 +30,7 @@ export default function App() {
                 {/* Rota padrão sem side bar*/}
                 <Route path="/" element={(<Login />)} />
 
+                <Route path="/solicitacoes" element={<Solicitacoes />} />
                 <Route path="/pedido-ferias" element={addSidebar(<PedidoFerias />)} />
                 <Route path="/horas" element={addSidebar(<Horas />)} />
                 <Route path="/ajudas" element={addSidebar(<Ajudas />)} />
