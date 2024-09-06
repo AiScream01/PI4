@@ -79,7 +79,7 @@ export default function Solicitacoes() {
                             <tr key={solicitacao.id}>
                                 <td>
                                     <img 
-                                        src={solicitacao.utilizador && solicitacao.utilizador.foto ? API_BASE_URL + 'uploads/' + solicitacao.utilizador.foto : 'default-avatar.png'} 
+                                        src={API_BASE_URL + 'uploads/' + solicitacao.Utilizadore.foto} 
                                         alt="User" 
                                         className="rounded-circle" 
                                         width="40" 
