@@ -209,5 +209,7 @@ button.as {
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra leve para o texto */
   font-family: 'Courier New', Courier, monospace; /* Fonte semelhante à usada em código */
+  font-weight: 700; /* Texto mais grosso */
   margin-bottom: 20px; /* Espaço abaixo */
 }
+
