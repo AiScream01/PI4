@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Para fazer requisições HTTP
+import axios from 'axios';
 import logo from '../../assets/Olisipo_LogoWhite.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../assets/CustomCSSMicroSite.css';
-import API_BASE_URL from "../../config"; // Ajuste conforme necessário
+import API_BASE_URL from "../../config";
 
 export default function MicroSite() {
     const [microsite, setMicrosite] = useState({
@@ -14,8 +14,7 @@ export default function MicroSite() {
     });
 
     useEffect(() => {
-        // Substitua o URL abaixo pela URL da sua API
-        axios.get(API_BASE_URL + 'microsite/1') // Supondo que o ID do registro desejado seja 1
+        axios.get(API_BASE_URL + 'microsite/1')
             .then(response => {
                 setMicrosite(response.data);
             })
@@ -37,35 +36,39 @@ export default function MicroSite() {
                     </h2>
                 </div>
                 <div className="instalar">
-                    <h1 className="hello-world">"Hello, World!"</h1> {/* Novo título */}
+                    <h1 className="hello-world">"Hello, World!"</h1>
                     <h1>Instala-me</h1>
                     <a href={microsite.link_google_play || '#'} target="_blank" rel="noopener noreferrer">
-                        <button className="gp"></button>
+                        <button className="gp">Google Play</button>
                     </a>
                     <a href={microsite.link_app_store} target="_blank" rel="noopener noreferrer">
-                        <button className="as"></button>
+                        <button className="as">App Store</button>
                     </a>
                 </div>
             </div>
             <footer>
-                <div className="rodape">
-                    <img className="logo" src={logo} alt="logotipo olisipo" />
-                    <div className="column">
-                        <h3>Download</h3>
-                        <p>Instala-me</p>
+                <div className="rodape d-flex justify-content-between">
+                    <div className="logo-section">
+                        <img className="logo" src={logo} alt="logotipo olisipo" />
                     </div>
+                    <div className="footer-columns d-flex">
+                        <div className="column">
+                            <h3>Download</h3>
+                            <p>Instala-me</p>
+                        </div>
 
-                    <div className="column">
-                        <h3>Suporte</h3>
-                        <p>FAQ</p>
-                        <p>Telefones</p>
-                        <p>Chat</p>
-                    </div>
+                        <div className="column">
+                            <h3>Suporte</h3>
+                            <p>FAQ</p>
+                            <p>Telefones</p>
+                            <p>Chat</p>
+                        </div>
 
-                    <div className="column">
-                        <h3>Contactos</h3>
-                        <p>+351 217 983 100</p>
-                        <p>+351 234 059 200</p>
+                        <div className="column">
+                            <h3>Contactos</h3>
+                            <p>+351 217 983 100</p>
+                            <p>+351 234 059 200</p>
+                        </div>
                     </div>
                 </div>
             </footer>
