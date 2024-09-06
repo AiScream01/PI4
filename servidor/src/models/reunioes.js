@@ -21,6 +21,10 @@ const Reunioes = sequelize.define('Reunioes', {
         type: DataTypes.DATE,
         allowNull: false
     },
+    hora: {
+        type: DataTypes.TIME, // Tipo para armazenar a hora da reunião
+        allowNull: false
+    },
     id_user: {
         type: DataTypes.INTEGER,
         allowNull: false

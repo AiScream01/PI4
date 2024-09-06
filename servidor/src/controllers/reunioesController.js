@@ -70,7 +70,7 @@ exports.listarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
-        const { titulo, descricao, data, id_user, nome_utilizador_reuniao } = req.body;
+        const { titulo, descricao, data, hora, id_user, nome_utilizador_reuniao } = req.body;
 
         // Buscar o id_user pelo nome do utilizador
         const utilizador = await Utilizador.findOne({ where: { nome: nome_utilizador_reuniao } });
@@ -86,6 +86,7 @@ exports.criar = async (req, res) => {
             titulo,
             descricao,
             data,
+            hora,
             id_user
         });
 
