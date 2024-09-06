@@ -163,7 +163,7 @@ export default function Parcerias() {
                 style={{ color: "blue" }}
                 onClick={() => { 
                   setIdParceria(parceria.id_parceria);
-                  setTituloEdit(parceria.titulo);
+                  setTituloEdit(parceria.titulo); 
                   setDescricaoEdit(parceria.descricao);
                   setCategoriaEdit(parceria.categoria);
                   setShowEditModal(true); 

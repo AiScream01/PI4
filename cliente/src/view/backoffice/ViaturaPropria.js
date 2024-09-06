@@ -76,8 +76,8 @@ export default function ViaturaPropria() {
                                 <td>{viatura.ponto_chegada}</td>
                                 <td>{viatura.preco_portagens}</td>
                                 <td>
-                                    <a href={API_BASE_URL + 'uploads'+ viatura.comprovativo} download className="text-decoration-none">
-                                        <FaFilePdf className="me-2" /> {viatura.comprovativo}
+                                    <a href={API_BASE_URL + 'uploads'+ despesaviatura.comprovativo} download className="text-decoration-none">
+                                        <FaFilePdf className="me-2" /> {despesaviatura.comprovativo}
                                     </a>
                                 </td>
                                 <td>
