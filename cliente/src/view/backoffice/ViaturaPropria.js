@@ -60,6 +60,7 @@ export default function ViaturaPropria() {
                             <th scope="col">Ponto de Partida</th>
                             <th scope="col">Ponto de Chegada</th>
                             <th scope="col">Portagens</th>
+                            <th scope="col">Comprovativo</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -74,6 +75,11 @@ export default function ViaturaPropria() {
                                 <td>{viatura.ponto_partida}</td>
                                 <td>{viatura.ponto_chegada}</td>
                                 <td>{viatura.preco_portagens}</td>
+                                <td>
+                                    <a href={API_BASE_URL + 'uploads'+ viatura.comprovativo} download className="text-decoration-none">
+                                        <FaFilePdf className="me-2" /> {viatura.comprovativo}
+                                    </a>
+                                </td>
                                 <td>
                                     <button 
                                         className="btn p-1" 
