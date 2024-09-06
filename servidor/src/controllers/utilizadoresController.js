@@ -68,7 +68,7 @@ exports.criar = async (req, res) => {
 // Atualizar um utilizador por ID
 exports.atualizar = async (req, res) => {
   try {
-    // Verifica se a senha foi fornecida para atualização e a criptografa se necessário
+    // Coleta os dados de atualização do corpo da requisição
     const updateData = { ...req.body };
     if (req.file) {
       updateData.foto = req.file.filename;
@@ -79,28 +79,28 @@ exports.atualizar = async (req, res) => {
     }
 
     // Verifica se há uma solicitação pendente para este utilizador
-    const solicitaçãoPendente = await Solicacoes.findOne({
+    const solicitacaoPendente = await Solicacoes.findOne({
       where: { user_id: req.params.id, estado: 'pendente' }
     });
 
-    if (solicitaçãoPendente) {
+    if (solicitacaoPendente) {
       // Caso haja uma solicitação pendente, retorne um erro ou uma mensagem apropriada
       return res.status(400).json({ message: 'Há uma solicitação pendente para atualizar os dados deste utilizador.' });
     }
 
-    const [updated] = await Utilizadores.update(updateData, {
-      where: { id_user: req.params.id },
+    // Cria uma nova solicitação de atualização
+    const solicitacao = await Solicacoes.create({
+      user_id: req.params.id,
+      dados: updateData,
+      estado: 'pendente'
     });
-    if (updated) {
-      const updatedUtilizador = await Utilizadores.findByPk(req.params.id);
-      res.json(updatedUtilizador);
-    } else {
-      res.status(404).json({ message: "Utilizador não encontrado" });
-    }
+
+    res.json({ message: 'Solicitação de atualização registrada com sucesso!', solicitacao });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Eliminar um utilizador por ID
 exports.eliminar = async (req, res) => {

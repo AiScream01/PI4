@@ -17,7 +17,7 @@ export default function Solicitacoes() {
                 }
 
                 const data = await response.json();
-                
+
                 setSolicitacoesData(data);
             } catch (error) {
                 console.error('Erro ao buscar solicitações de perfil:', error);
