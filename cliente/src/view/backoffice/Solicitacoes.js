@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
 import Swal from 'sweetalert2';
 import API_BASE_URL from "../../config";
 
@@ -10,15 +11,8 @@ export default function Solicitacoes() {
     useEffect(() => {
         const fetchSolicitacoesPendentes = async () => {
             try {
-                const response = await fetch(API_BASE_URL + "solicitacoes");
-
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP! Status: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                setSolicitacoesData(data);
+                const response = await axios.get(`${API_BASE_URL}solicitacoes`);
+                setSolicitacoesData(response.data);
             } catch (error) {
                 console.error('Erro ao buscar solicitações de perfil:', error);
             }
@@ -41,17 +35,14 @@ export default function Solicitacoes() {
 
         if (result.isConfirmed) {
             try {
-                const response = await fetch(API_BASE_URL + `solicitacoes/${id_solicitacao}/${novoEstado}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                if (!response.ok) {
+                const response = await axios.put(`${API_BASE_URL}solicitacoes/${id_solicitacao}/${novoEstado}`);
+                
+                if (response.status === 200) {
+                    setSolicitacoesData(solicitacoesData.filter(solicitacao => solicitacao.id_solicitacao !== id_solicitacao));
+                    Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+                } else {
                     throw new Error(`Erro HTTP! Status: ${response.status}`);
                 }
-
-                setSolicitacoesData(solicitacoesData.filter(solicitacao => solicitacao.id_solicitacao !== id_solicitacao));
-                Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
             } catch (error) {
                 Swal.fire('Erro!', 'Ocorreu um erro ao tentar atualizar o pedido.', 'error');
             }
@@ -62,7 +53,7 @@ export default function Solicitacoes() {
         <div className="container mt-5">
             <h1 className="mb-4">Solicitações de Alteração de Perfil</h1>
             <div className="table-responsive">
-                <table className="table align-middle" style={{boxShadow: '5px 5px 15px grey'}}>
+                <table className="table align-middle" style={{ boxShadow: '5px 5px 15px grey' }}>
                     <thead className="table-light">
                         <tr>
                             <th scope="col"></th>
@@ -76,7 +67,7 @@ export default function Solicitacoes() {
                         {solicitacoesData.map((solicitacao) => (
                             <tr key={solicitacao.id_solicitacao}>
                                 <td>
-                                    <img src={API_BASE_URL + 'uploads/'+ solicitacao.utilizador.foto} alt="User"  className="rounded-circle" width="40" height="40" />
+                                    <img src={API_BASE_URL + 'uploads/' + solicitacao.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
                                 <td>{solicitacao.utilizador.nome}</td>
                                 <td>{JSON.stringify(solicitacao.dados)}</td>
