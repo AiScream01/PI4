@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const path = require('path');
 const horasController = require('../controllers/horasController');
 
 // Configuração do multer para PDFs
@@ -39,7 +40,7 @@ router.post('/create', upload.single('comprovativo'), horasController.criar);
 
 // Atualizar horas por ID
 router.put('/update/:id_horas', upload.single('comprovativo'),horasController.atualizar);
- 
+
 // Atualizar o estado das horas por ID
 router.put('/estado/:id_horas', horasController.atualizarEstadoHoras);
 
