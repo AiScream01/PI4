@@ -69,7 +69,7 @@ export default function Reunioes() {
                                 <td>
                                     <img src={API_BASE_URL + 'uploads/'+ reuniao.utilizador.foto} alt="User" className="rounded-circle" width="50" height="50" />
                                 </td>
-                                <td>{reuniao.utilizador.nome}</td>
+                                <td>{reuniao.utilizador.nome} {reuniao.id_reuniao}</td>
                                 <td>{new Date(reuniao.data).toLocaleDateString()}</td>
                                 <td>{reuniao.titulo}</td>
                                 <td>
