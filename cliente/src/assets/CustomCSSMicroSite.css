@@ -47,16 +47,16 @@ div.texto {
   float: left;
 }
 
-.instalar {
-  display: inline-block;
-  margin-left: 10%;
-  overflow: auto;
-  text-align: center;
-  margin-top: 35vh;
-  background-color: transparent;
-  height: 57vh;
-  width: 550px;
+.instalar h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: #007bff; /* Azul moderno */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidade */
+  font-family: 'Poppins', sans-serif; /* Fonte moderna e estilosa */
+  text-align: center; /* Centralizado */
+  margin-bottom: 20px; /* Espaço abaixo do título */
 }
+
 
 .logootipo {
   height: 50px;
