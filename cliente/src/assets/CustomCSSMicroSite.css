@@ -202,3 +202,12 @@ button.as {
 .active {
   background-color: #1ED700 !important;
 }
+
+.hello-world {
+  font-size: 36px;
+  color: #00FF00; /* Verde brilhante */
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra leve para o texto */
+  font-family: 'Courier New', Courier, monospace; /* Fonte semelhante à usada em código */
+  margin-bottom: 20px; /* Espaço abaixo */
+}

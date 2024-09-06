@@ -37,6 +37,7 @@ export default function MicroSite() {
                     </h2>
                 </div>
                 <div className="instalar">
+                    <h1 className="hello-world">"Hello, World!"</h1> {/* Novo título */}
                     <h1>Instala-me</h1>
                     <a href={microsite.link_google_play || '#'} target="_blank" rel="noopener noreferrer">
                         <button className="gp"></button>
