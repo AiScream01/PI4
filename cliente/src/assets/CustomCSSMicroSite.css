@@ -209,7 +209,7 @@ button.as {
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra mais forte */
   font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada */
-  font-weight: 900; /* Peso máximo para tornar bem grosso */
+  font-weight: 1200; /* Peso máximo para tornar bem grosso */
   margin-bottom: 20px; /* Espaço abaixo */
 }
 
