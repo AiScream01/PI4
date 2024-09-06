@@ -63,8 +63,8 @@ export default function MicroSite() {
 
                     <div className="column">
                         <h3>Contactos</h3>
-                        <p>+351 931 231 231</p>
-                        <p>+351 931 231 231</p>
+                        <p>+351 217 983 100</p>
+                        <p>+351 234 059 200</p>
                     </div>
                 </div>
             </footer>
