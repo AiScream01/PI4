@@ -12,12 +12,13 @@ export default function Solicitacoes() {
         const fetchSolicitacoesPendentes = async () => {
             try {
                 const response = await axios.get(`${API_BASE_URL}solicitacoes`);
+                console.log(response.data); // Verifique a estrutura dos dados
                 setSolicitacoesData(response.data);
             } catch (error) {
                 console.error('Erro ao buscar solicitações de perfil:', error);
             }
         };
-
+    
         fetchSolicitacoesPendentes();
     }, []);
 
