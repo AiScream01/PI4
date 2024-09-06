@@ -73,9 +73,13 @@ exports.criar = async (req, res) => {
         // Extrair campos do corpo da requisição
         const { horas, id_user } = req.body;
 
+        // Se houver um arquivo PDF carregado, gerar o caminho correto
+        const comprovativo = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
+
         // Criar o registro de horas na base de dados
         const novoRegistroHoras = await Horas.create({
             horas,
+            comprovativo,
             id_user
         });
 
@@ -101,6 +105,11 @@ exports.criar = async (req, res) => {
 exports.atualizar = async (req, res) => {
     try {
         const { id_horas } = req.params;
+
+        if (req.file) {
+            updateData.comprovativo = req.file.path;
+        }
+
         const [updated] = await Horas.update(req.body, {
             where: { id_horas }
         });

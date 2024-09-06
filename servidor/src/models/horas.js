@@ -14,6 +14,10 @@ const Horas = sequelize.define('Horas', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    comprovativo: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
     id_user: {
         type: DataTypes.INTEGER,
         allowNull: false

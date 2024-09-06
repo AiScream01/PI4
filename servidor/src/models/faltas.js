@@ -18,12 +18,12 @@ const Faltas = sequelize.define('Faltas', {
         allowNull: false
     },
     horas: {
-        type: DataTypes.FLOAT, // Para armazenar o número de horas
+        type: DataTypes.INTEGER, // Para armazenar o número de horas
         allowNull: false
     },
-    justificacao: { // 'justificação' traduzido para 'justificacao' para consistência com o padrão de nomeação
-        type: DataTypes.STRING, // Pode ajustar o tamanho conforme necessário
-        allowNull: true // Se não for obrigatório, pode ser `true`
+    justificacao: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: 'faltas',

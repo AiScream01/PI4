@@ -29,15 +29,21 @@ exports.listarPorId = async (req, res) => {
     }
 };
 
+//justificacao
 // Criar nova falta
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
         const { data, id_user } = req.body;
 
+        // Se houver um arquivo PDF carregado, gerar o caminho correto
+        const justificacao = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
+
+
         // Criar o registro de falta na base de dados
         const novaFalta = await Faltas.create({
             data,
+            justificacao,
             id_user
         });
 
@@ -52,7 +58,7 @@ exports.criar = async (req, res) => {
     } catch (error) {
         // Log do erro para debug
         console.error('Erro ao criar falta:', error);
-        
+
         // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
@@ -63,6 +69,11 @@ exports.criar = async (req, res) => {
 exports.atualizar = async (req, res) => {
     try {
         const { id_falta } = req.params;
+
+        if (req.file) {
+            updateData.justificacao = req.file.path;
+        }
+
         const [updated] = await Faltas.update(req.body, {
             where: { id_falta }
         });
