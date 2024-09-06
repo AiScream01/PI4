@@ -19,7 +19,13 @@ const Utilizador = require('./utilizadores');
 const Reuniao = require('./reunioes');
 const EstadoReuniao = require('./estado_reuniao');
 
+const Solicitacoes = require('./solicitacoes');
+
 const Estado = require('./estado');
+
+// Associações entre Utilizadores e Solicitacoes
+Utilizador.hasMany(Solicitacoes, { foreignKey: 'user_id' });
+Solicitacoes.belongsTo(Utilizador, { foreignKey: 'user_id' });
 
 // Defina as associações
 // Horas e EstadoHoras
@@ -81,4 +87,4 @@ ReuniaoUtilizadores.belongsTo(Reuniao, {foreignKey: 'id_reuniao'});
 
 
 module.exports = { Horas, EstadoHoras, Ajudas, EstadoAjudas, Estado, Faltas, EstadoFaltas, Despesas,
-    EstadoDespesas, Ferias, EstadoFerias, ReuniaoUtilizadores,  Utilizador, Reuniao, EstadoReuniao};
+    EstadoDespesas, Ferias, EstadoFerias, ReuniaoUtilizadores, Utilizador, Reuniao, EstadoReuniao, Solicitacoes };
