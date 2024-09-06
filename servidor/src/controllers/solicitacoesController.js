@@ -28,7 +28,7 @@ exports.adicionarSolicitacao = async (req, res) => {
       updateData.palavrapasse = await bcrypt.hash(updateData.palavrapasse, 10);
     }
 
-    const solicitacao = await Solicacoes.create({
+    const solicitacao = await Solicitacoes.create({
       user_id: req.params.id,
       dados: updateData,
       estado: 'pendente'
@@ -43,7 +43,7 @@ exports.adicionarSolicitacao = async (req, res) => {
 exports.aceitarSolicitacao = async (req, res) => {
   try {
     const { id } = req.params;
-    const solicitacao = await Solicacoes.findOne({ where: { user_id: id, estado: 'pendente' } });
+    const solicitacao = await Solicitacoes.findOne({ where: { user_id: id, estado: 'pendente' } });
 
     if (solicitacao) {
       await Utilizadores.update(solicitacao.dados, {
@@ -63,7 +63,7 @@ exports.aceitarSolicitacao = async (req, res) => {
 exports.recusarSolicitacao = async (req, res) => {
   try {
     const { id } = req.params;
-    const solicitacao = await Solicacoes.findOne({ where: { user_id: id, estado: 'pendente' } });
+    const solicitacao = await Solicitacoes.findOne({ where: { user_id: id, estado: 'pendente' } });
 
     if (solicitacao) {
       solicitacao.estado = 'recusado';
