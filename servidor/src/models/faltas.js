@@ -1,4 +1,4 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes, Sequelize } = require('sequelize');
 const sequelize = require('./database'); // Certifique-se de ajustar o caminho conforme necessário
 const Utilizadores = require('./utilizadores'); // Certifique-se de ajustar o caminho conforme necessário
 
@@ -18,7 +18,7 @@ const Faltas = sequelize.define('Faltas', {
         allowNull: false
     },
     horas: {
-        type: DataTypes.INTEGER, // Para armazenar o número de horas
+        type: Sequelize.INTEGER, // Para armazenar o número de horas
         allowNull: true
     },
     justificacao: {

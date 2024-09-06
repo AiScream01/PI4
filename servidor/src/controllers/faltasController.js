@@ -34,7 +34,7 @@ exports.listarPorId = async (req, res) => {
 exports.criar = async (req, res) => {
     try {
         // Extrair campos do corpo da requisição
-        const { data, id_user } = req.body;
+        const { data, id_user, horas    } = req.body;
 
         // Se houver um arquivo PDF carregado, gerar o caminho correto
         const justificacao = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
@@ -44,7 +44,8 @@ exports.criar = async (req, res) => {
         const novaFalta = await Faltas.create({
             data,
             justificacao,
-            id_user
+            id_user,
+            horas
         });
 
         // Criar o registro na tabela estado_faltas com id_estado 3
