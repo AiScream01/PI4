@@ -1,7 +1,7 @@
 const Utilizadores = require("../models/utilizadores");
 const bcrypt = require("bcryptjs"); // Importação do bcrypt para hash da palavra-passe
 const jwt = require("jsonwebtoken");
-const Solicacoes = require('../models/solicitacoes'); // Adicione esta linha para importar o modelo de solicitações
+const Solicitacoes = require('../models/solicitacoes'); // Adicione esta linha para importar o modelo de solicitações
 
 // Listar todos os utilizadores
 exports.listarTodos = async (req, res) => {
@@ -79,7 +79,7 @@ exports.atualizar = async (req, res) => {
     }
 
     // Verifica se há uma solicitação pendente para este utilizador
-    const solicitacaoPendente = await Solicacoes.findOne({
+    const solicitacaoPendente = await Solicitacoes.findOne({
       where: { user_id: req.params.id, estado: 'pendente' }
     });
 
@@ -89,7 +89,7 @@ exports.atualizar = async (req, res) => {
     }
 
     // Cria uma nova solicitação de atualização
-    const solicitacao = await Solicacoes.create({
+    const solicitacao = await Solicitacoes.create({
       user_id: req.params.id,
       dados: updateData,
       estado: 'pendente'
