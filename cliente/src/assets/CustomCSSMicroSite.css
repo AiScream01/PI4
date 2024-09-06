@@ -204,12 +204,13 @@ button.as {
 }
 
 .hello-world {
-  font-size: 36px;
+  font-size: 48px; /* Tamanho maior para ser mais destacado */
   color: #00FF00; /* Verde brilhante */
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra leve para o texto */
-  font-family: 'Courier New', Courier, monospace; /* Fonte semelhante à usada em código */
-  font-weight: 700; /* Texto mais grosso */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra mais forte */
+  font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada */
+  font-weight: 900; /* Peso máximo para tornar bem grosso */
   margin-bottom: 20px; /* Espaço abaixo */
 }
+
 
