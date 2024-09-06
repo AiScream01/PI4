@@ -213,33 +213,6 @@ button.as {
   margin-bottom: 20px; /* Espaço abaixo */
 }
 
-.rodape {
-  background-color: #f8f9fa; /* Cor de fundo do rodapé */
-  padding: 20px;
-}
-
-.logo-section {
-  flex: 1;
-}
-
-.footer-columns {
-  flex: 3;
-  display: flex;
-  justify-content: space-around;
-}
-
-.column {
-  margin: 0 10px;
-}
-
-.column h3 {
-  margin-bottom: 10px;
-}
-
-.column p {
-  margin: 5px 0;
-}
-
 
 
 
