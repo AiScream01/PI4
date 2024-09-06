@@ -44,7 +44,7 @@ export default function Reunioes() {
                 }
             } catch (error) {
                 console.error('Erro ao atualizar estado:', error);
-                Swal.fire('Erro!', 'Não foi possível atualizar o pedido.', 'error');
+                Swal.fire('Erro!', 'Não foi possível atualizar o pedido.'+ error, 'error');
             }
         }
     };
