@@ -137,7 +137,7 @@ export default function Parcerias() {
 
   return (
     <div className="container mt-4" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
-      <h3 className="mb-4">Parcerias</h3>
+      <h1 className="mb-4">Parcerias</h1>
       <button
         className="btn btn-primary mb-4"
         onClick={() => setShowAddModal(true)}
