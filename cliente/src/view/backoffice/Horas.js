@@ -70,7 +70,7 @@ export default function Horas() {
                                 <td>{hora.utilizador.nome}</td>
                                 <td>{hora.horas}</td>
                                 <td>
-                                    <a href={`/path/to/comprovativos/${hora.comprovativo}`} download className="text-decoration-none">
+                                    <a href={API_BASE_URL + 'uploads'+ hora.comprovativo} download className="text-decoration-none">
                                         <FaFilePdf className="me-2" /> {hora.comprovativo}
                                     </a>
                                 </td>
