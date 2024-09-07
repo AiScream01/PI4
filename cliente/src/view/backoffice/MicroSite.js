@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from 'axios'; // Para fazer requisições HTTP
 import logo from '../../assets/Olisipo_LogoWhite.svg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../assets/CustomCSSMicroSite.css';
-import API_BASE_URL from "../../config";
+import API_BASE_URL from "../../config"; // Ajuste conforme necessário
 
 export default function MicroSite() {
     const [microsite, setMicrosite] = useState({
@@ -14,7 +14,8 @@ export default function MicroSite() {
     });
 
     useEffect(() => {
-        axios.get(API_BASE_URL + 'microsite/1')
+        // Substitua o URL abaixo pela URL da sua API
+        axios.get(API_BASE_URL + 'microsite/1') // Supondo que o ID do registro desejado seja 1
             .then(response => {
                 setMicrosite(response.data);
             })
@@ -28,7 +29,7 @@ export default function MicroSite() {
             <header>
                 <img className="logootipo" src={logo} alt="logotipo olisipo" />
             </header>
-            <div className="container">
+            <div className="container d-flex">
                 <div className="texto">
                     <h1 className="title"> {microsite.titulo} </h1>
                     <h2 className="texto-content">
@@ -36,7 +37,7 @@ export default function MicroSite() {
                     </h2>
                 </div>
                 <div className="instalar">
-                    <h1 className="hello-world">"Hello, World!"</h1>
+                    <h1 className="hello-world">"Hello, World!"</h1> {/* Novo título */}
                     <h1>Instala-me</h1>
                     <a href={microsite.link_google_play || '#'} target="_blank" rel="noopener noreferrer">
                         <button className="gp"></button>
