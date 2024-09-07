@@ -1,5 +1,4 @@
 const ProtocolosParcerias = require('../models/protocolos_parcerias');
-const admin = require('../firebase.js'); // Importa o Firebase admin
 
 // Listar todas as parcerias
 exports.listarTodos = async (req, res) => {
