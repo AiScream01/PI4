@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { FaCheck, FaTimes } from 'react-icons/fa';
+import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
@@ -92,7 +92,11 @@ export default function ViaturaPropria() {
                                 <td>{viatura.ponto_partida}</td>
                                 <td>{viatura.ponto_chegada}</td>
                                 <td>{viatura.preco_portagens}</td>
-                                <td>{viatura.comprovativo}</td>
+                                <td>
+                                    <a href={API_BASE_URL + 'uploads'+ viatura.comprovativo} download className="text-decoration-none">
+                                        <FaFilePdf className="me-2" /> {viatura.comprovativo}
+                                    </a>
+                                </td>
                                 <td>
                                     <button 
                                         className="btn p-1" 
