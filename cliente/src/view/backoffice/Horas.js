@@ -4,9 +4,12 @@ import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 import Swal from 'sweetalert2';
+import '../../assets/CustomCSS.css'; // Importando o arquivo de estilo customizado
 
 export default function Horas() {
     const [horasData, setHorasData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Página atual
+    const itemsPerPage = 10; // Número de itens por página
 
     useEffect(() => {
         const fetchHoras = async () => {
@@ -34,7 +37,6 @@ export default function Horas() {
         });
 
         if (result.isConfirmed) {
-
             const response = await fetch(`${API_BASE_URL}horas/estado/${idHoras}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -43,9 +45,16 @@ export default function Horas() {
             setHorasData(horasData.filter(hora => hora.id_horas !== idHoras));
 
             Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-            
         }
     };
+
+    // Calcular os itens da página atual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = horasData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Função para mudar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container mt-5">
@@ -62,7 +71,7 @@ export default function Horas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {horasData.map((hora) => (
+                        {currentItems.map((hora) => (
                             <tr key={hora.id_horas}>
                                 <td>
                                     <img src={API_BASE_URL + 'uploads/'+ hora.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
@@ -95,6 +104,19 @@ export default function Horas() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Paginação */}
+            <nav>
+                <ul className="pagination justify-content-center">
+                    {[...Array(Math.ceil(horasData.length / itemsPerPage)).keys()].map(number => (
+                        <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                            <button onClick={() => paginate(number + 1)} className="page-link">
+                                {number + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
     );
 }
