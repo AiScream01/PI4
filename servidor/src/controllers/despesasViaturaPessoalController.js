@@ -55,10 +55,7 @@ exports.criar = async (req, res) => {
         // Responder com o objeto criado e status 201
         res.status(201).json(despesaViaturaPessoal);
     } catch (error) {
-        // Log do erro para debug
         console.error('Erro ao criar despesa de viatura pessoal:', error);
-        
-        // Responder com status 500 e a mensagem de erro
         res.status(500).json({ error: error.message });
     }
 };
