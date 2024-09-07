@@ -1,20 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
 const noticiasController = require('../controllers/noticiasController');
-
-// Set up storage configuration
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        // Correct the destination to always be 'src/uploads' relative to the project's root
-        cb(null, path.join(__dirname, '..', 'uploads')); // Go up one directory from 'routes' and then into 'uploads'
-    },
-    filename: function (req, file, cb) {
-        // Use Date.now() to generate a unique filename with the original file extension
-        cb(null, Date.now() + path.extname(file.originalname));
-    },
-  });
+const storage = require('../multer_config');
   
 // Initialize multer with the storage configuration
 const upload = multer({ storage: storage });
