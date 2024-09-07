@@ -7,12 +7,13 @@ import API_BASE_URL from "../../config";
 
 export default function Solicitacoes() {
     const [solicitacoesData, setSolicitacoesData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Página atual
+    const itemsPerPage = 10; // Número de itens por página
 
     useEffect(() => {
         const fetchSolicitacoesPendentes = async () => {
             try {
                 const response = await axios.get(`${API_BASE_URL}solicitacoes/`);
-                console.log(response.data); // Verifique a estrutura dos dados
                 setSolicitacoesData(response.data);
             } catch (error) {
                 console.error('Erro ao buscar solicitações de perfil:', error);
@@ -28,7 +29,7 @@ export default function Solicitacoes() {
             text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#1ED700',
             cancelButtonColor: '#d33',
             confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
             cancelButtonText: 'Cancelar'
@@ -36,9 +37,9 @@ export default function Solicitacoes() {
     
         if (result.isConfirmed) {
             try {
-                const url = `${API_BASE_URL}solicitacoes/aceitar/${id_solicitacao}`;
+                const url = `${API_BASE_URL}solicitacoes/${novoEstado}/${id_solicitacao}`;
                 const response = await axios.put(url);
-                
+
                 if (response.status === 200) {
                     setSolicitacoesData(solicitacoesData.filter(solicitacao => solicitacao.id !== id_solicitacao));
                     Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
@@ -60,6 +61,14 @@ export default function Solicitacoes() {
         ));
     };
 
+    // Calcular os itens da página atual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = solicitacoesData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Função para mudar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Solicitações de Alteração de Perfil</h1>
@@ -75,7 +84,7 @@ export default function Solicitacoes() {
                         </tr>
                     </thead>
                     <tbody>
-                        {solicitacoesData.map((solicitacao) => (
+                        {currentItems.map((solicitacao) => (
                             <tr key={solicitacao.id}>
                                 <td>
                                     <img 
@@ -91,14 +100,14 @@ export default function Solicitacoes() {
                                 <td>{new Date(solicitacao.data_solicitacao).toLocaleDateString()}</td>
                                 <td>
                                     <button
-                                        className="btn p-1"
+                                        className="btn p-1 me-2"
                                         style={{ color: 'green' }}
                                         onClick={() => handleUpdateStatus(solicitacao.id, 'aceito', true)}
                                     >
                                         <FaCheck />
                                     </button>
                                     <button
-                                        className="btn p-1 ms-2"
+                                        className="btn p-1"
                                         style={{ color: 'red' }}
                                         onClick={() => handleUpdateStatus(solicitacao.id, 'recusado', false)}
                                     >
@@ -109,6 +118,19 @@ export default function Solicitacoes() {
                         ))}
                     </tbody>
                 </table>
+
+                {/* Paginação */}
+                <nav>
+                    <ul className="pagination justify-content-center">
+                        {[...Array(Math.ceil(solicitacoesData.length / itemsPerPage)).keys()].map(number => (
+                            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                                <button onClick={() => paginate(number + 1)} className="page-link">
+                                    {number + 1}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </div>
         </div>
     );
