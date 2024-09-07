@@ -6,8 +6,9 @@ import API_BASE_URL from "../../config";
 import axios from "axios";
 
 export default function Parcerias() {
-  // Estado para armazenar a lista de parcerias
   const [parceriasData, setParceriasData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6; // Número de itens por página
 
   // Estados para o modal de edição
   const [showEditModal, setShowEditModal] = useState(false);
@@ -61,8 +62,6 @@ export default function Parcerias() {
         formData.append("titulo", tituloEdit);
         formData.append("descricao", descricaoEdit);
         formData.append("categoria", categoriaEdit);
-        console.log("logotipoEdit",logotipoEdit);
-        console.log("logotipoAdd",logotipoAdd);
         if (logotipoEdit) {
           formData.append("logotipo", logotipoEdit);
         }
@@ -74,12 +73,9 @@ export default function Parcerias() {
             { ...parceria, ...response?.data } 
             : parceria
         ));
-        
-        console.log(parceriasData)
         setShowEditModal(false);
         Swal.fire("Sucesso!", "A parceria foi atualizada.", "success");
       } else {
-        console.log("logotipo",logotipoAdd);
         formData.append("titulo", tituloAdd);
         formData.append("descricao", descricaoAdd);
         formData.append("categoria", categoriaAdd);
@@ -89,9 +85,7 @@ export default function Parcerias() {
         const response = await axios.post(API_BASE_URL + "protocolosparceria/create", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        
-        console.log('data1', response);
-        setParceriasData([...parceriasData,  response?.data ]);
+        setParceriasData([...parceriasData, response?.data]);
         setShowAddModal(false);
         Swal.fire("Sucesso!", "A nova parceria foi adicionada.", "success");
       }
@@ -135,6 +129,14 @@ export default function Parcerias() {
     }
   };
 
+  // Calcular os itens da página atual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = parceriasData.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Função para mudar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="container mt-4" style={{ paddingLeft: "40px", paddingRight: "40px" }}>
       <h1 className="mb-4">Parcerias</h1>
@@ -146,7 +148,7 @@ export default function Parcerias() {
         <FaPlus /> Adicionar Parceria
       </button>
       <div className="row">
-        {parceriasData.map((parceria) => (
+        {currentItems.map((parceria) => (
           <div className="col-md-4 mb-4" key={parceria.id_parceria}>
             <div className="text-center border rounded p-3" style={{ boxShadow: "0 4px 8px rgba(0,0,0,0.2)", backgroundColor: "white" }}>
               <img
@@ -182,6 +184,19 @@ export default function Parcerias() {
           </div>
         ))}
       </div>
+
+      {/* Paginação */}
+      <nav>
+        <ul className="pagination justify-content-center">
+          {[...Array(Math.ceil(parceriasData.length / itemsPerPage)).keys()].map(number => (
+            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+              <button onClick={() => paginate(number + 1)} className="page-link">
+                {number + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* Modal de Edição */}
       {showEditModal && (
