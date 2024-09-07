@@ -3,10 +3,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
+import API_BASE_URL from '../../config';
+import '../../assets/CustomCSS.css';
 
 export default function PedidoFerias() {
     const [feriasData, setFeriasData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Página atual
+    const itemsPerPage = 10; // Número de itens por página
 
     useEffect(() => {
         const fetchFerias = async () => {
@@ -42,15 +45,22 @@ export default function PedidoFerias() {
             setFeriasData(feriasData.filter(feria => feria.id_ferias !== idFerias));
 
             Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-            
         }
     };
+
+    // Calcular itens da página atual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = feriasData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Função para alterar página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Pedidos de Férias Pendentes</h1>
-            <div className="table-responsive" >
-                <table className="table align-middle" style={{boxShadow: '5px 5px 15px grey'}}>
+            <div className="table-responsive">
+                <table className="table align-middle" style={{ boxShadow: '5px 5px 15px grey' }}>
                     <thead className="table-light">
                         <tr>
                             <th scope="col"></th>
@@ -61,12 +71,12 @@ export default function PedidoFerias() {
                         </tr>
                     </thead>
                     <tbody>
-                        {feriasData.map((item) => (
+                        {currentItems.map((item) => (
                             <tr key={item.id_ferias}>
                                 <td>
                                     <img src={API_BASE_URL + 'uploads/' + item.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
                                 </td>
-                                <td>{item.utilizador?.nome || 'N/A'}</td> {/* Supondo que 'utilizador' é um objeto com o nome */}
+                                <td>{item.utilizador?.nome || 'N/A'}</td>
                                 <td>{item.data_inicio}</td>
                                 <td>{item.data_fim}</td>
                                 <td>
@@ -88,6 +98,19 @@ export default function PedidoFerias() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Paginação */}
+            <nav>
+                <ul className="pagination justify-content-center">
+                    {[...Array(Math.ceil(feriasData.length / itemsPerPage)).keys()].map(number => (
+                        <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                            <button onClick={() => paginate(number + 1)} className="page-link">
+                                {number + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
     );
 }

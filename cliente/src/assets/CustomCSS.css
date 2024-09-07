@@ -1,0 +1,18 @@
+/* Estilo para todos os números das páginas (botões) */
+.page-link {
+    color: #1ED700;             /* Cor do texto para todos os botões */
+    border-color: #1ED700;      /* Cor da borda para todos os botões */
+}
+
+/* Estilo personalizado para o botão da página ativa */
+.page-item.active .page-link {
+    background-color: #1ED700;  /* Cor de fundo do botão ativo */
+    border-color: #1ED700;      /* Cor da borda do botão ativo */
+    color: white;               /* Cor do texto do botão ativo */
+}
+
+/* Remover o hover azul padrão e manter a cor verde */
+.page-link:hover {
+    background-color: #E8FFE6;  /* Cor do fundo ao passar o mouse */
+    border-color: #1ED700;      /* Cor da borda ao passar o mouse */
+}
