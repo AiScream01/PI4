@@ -2,6 +2,7 @@ const express = require("express");
 const path = require('path');
 const app = express();
 const sequelize = require('./models/database');
+const cors = require('cors');
 
 // Importa o arquivo de associações
 require('./models/associations');
@@ -60,13 +61,7 @@ const micrositeRoute = require ('./routes/microSiteRoutes.js')
 app.set("port", process.env.PORT || 3001);
 
 // Configurar CORS
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
-    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-    next();
-});
+app.use(cors());
 
 // Middlewares
 app.use(express.json());

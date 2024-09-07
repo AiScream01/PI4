@@ -102,7 +102,7 @@ export default function Solicitacoes() {
                                     <button
                                         className="btn p-1 me-2"
                                         style={{ color: 'green' }}
-                                        onClick={() => handleUpdateStatus(solicitacao.id, 'aceito', true)}
+                                        onClick={() => handleUpdateStatus(solicitacao.id, 'aceitar', true)}
                                     >
                                         <FaCheck />
                                     </button>

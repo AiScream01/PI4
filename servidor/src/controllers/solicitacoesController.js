@@ -5,6 +5,9 @@ const bcrypt = require('bcryptjs');
 exports.listarSolicitacoes = async (req, res) => {
   try {
     const solicitacoes = await Solicitacoes.findAll({
+        where: {
+          estado: 'pendente'
+        },
         include: [{
             model: Utilizadores,
             attributes: ['nome', 'foto'] // Adicione os atributos que deseja buscar
