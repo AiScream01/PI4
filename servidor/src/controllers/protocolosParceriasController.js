@@ -48,13 +48,13 @@ exports.criar = async (req, res) => {
         };
 
         // Enviar a notificação através do Firebase Cloud Messaging
-        admin.messaging().send(message)
+        /*admin.messaging().send(message)
             .then((response) => {
                 console.log('Notificação enviada com sucesso:', response);
             })
             .catch((error) => {
                 console.log('Erro ao enviar notificação:', error);
-            });
+            });*/
 
         res.status(201).json(parceria);
     } catch (error) {
