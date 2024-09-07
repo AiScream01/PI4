@@ -3,9 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import API_BASE_URL from "../../config";
+import '../../assets/CustomCSS.css';
 
 export default function Ajudas() {
     const [ajudasData, setAjudasData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Página atual
+    const itemsPerPage = 10; // Número de itens por página
 
     useEffect(() => {
         const fetchAjudasPendentes = async () => {
@@ -17,7 +20,6 @@ export default function Ajudas() {
                 }
 
                 const data = await response.json();
-                
                 setAjudasData(data);
             } catch (error) {
                 console.error('Erro ao buscar ajudas de custo:', error);
@@ -27,36 +29,45 @@ export default function Ajudas() {
         fetchAjudasPendentes();
     }, []);
 
-    const handleUpdateStatus = async (id_custo, novoEstado, confirmacao) => {
+    const handleUpdateStatus = async (id_custo, novoEstado) => {
         const result = await Swal.fire({
-            title: confirmacao ? 'Tem a certeza?' : 'Confirmação!',
-            text: confirmacao ? 'Esta ação será confirmada.' : 'Deseja realmente atualizar o estado?',
+            title: 'Confirmação!',
+            text: 'Deseja realmente atualizar o estado?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: confirmacao ? 'Sim, confirmar!' : 'Sim',
+            confirmButtonText: 'Sim',
             cancelButtonText: 'Cancelar'
         });
 
         if (result.isConfirmed) {
-        try {
-            const response = await fetch(API_BASE_URL + `ajudascusto/estado/${id_custo}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_estado: novoEstado })
-            });
+            try {
+                const response = await fetch(API_BASE_URL + `ajudascusto/estado/${id_custo}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_estado: novoEstado })
+                });
 
-            
-                setAjudasData(ajudasData.filter(ajuda => ajuda.id_custo !== id_custo));
-                Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
-           
-        } catch (error) {
-            alert("erro2");
-            Swal.fire('Erro!', 'Ocorreu um erro ao tentar atualizar o pedido.', 'error');
-        }
+                if (response.ok) {
+                    setAjudasData(ajudasData.filter(ajuda => ajuda.id_custo !== id_custo));
+                    Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+                } else {
+                    throw new Error('Erro ao atualizar o estado');
+                }
+            } catch (error) {
+                Swal.fire('Erro!', 'Ocorreu um erro ao tentar atualizar o pedido.', 'error');
+            }
         }
     };
+
+    // Calcular os itens da página atual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = ajudasData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Função para mudar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container mt-5">
@@ -74,7 +85,7 @@ export default function Ajudas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {ajudasData.map((ajuda) => (
+                        {currentItems.map((ajuda) => (
                             <tr key={ajuda.id_custo}>
                                 <td>
                                     <img src={API_BASE_URL + 'uploads/'+ ajuda.utilizador.foto} alt="User"  className="rounded-circle" width="40" height="40" />
@@ -108,6 +119,19 @@ export default function Ajudas() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Paginação */}
+            <nav>
+                <ul className="pagination justify-content-center">
+                    {[...Array(Math.ceil(ajudasData.length / itemsPerPage)).keys()].map(number => (
+                        <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                            <button onClick={() => paginate(number + 1)} className="page-link">
+                                {number + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
     );
 }

@@ -4,7 +4,7 @@ import { FaCheck, FaTimes, FaFilePdf } from 'react-icons/fa';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
 import Swal from 'sweetalert2';
-import '../../assets/CustomCSS.css'; // Importando o arquivo de estilo customizado
+import '../../assets/CustomCSS.css';
 
 export default function Horas() {
     const [horasData, setHorasData] = useState([]);
