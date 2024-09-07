@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../assets/Olisipo_LogoWhite.svg";
 import { FaSignOutAlt } from "react-icons/fa"; // Importa o ícone de logout
+import API_BASE_URL from "../../config";
 
 export default function SideBar() {
   const location = useLocation(); // Hook para obter a localização atual
@@ -23,7 +24,7 @@ export default function SideBar() {
 
   return (
     <div
-      className="d-flex flex-column flex-shrink-0 p-3 text-white bg-olisipo overflow-scroll"
+      className="d-flex flex-column flex-shrink-0 p-3 text-white bg-olisipo"
       style={{ width: "230px", height: "100vh", backgroundColor: "#1F1F1F" }}
     >
       <Link
@@ -143,13 +144,13 @@ export default function SideBar() {
       <div className="dropdown">
         <div className="d-flex align-items-center text-white text-decoration-none">
           <img
-            src="https://github.com/caroll2.png"
+            src={API_BASE_URL + 'uploads/' + window.localStorage.getItem("userPhoto")}
             alt="Admin Avatar"
             width="32"
             height="32"
             className="rounded-circle me-2"
           />
-          <strong className="me-auto">Admin</strong>
+          <strong className="me-auto">{window.localStorage.getItem("userName")}</strong>
           <FaSignOutAlt
             onClick={handleLogout}
             style={{ cursor: "pointer", marginLeft: "10px" }}

@@ -186,7 +186,9 @@ exports.login = async (req, res) => {
     res.status(200).json({
       message: "Login bem-sucedido",
       id: user.id_user,  // Ajuste para corresponder ao campo retornado pelo Flutter
-      role: user.role
+      role: user.role,
+      nome: user.nome,
+      foto: user.foto
     });
   } catch (error) {
     console.error("Erro ao realizar login:", error);

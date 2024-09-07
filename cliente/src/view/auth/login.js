@@ -30,6 +30,8 @@ const Login = () => {
         if (data.role === 'Admin') {
           window.localStorage.setItem("userId", data.id);
           window.localStorage.setItem("userRole", data.role);
+          window.localStorage.setItem("userName", data.nome);
+          window.localStorage.setItem("userPhoto", data.foto);
 
           swal("Login bem-sucedido", "Bem-vindo!", "success").then(() => {
             navigate('/pedido-ferias');
