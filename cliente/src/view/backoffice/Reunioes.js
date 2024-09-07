@@ -4,9 +4,12 @@ import { FaCheck, FaTimes } from 'react-icons/fa';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
+import '../../assets/CustomCSS.css'; // Importando o arquivo de estilo customizado
 
 export default function Reunioes() {
     const [reunioesData, setReunioesData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Página atual
+    const itemsPerPage = 10; // Número de itens por página
 
     useEffect(() => {
         const fetchReunioes = async () => {
@@ -34,17 +37,27 @@ export default function Reunioes() {
         });
 
         if (result.isConfirmed) {
-            
             const response = await fetch(`${API_BASE_URL}reunioes/estado/${idReuniao}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id_estado: novoEstado })
             });
-            setReunioesData(reunioesData.filter(reuniao => reuniao.id_reuniao !== idReuniao));
-
-            Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+            if (response.ok) {
+                setReunioesData(reunioesData.filter(reuniao => reuniao.id_reuniao !== idReuniao));
+                Swal.fire('Sucesso!', 'O pedido foi atualizado.', 'success');
+            } else {
+                Swal.fire('Erro!', 'Não foi possível atualizar o estado.', 'error');
+            }
         }
     };
+
+    // Calcular os itens da página atual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = reunioesData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Função para mudar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     return (
         <div className="container mt-5">
@@ -57,12 +70,12 @@ export default function Reunioes() {
                             <th scope="col">Colaborador</th>
                             <th scope="col">Dia</th>
                             <th scope="col">Assunto</th>
-                            <th scopre="col">Horas</th>
+                            <th scope="col">Horas</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {reunioesData.map((reuniao) => (
+                        {currentItems.map((reuniao) => (
                             <tr key={reuniao.id_reuniao}>
                                 <td>
                                     <img src={API_BASE_URL + 'uploads/'+ reuniao.utilizador.foto} alt="User" className="rounded-circle" width="50" height="50" />
@@ -91,6 +104,19 @@ export default function Reunioes() {
                         ))}
                     </tbody>
                 </table>
+
+                {/* Paginação */}
+                <nav>
+                    <ul className="pagination justify-content-center">
+                        {[...Array(Math.ceil(reunioesData.length / itemsPerPage)).keys()].map(number => (
+                            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                                <button onClick={() => paginate(number + 1)} className="page-link">
+                                    {number + 1}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </div>
         </div>
     );
