@@ -57,6 +57,7 @@ export default function Reunioes() {
                             <th scope="col">Colaborador</th>
                             <th scope="col">Dia</th>
                             <th scope="col">Assunto</th>
+                            <th scopre="col">Horas</th>
                             <th scope="col">Ações</th>
                         </tr>
                     </thead>
@@ -69,6 +70,7 @@ export default function Reunioes() {
                                 <td>{reuniao.utilizador.nome}</td>
                                 <td>{new Date(reuniao.data).toLocaleDateString()}</td>
                                 <td>{reuniao.titulo}</td>
+                                <td>{reuniao.hora}</td>
                                 <td>
                                     <button 
                                         className="btn p-1 me-2" 

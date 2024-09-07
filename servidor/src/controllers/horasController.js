@@ -2,7 +2,6 @@ const Horas = require('../models/horas');
 const EstadoHoras = require('../models/estado_horas'); // Supondo que exista um model para estado_horas
 const Estado = require('../models/estado'); // Supondo que exista um model para estado
 const Utilizador = require ('../models/utilizadores.js');
-const admin = require('../firebase.js'); // Importa o Firebase admin
 
 
 // Listar todas as horas
@@ -146,7 +145,7 @@ exports.eliminar = async (req, res) => {
 exports.atualizarEstadoHoras = async (req, res) => {
     try {
       const { id_horas } = req.params;
-      const { id_estado, fcmToken } = req.body; // fcmToken vem da app Flutter
+      const { id_estado} = req.body; // fcmToken vem da app Flutter
   
       // Atualiza o estado das horas com o novo id_estado
       const [updated] = await EstadoHoras.update(
@@ -155,25 +154,7 @@ exports.atualizarEstadoHoras = async (req, res) => {
       );
   
       if (updated) {
-        // Se a atualização for bem-sucedida, envia a push notification
-        const message = {
-          notification: {
-            title: 'Estado Atualizado',
-            body: `O estado da hora ${id_horas} foi atualizado para ${id_estado}`,
-          },
-          token: fcmToken, // Token do dispositivo que irá receber a notificação
-        };
-  
-        // Envia a notificação através do Firebase Cloud Messaging
-        admin.messaging().send(message)
-          .then((response) => {
-            console.log('Notificação enviada com sucesso:', response);
-          })
-          .catch((error) => {
-            console.log('Erro ao enviar notificação:', error);
-          });
-  
-        res.json({ message: 'Estado atualizado e notificação enviada com sucesso' });
+        res.json({ message: 'Estado atualizado com sucesso' });
       } else {
         res.status(404).json({ message: 'Horas não encontradas' });
       }
