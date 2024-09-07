@@ -29,7 +29,7 @@ export default function MicroSite() {
             <header>
                 <img className="logootipo" src={logo} alt="logotipo olisipo" />
             </header>
-            <div className="container">
+            <div className="container d-flex">
                 <div className="texto">
                     <h1 className="title"> {microsite.titulo} </h1>
                     <h2 className="texto-content">
