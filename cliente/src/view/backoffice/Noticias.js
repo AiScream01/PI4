@@ -4,9 +4,10 @@ import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 import API_BASE_URL from "../../config"; // Ajuste conforme necessário
 import axios from "axios";
+import '../../assets/CustomCSS.css'; // Importando o arquivo de estilo customizado
 
 export default function Noticias() {
-  // Estado para armazenar a lista de noticias
+  // Estado para armazenar a lista de notícias
   const [noticiasData, setNoticiasData] = useState([]);
 
   // Estados para o modal de edição
@@ -24,6 +25,10 @@ export default function Noticias() {
   const [dataAdd, setDataAdd] = useState("");
   const [imagemAdd, setImagemAdd] = useState(null);
   
+  // Paginação
+  const [currentPage, setCurrentPage] = useState(1); // Página atual
+  const itemsPerPage = 10; // Número de itens por página
+
   // Efeito para buscar notícias
   useEffect(() => {
     const fetchNoticias = async () => {
@@ -62,8 +67,6 @@ export default function Noticias() {
         formData.append("titulo", tituloEdit);
         formData.append("descricao", descricaoEdit);
         formData.append("data", dataEdit);
-        console.log("imagemEdit",imagemEdit);
-        console.log("imagemAdd",imagemAdd);
         if (imagemEdit) {
           formData.append("imagem", imagemEdit);
         }
@@ -73,28 +76,24 @@ export default function Noticias() {
         setNoticiasData(
           noticiasData.map(noticia =>
             noticia.id_noticia === id_noticia ? 
-            { ...noticia, ...response?.data}
+            { ...noticia, ...response?.data }
             : noticia
           )
         );
         setShowEditModal(false);
         Swal.fire("Sucesso!", "A notícia foi atualizada.", "success");
       } else {
-        console.log("imagem",imagemAdd);
-        console.log("dados",tituloAdd, descricaoAdd, dataAdd);
         formData.append("titulo", tituloAdd);
         formData.append("descricao", descricaoAdd);
         formData.append("data", dataAdd);
         if (imagemAdd) {
           formData.append("imagem", imagemAdd);
         }
-        console.log('formData', formData);
         const response = await axios.post(API_BASE_URL + "noticias/create", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         
-        console.log('data1', response);
-        setNoticiasData([...noticiasData,  response?.data ]);
+        setNoticiasData([...noticiasData, response?.data ]);
         setShowAddModal(false);
         Swal.fire("Sucesso!", "A nova notícia foi adicionada.", "success");
       }
@@ -145,98 +144,14 @@ export default function Noticias() {
     }
   };
 
-  /*const handleEdit = (noticia) => {
-    setSelectedNoticia(noticia);
-    setShowEditModal(true);
-  };
+  // Calcular os itens da página atual
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = noticiasData.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handleSaveEdit = async () => {
-    try {
-      const response = await fetch(
-        API_BASE_URL + `noticias/update/${selectedNoticia.id_noticia}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(selectedNoticia),
-        }
-      );
+  // Função para mudar de página
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-      if (response.ok) {
-        const updatedNoticia = await response.json();
-        setNoticiasData(
-          noticiasData.map((noticia) =>
-            noticia.id_noticia === selectedNoticia.id_noticia
-              ? updatedNoticia
-              : noticia
-          )
-        );
-        setShowEditModal(false);
-        Swal.fire(
-          "Sucesso!",
-          "Os dados da notícia foram atualizados.",
-          "success"
-        );
-      } else {
-        Swal.fire(
-          "Erro!",
-          "Não foi possível atualizar os dados da notícia.",
-          "error"
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao atualizar a notícia:", error);
-      Swal.fire(
-        "Erro!",
-        "Ocorreu um erro ao tentar atualizar a notícia.",
-        "error"
-      );
-    }
-  };
-
-  const handleSaveAdd = async () => {
-    try {
-      const response = await fetch(API_BASE_URL + "noticias/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newNoticia),
-      });
-
-      if (response.ok) {
-        const createdNoticia = await response.json();
-        setNoticiasData([...noticiasData, createdNoticia]);
-        setShowAddModal(false);
-        Swal.fire("Sucesso!", "A nova notícia foi adicionada.", "success");
-      } else {
-        Swal.fire(
-          "Erro!",
-          "Não foi possível adicionar a nova notícia.",
-          "error"
-        );
-      }
-    } catch (error) {
-      console.error("Erro ao adicionar a notícia:", error);
-      Swal.fire(
-        "Erro!",
-        "Ocorreu um erro ao tentar adicionar a notícia.",
-        "error"
-      );
-    }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSelectedNoticia({ ...selectedNoticia, [name]: value });
-  };
-
-  const handleNewInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewNoticia({ ...newNoticia, [name]: value });
-  };
-*/
   return (
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -249,7 +164,7 @@ export default function Noticias() {
           <FaPlus /> Adicionar Notícia
         </button>
       </div>
-      <table className="table table-striped text-center align-middle" style={{boxShadow: '5px 5px 15px grey'}}>
+      <table className="table table-striped text-center align-middle" style={{ boxShadow: '5px 5px 15px grey' }}>
         <thead>
           <tr>
             <th>Imagem</th>
@@ -260,7 +175,7 @@ export default function Noticias() {
           </tr>
         </thead>
         <tbody>
-          {noticiasData.map((noticia) => (
+          {currentItems.map((noticia) => (
             <tr key={noticia.id_noticia}>
               <td>
                 <img
@@ -278,11 +193,11 @@ export default function Noticias() {
                   style={{ cursor: "pointer", marginRight: "10px" }}
                   onClick={() => {
                     setId_noticia(noticia.id_noticia);
-                  setTituloEdit(noticia.titulo);
-                  setDescricaoEdit(noticia.descricao);
-                  setDataEdit(noticia.data);
-                  setShowEditModal(true); 
-                    /*handleEdit(noticia)*/}}
+                    setTituloEdit(noticia.titulo);
+                    setDescricaoEdit(noticia.descricao);
+                    setDataEdit(noticia.data);
+                    setShowEditModal(true);
+                  }}
                 />
                 <FaTrash
                   style={{ cursor: "pointer", color: "red" }}
@@ -293,6 +208,19 @@ export default function Noticias() {
           ))}
         </tbody>
       </table>
+
+      {/* Paginação */}
+      <nav>
+        <ul className="pagination justify-content-center">
+          {[...Array(Math.ceil(noticiasData.length / itemsPerPage)).keys()].map(number => (
+            <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+              <button onClick={() => paginate(number + 1)} className="page-link">
+                {number + 1}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* Modal de Edição */}
       {showEditModal && (
@@ -310,53 +238,53 @@ export default function Noticias() {
                 </button>
               </div>
               <form onSubmit={(e) => handleSubmit(e, true)}>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="tituloEdit">Título</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="tituloEdit"
+                <div className="modal-body">
+                  <div className="form-group">
+                    <label htmlFor="tituloEdit">Título</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="tituloEdit"
                       value={tituloEdit}
                       onChange={(e) => setTituloEdit(e.target.value)}
                       required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="descricaoEdit">Descrição</label>
-                  <textarea
-                    className="form-control"
-                    id="descricaoEdit"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="descricaoEdit">Descrição</label>
+                    <textarea
+                      className="form-control"
+                      id="descricaoEdit"
                       value={descricaoEdit}
                       onChange={(e) => setDescricaoEdit(e.target.value)}
                       required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="dataEdit">Data</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="dataEdit"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="dataEdit">Data</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="dataEdit"
                       value={dataEdit}
                       onChange={(e) => setDataEdit(e.target.value)}
                       required
-                  />
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="imagemEdit">Imagem</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="imagemEdit"
+                      onChange={(e) => handleFileChange(e, true)}
+                    />
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label htmlFor="imagemEdit">Imagem</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="imagemEdit"
-                    onChange={(e) => handleFileChange(e, true)}
-                  />
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={() => setShowEditModal(false)}>Cancelar</button>
+                  <button type="submit" className="btn btn-primary">Salvar mudanças</button>
                 </div>
-              </div>
-              <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setShowEditModal(false)}>Cancelar</button>
-              <button type="submit" className="btn btn-primary">Salvar mudanças</button>
-              </div>
               </form>
             </div>
           </div>
@@ -379,53 +307,53 @@ export default function Noticias() {
                 </button>
               </div>
               <form onSubmit={(e) => handleSubmit(e)}>
-              <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="tituloAdd">Título</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="tituloAdd"
+                <div className="modal-body">
+                  <div className="form-group">
+                    <label htmlFor="tituloAdd">Título</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="tituloAdd"
                       value={tituloAdd}
                       onChange={(e) => setTituloAdd(e.target.value)}
                       required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="descricaoAdd">Descrição</label>
-                  <textarea
-                    className="form-control"
-                    id="descricaoAdd"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="descricaoAdd">Descrição</label>
+                    <textarea
+                      className="form-control"
+                      id="descricaoAdd"
                       value={descricaoAdd}
                       onChange={(e) => setDescricaoAdd(e.target.value)}
                       required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="dataAdd" >Data</label>
-                  <input
-                    type="date"
-                    className="form-control"
-                    id="dataAdd"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="dataAdd">Data</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      id="dataAdd"
                       value={dataAdd}
                       onChange={(e) => setDataAdd(e.target.value)}
                       required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="imagemAdd">Imagem</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="imagemAdd"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="imagemAdd">Imagem</label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="imagemAdd"
                       onChange={(e) => handleFileChange(e)}
-                  />
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancelar</button>
-              <button type="submit" className="btn btn-primary">Adicionar</button>
-              </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancelar</button>
+                  <button type="submit" className="btn btn-primary">Adicionar</button>
+                </div>
               </form>
             </div>
           </div>
