@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes, FaFileDownload } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
+import '../../assets/CustomCSS.css'; // Importando o arquivo de estilo customizado
 
 export default function Faltas() {
     const [faltasData, setFaltasData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1); // Página atual
+    const itemsPerPage = 10; // Número de itens por página
 
     useEffect(() => {
         const fetchFaltas = async () => {
@@ -53,11 +56,19 @@ export default function Faltas() {
         }
     };
 
+    // Calcular os itens da página atual
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = faltasData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Função para mudar de página
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
         <div className="container mt-5">
             <h1 className="mb-4">Faltas Pendentes</h1>
             <div className="table-responsive">
-                <table className="table align-middle" style={{boxShadow: '5px 5px 15px grey'}}>
+                <table className="table align-middle" style={{ boxShadow: '5px 5px 15px grey' }}>
                     <thead className="table-light">
                         <tr>
                             <th scope="col"></th>
@@ -68,7 +79,7 @@ export default function Faltas() {
                         </tr>
                     </thead>
                     <tbody>
-                        {faltasData.map((falta) => (
+                        {currentItems.map((falta) => (
                             <tr key={falta.id_falta}>
                                 <td>
                                     <img src={API_BASE_URL + 'uploads/' + falta.utilizador.foto} alt="User" className="rounded-circle" width="40" height="40" />
@@ -101,6 +112,19 @@ export default function Faltas() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Paginação */}
+            <nav>
+                <ul className="pagination justify-content-center">
+                    {[...Array(Math.ceil(faltasData.length / itemsPerPage)).keys()].map(number => (
+                        <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
+                            <button onClick={() => paginate(number + 1)} className="page-link">
+                                {number + 1}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </div>
     );
 }
