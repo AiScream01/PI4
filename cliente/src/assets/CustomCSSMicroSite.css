@@ -1,61 +1,64 @@
 /* Estilos gerais */
-header {
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@500;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
   background-color: #1F1F1F;
-  height: 5em;
-  display: flex;
+  background-image: url(fundo_olisipo.png);
+  background-size: cover;
+  color: #FFFFFF;
+  margin: 0;
+  padding: 0;
 }
 
-.container {
-  /* Outras propriedades para o container, se necessário */
+header {
+  background-color: #333; /* Cor mais suave */
+  height: 5em;
+  display: flex;
+  align-items: center;
+  padding: 0 1em;
 }
 
 .texto {
-  padding: 40px; /* Aumentado o padding interno */
-  color: #FFFFFF; /* Define a cor do texto dentro da classe texto como branca */
-  text-align: left; /* Alinha o texto à esquerda */
-  font-weight: lighter; /* Torna o texto mais fino */
+  padding: 2rem;
+  color: #FFFFFF;
+  text-align: left;
+  font-weight: lighter;
 }
 
 .title {
-  text-align: left;
-  font-size: 4rem; /* Aumentado o tamanho do título */
-  color: #00D800;   /* Cor do título */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 4rem;
+  color: #1E90FF; /* Azul mais vibrante */
 }
 
 .texto-content {
-  color: #FFFFFF; /* Garante que o texto dentro da classe texto-content também seja branco */
-  font-weight: lighter; /* Torna o texto mais fino */
+  color: #f0f0f0;
+  font-weight: lighter;
 }
 
 img.logo {
-  margin: .7em;
-}
-
-body {
-  background-color: #1F1F1F;
-  background-image: url(fundo_olisipo.png);
+  margin: 0.7em;
+  height: auto;
 }
 
 div.texto {
   background-color: #1F1F1F;
   width: 550px;
-  margin-left: 5%;
-  margin-top: 4%;
-  text-align: left; /* Corrigido alinhamento para a esquerda */
+  margin: 2rem auto;
+  text-align: left;
   border-radius: 20px;
-  display: inline-block;
-  float: left;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .instalar {
   display: inline-block;
-  margin-left: 10%;
-  overflow: auto;
+  margin: 2rem auto;
   text-align: center;
-  margin-top: 35vh;
   background-color: transparent;
   height: 57vh;
   width: 550px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .logootipo {
@@ -66,7 +69,7 @@ div.texto {
 }
 
 h2.itshappening {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-align: left;
   color: white;
   font-size: 32px;
@@ -81,14 +84,19 @@ img.itshappening {
 }
 
 .container {
-  left: 350px;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
 h1 {
+  font-family: 'Montserrat', sans-serif;
   font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+button.gp, button.as {
+  border-radius: 8px; /* Borda arredondada */
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 button.gp {
@@ -96,7 +104,6 @@ button.gp {
   border-color: transparent;
   width: 160px;
   height: 50px;
-  margin: 0;
   background-image: url(google.png);
 }
 
@@ -108,74 +115,36 @@ button.as {
   background-image: url(apple.png);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-      transform: rotate(0deg);
-  }
-  to {
-      transform: rotate(360deg);
-  }
-}
-
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+button.gp:hover, button.as:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
 }
 
 .footer {
-  padding: 20px;
-  text-align: center;
+  padding: 2rem;
+  background-color: #1F1F1F;
+  color: white;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .column {
   display: inline-block;
   vertical-align: top;
-  margin: 0 20px;
-  margin-top: 1%;
-  margin-left: 10%;
+  margin: 0 1rem;
 }
 
 .rodape {
   background-color: #1F1F1F;
   color: white;
-  margin-top: 2%;
+  padding: 2rem;
+  border-top: 1px solid #444;
 }
 
 .logo {
-  flex: 1;
-  text-align: left;
   width: 188px;
   height: 86px;
-  margin-top: 80%;
 }
 
 .segunda {
@@ -185,7 +154,7 @@ button.as {
   margin-top: 100px;
   border-radius: 20px;
   margin-left: 2%;
-  box-shadow: 5px 5px 5px 5px #1f1f1f40;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   padding: 2%;
   overflow: auto;
 }
@@ -204,17 +173,31 @@ button.as {
 }
 
 .hello-world {
-  font-size: 48px; /* Tamanho maior para ser mais destacado */
-  color: #00FF00; /* Verde brilhante */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 48px;
+  color: #32CD32; /* Verde limão */
   text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra mais forte */
-  font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada */
-  font-weight: 1200; /* Peso máximo para tornar bem grosso */
-  margin-bottom: 20px; /* Espaço abaixo */
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
+/* Responsividade */
+@media (max-width: 768px) {
+  .texto, .instalar {
+    width: 100%;
+    margin: 0;
+    padding: 1rem;
+  }
 
+  .logootipo, .logo {
+    height: auto;
+    width: 100px;
+  }
 
-
-
-
+  .column {
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
+  }
+}
