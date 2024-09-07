@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaCheck, FaTimes, FaFileDownload } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import API_BASE_URL from '../../config'; // Ajuste o caminho conforme necessário
-import '../../assets/CustomCSS.css'; // Importando o arquivo de estilo customizado
+import API_BASE_URL from '../../config';
+import '../../assets/CustomCSS.css';
 
 export default function Faltas() {
     const [faltasData, setFaltasData] = useState([]);
