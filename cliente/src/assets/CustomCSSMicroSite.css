@@ -1,39 +1,58 @@
 /* Estilos gerais */
+body {
+  background-color: #1F1F1F;
+  background-image: url(fundo_olisipo.png);
+  background-size: cover;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #FFFFFF;
+}
+
 header {
   background-color: #1F1F1F;
   height: 5em;
   display: flex;
+  align-items: center;
+  padding: 0 2em;
+}
+
+.logootipo {
+  height: 50px;
+  width: auto;
 }
 
 .container {
-  /* Outras propriedades para o container, se necessário */
+  display: flex;
+  justify-content: space-between;
+  padding: 2em;
 }
 
 .texto {
-  padding: 40px; /* Aumentado o padding interno */
-  color: #FFFFFF; /* Define a cor do texto dentro da classe texto como branca */
-  text-align: left; /* Alinha o texto à esquerda */
-  font-weight: lighter; /* Torna o texto mais fino */
+  background-color: rgba(31, 31, 31, 0.8); /* Cor de fundo com leve transparência */
+  padding: 2em; /* Aumentado o padding para melhor espaçamento */
+  color: #FFFFFF;
+  text-align: left;
+  font-weight: lighter;
+  border-radius: 15px;
+  width: 50%; /* Ajuste da largura para layout mais responsivo */
 }
 
 .title {
   text-align: left;
-  font-size: 4rem; /* Aumentado o tamanho do título */
-  color: #00D800;   /* Cor do título */
+  font-size: 3rem; /* Ajustado o tamanho do título */
+  color: #00D800;
+  margin-bottom: 0.5em;
 }
 
 .texto-content {
-  color: #FFFFFF; /* Garante que o texto dentro da classe texto-content também seja branco */
-  font-weight: lighter; /* Torna o texto mais fino */
+  color: #FFFFFF;
+  font-weight: lighter;
+  font-size: 1.2rem;
 }
 
 img.logo {
   margin: .7em;
-}
-
-body {
-  background-color: #1F1F1F;
-  background-image: url(fundo_olisipo.png);
 }
 
 div.texto {
@@ -41,71 +60,52 @@ div.texto {
   width: 550px;
   margin-left: 5%;
   margin-top: 4%;
-  text-align: left; /* Corrigido alinhamento para a esquerda */
+  text-align: left;
   border-radius: 20px;
   display: inline-block;
   float: left;
 }
 
 .instalar {
-  display: inline-block;
-  margin-left: 10%;
-  overflow: auto;
-  text-align: center;
-  margin-top: 35vh;
-  background-color: transparent;
-  height: 57vh;
-  width: 550px;
-}
-
-.logootipo {
-  height: 50px;
-  width: auto;
-  margin-top: 1%;
-  margin-left: 1%;
-}
-
-h2.itshappening {
-  font-family: Arial, Helvetica, sans-serif;
-  text-align: left;
-  color: white;
-  font-size: 32px;
-  font-weight: normal;
-  padding-left: 6%;
-}
-
-img.itshappening {
-  width: 500px;
-  height: 100px;
-  margin-top: 20%;
-}
-
-.container {
-  left: 350px;
-  padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(31, 31, 31, 0.7); /* Cor de fundo com leve transparência */
+  border-radius: 15px;
+  padding: 2em;
+  width: 50%;
+  height: auto;
 }
 
 h1 {
-  font-size: 40px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 3rem;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 button.gp {
   background-color: transparent;
-  border-color: transparent;
+  border: none;
   width: 160px;
   height: 50px;
-  margin: 0;
+  margin: 0.5em;
   background-image: url(google.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 button.as {
   background-color: transparent;
-  border-color: transparent;
+  border: none;
   width: 170px;
   height: 50px;
+  margin: 0.5em;
   background-image: url(apple.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
 }
 
 .App-logo {
@@ -115,7 +115,7 @@ button.as {
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
-      animation: App-logo-spin infinite 20s linear;
+    animation: App-logo-spin infinite 20s linear;
   }
 }
 
@@ -136,10 +136,10 @@ button.as {
 
 @keyframes App-logo-spin {
   from {
-      transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   to {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -204,17 +204,11 @@ button.as {
 }
 
 .hello-world {
-  font-size: 48px; /* Tamanho maior para ser mais destacado */
+  font-size: 3rem; /* Tamanho maior para ser mais destacado */
   color: #00FF00; /* Verde brilhante */
   text-align: center;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra mais forte */
   font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada */
-  font-weight: 1200; /* Peso máximo para tornar bem grosso */
-  margin-bottom: 20px; /* Espaço abaixo */
+  font-weight: bold; /* Peso mais forte para destaque */
+  margin-bottom: 1em; /* Espaço abaixo */
 }
-
-
-
-
-
-
