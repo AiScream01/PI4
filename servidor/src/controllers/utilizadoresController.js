@@ -31,31 +31,33 @@ exports.listarPorId = async (req, res) => {
 // Criar um novo utilizador
 exports.criar = async (req, res) => {
   try {
-    // Adicione log para ver o corpo da requisição
     console.log("Dados recebidos:", req.body);
 
-    // Validar a entrada
     const { nome, email, role, palavrapasse } = req.body;
 
     if (!nome || !email || !palavrapasse) {
       return res.status(400).json({ error: 'Nome, email e palavrapasse são obrigatórios.' });
     }
 
-    // Criptografa a senha usando bcrypt
-    const hashedPassword = await bcrypt.hash(req.body.palavrapasse, 10);
+    // Criptografar a palavra-passe
+    const hashedPassword = await bcrypt.hash(palavrapasse, 10);
 
+    // Coleta os arquivos enviados
+    const foto = req.files['foto'] ? req.files['foto'][0].filename : null;
+    const declaracao_academica = req.files['declaracao_academica'] ? req.files['declaracao_academica'][0].filename : null;
+    const declaracao_bancaria = req.files['declaracao_bancaria'] ? req.files['declaracao_bancaria'][0].filename : null;
 
-
-    // Adicione log para verificar os dados antes de criar o utilizador
-    console.log("Dados do utilizador a serem criados:", {nome, email, role});
+    console.log("Arquivos recebidos:", { foto, declaracao_academica, declaracao_bancaria });
 
     // Cria o utilizador no banco de dados
     const utilizadorData = await Utilizadores.create({
       nome,
       email,
       role,
-      foto: req.file ? req.file.filename : null,
       palavrapasse: hashedPassword,
+      foto,
+      declaracao_academica,
+      declaracao_bancaria
     });
 
     res.status(201).json(utilizadorData);
@@ -68,23 +70,30 @@ exports.criar = async (req, res) => {
 // Atualizar um utilizador por ID
 exports.atualizar = async (req, res) => {
   try {
-    // Coleta os dados de atualização do corpo da requisição
     const updateData = { ...req.body };
-    if (req.file) {
-      updateData.foto = req.file.filename;
+
+    // Coleta os arquivos enviados
+    if (req.files['foto']) {
+      updateData.foto = req.files['foto'][0].filename;
+    }
+    if (req.files['declaracao_academica']) {
+      updateData.declaracao_academica = req.files['declaracao_academica'][0].filename;
+    }
+    if (req.files['declaracao_bancaria']) {
+      updateData.declaracao_bancaria = req.files['declaracao_bancaria'][0].filename;
     }
 
+    // Hash da palavrapasse, se fornecida
     if (updateData.palavrapasse) {
       updateData.palavrapasse = await bcrypt.hash(updateData.palavrapasse, 10);
     }
 
-    // Verifica se há uma solicitação pendente para este utilizador
+    // Verifica se há uma solicitação pendente
     const solicitacaoPendente = await Solicitacoes.findOne({
       where: { user_id: req.params.id, estado: 'pendente' }
     });
 
     if (solicitacaoPendente) {
-      // Caso haja uma solicitação pendente, retorne um erro ou uma mensagem apropriada
       return res.status(400).json({ message: 'Há uma solicitação pendente para atualizar os dados deste utilizador.' });
     }
 
@@ -100,6 +109,7 @@ exports.atualizar = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 // Eliminar um utilizador por ID

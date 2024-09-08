@@ -68,12 +68,18 @@ export default function Utilizadores() {
         if (fotoEdit) {
           formData.append("foto", fotoEdit);
         }
-        const response = await axios.put(API_BASE_URL + `utilizador/update/${id_user}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await axios.put(
+          API_BASE_URL + `utilizador/update/${id_user}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
         setUtilizadoresData(
-          utilizadoresData.map(utilizador =>
-            utilizador.id_user === id_user ? { ...utilizador, ...response?.data } : utilizador
+          utilizadoresData.map((utilizador) =>
+            utilizador.id_user === id_user
+              ? { ...utilizador, ...response?.data }
+              : utilizador
           )
         );
         setShowEditModal(false);
@@ -88,17 +94,30 @@ export default function Utilizadores() {
           formData.append("foto", fotoAdd);
         }
 
-        const response = await axios.post(API_BASE_URL + "utilizador/create", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const response = await axios.post(
+          API_BASE_URL + "utilizador/create",
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
 
         setUtilizadoresData([...utilizadoresData, response?.data]);
         setShowAddModal(false);
         Swal.fire("Sucesso!", "O novo utilizador foi adicionado.", "success");
       }
     } catch (error) {
-      console.error(isEdit ? "Erro ao atualizar utilizador:" : "Erro ao adicionar utilizador:", error);
-      Swal.fire("Erro!", "Ocorreu um erro ao tentar guardar o utilizador.", "error");
+      console.error(
+        isEdit
+          ? "Erro ao atualizar utilizador:"
+          : "Erro ao adicionar utilizador:",
+        error
+      );
+      Swal.fire(
+        "Erro!",
+        "Ocorreu um erro ao tentar guardar o utilizador.",
+        "error"
+      );
     }
   };
 
@@ -116,21 +135,30 @@ export default function Utilizadores() {
 
     if (result.isConfirmed) {
       try {
-        const response = await fetch(API_BASE_URL + `utilizador/delete/${id_user}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          API_BASE_URL + `utilizador/delete/${id_user}`,
+          {
+            method: "DELETE",
+          }
+        );
 
         if (response.ok) {
           Swal.fire("Apagado!", "O utilizador foi apagado.", "success");
           setUtilizadoresData(
-            utilizadoresData.filter((utilizador) => utilizador.id_user !== id_user)
+            utilizadoresData.filter(
+              (utilizador) => utilizador.id_user !== id_user
+            )
           );
         } else {
           Swal.fire("Erro!", "Não foi possível apagar o utilizador.", "error");
         }
       } catch (error) {
         console.error("Erro ao apagar o utilizador:", error);
-        Swal.fire("Erro!", "Ocorreu um erro ao tentar apagar o utilizador.", "error");
+        Swal.fire(
+          "Erro!",
+          "Ocorreu um erro ao tentar apagar o utilizador.",
+          "error"
+        );
       }
     }
   };
@@ -138,7 +166,10 @@ export default function Utilizadores() {
   // Calcular os itens da página atual
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = utilizadoresData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = utilizadoresData.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   // Função para mudar de página
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -156,7 +187,10 @@ export default function Utilizadores() {
         </button>
       </div>
       <div className="table-responsive">
-        <table className="table align-middle" style={{ boxShadow: '5px 5px 15px grey' }}>
+        <table
+          className="table align-middle"
+          style={{ boxShadow: "5px 5px 15px grey" }}
+        >
           <thead className="table-light">
             <tr>
               <th scope="col"></th>
@@ -171,7 +205,7 @@ export default function Utilizadores() {
               <tr key={utilizador.id_user}>
                 <td>
                   <img
-                    src={API_BASE_URL + 'uploads/' + utilizador.foto}
+                    src={API_BASE_URL + "uploads/" + utilizador.foto}
                     alt={"User"}
                     className="rounded-circle"
                     width="50"
@@ -211,9 +245,21 @@ export default function Utilizadores() {
         {/* Paginação */}
         <nav>
           <ul className="pagination justify-content-center">
-            {[...Array(Math.ceil(utilizadoresData.length / itemsPerPage)).keys()].map(number => (
-              <li key={number + 1} className={`page-item ${currentPage === number + 1 ? 'active' : ''}`}>
-                <button onClick={() => paginate(number + 1)} className="page-link">
+            {[
+              ...Array(
+                Math.ceil(utilizadoresData.length / itemsPerPage)
+              ).keys(),
+            ].map((number) => (
+              <li
+                key={number + 1}
+                className={`page-item ${
+                  currentPage === number + 1 ? "active" : ""
+                }`}
+              >
+                <button
+                  onClick={() => paginate(number + 1)}
+                  className="page-link"
+                >
                   {number + 1}
                 </button>
               </li>
@@ -290,9 +336,49 @@ export default function Utilizadores() {
                     />
                   </div>
                 </div>
+                <div className="mb-3">
+                  <label
+                    htmlFor="declaracaoBancariaEdit"
+                    className="form-label"
+                  >
+                    Declaração Bancária
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="declaracaoBancariaEdit"
+                    onChange={(e) =>
+                      handleFileChange(e, "declaracaoBancaria", true)
+                    }
+                  />
+                </div>
+                <div className="mb-3">
+                  <label
+                    htmlFor="declaracaoAcademicaEdit"
+                    className="form-label"
+                  >
+                    Declaração Académica
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="declaracaoAcademicaEdit"
+                    onChange={(e) =>
+                      handleFileChange(e, "declaracaoAcademica", true)
+                    }
+                  />
+                </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={() => setShowEditModal(false)}>Cancelar</button>
-                  <button type="submit" className="btn btn-primary">Salvar mudanças</button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowEditModal(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Salvar mudanças
+                  </button>
                 </div>
               </form>
             </div>
@@ -368,6 +454,38 @@ export default function Utilizadores() {
                     />
                   </div>
                   <div className="mb-3">
+                    <label
+                      htmlFor="declaracaoBancariaAdd"
+                      className="form-label"
+                    >
+                      Declaração Bancária
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="declaracaoBancariaAdd"
+                      onChange={(e) =>
+                        handleFileChange(e, "declaracaoBancaria")
+                      }
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label
+                      htmlFor="declaracaoAcademicaAdd"
+                      className="form-label"
+                    >
+                      Declaração Acadêmica
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="declaracaoAcademicaAdd"
+                      onChange={(e) =>
+                        handleFileChange(e, "declaracaoAcademica")
+                      }
+                    />
+                  </div>
+                  <div className="mb-3">
                     <label htmlFor="palavrapasseAdd" className="form-label">
                       Senha
                     </label>
@@ -382,8 +500,16 @@ export default function Utilizadores() {
                   </div>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" onClick={() => setShowAddModal(false)}>Cancelar</button>
-                  <button type="submit" className="btn btn-primary">Adicionar</button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => setShowAddModal(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn btn-primary">
+                    Adicionar
+                  </button>
                 </div>
               </form>
             </div>
