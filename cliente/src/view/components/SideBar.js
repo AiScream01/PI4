@@ -130,15 +130,6 @@ export default function SideBar() {
             Micro-Site Editar
           </Link>
         </li>
-        <li className="nav-item">
-          <Link
-            to="/micro-site"
-            className="nav-link"
-            style={getLinkStyle("/micro-site")}
-          >
-            Micro-Site
-          </Link>
-        </li>
       </ul>
       <hr />
       <div className="dropdown">
