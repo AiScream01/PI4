@@ -42,10 +42,10 @@ exports.criar = async (req, res) => {
     // Criptografar a palavra-passe
     const hashedPassword = await bcrypt.hash(palavrapasse, 10);
 
-    const foto = req.files['foto'] ? req.files['foto'][0].filename : null;
-    const declaracao_academica = req.files['declaracao_academica'] ? req.files['declaracao_academica'][0].filename : null;
-    const declaracao_bancaria = req.files['declaracao_bancaria'] ? req.files['declaracao_bancaria'][0].filename : null;
-
+    // Coleta os arquivos enviados
+    const foto = req.files['foto'] ? `/${req.files['foto'][0].filename}` : null;
+    const declaracao_academica = req.files['declaracao_academica'] ? `/${req.files['declaracao_academica'][0].filename}` : null;
+    const declaracao_bancaria = req.files['declaracao_bancaria'] ? `/${req.files['declaracao_bancaria'][0].filename}` : null;
 
     console.log("Arquivos recebidos:", { foto, declaracao_academica, declaracao_bancaria });
 
@@ -60,6 +60,7 @@ exports.criar = async (req, res) => {
       declaracao_bancaria
     });
 
+    // Responder com o utilizador criado e status 201
     res.status(201).json(utilizadorData);
   } catch (error) {
     console.error("Erro ao criar utilizador:", error);
@@ -67,33 +68,27 @@ exports.criar = async (req, res) => {
   }
 };
 
+
 // Atualizar um utilizador por ID
 exports.atualizar = async (req, res) => {
   try {
+    // Coleta os dados de atualização do corpo da requisição
     const updateData = { ...req.body };
-
-    
-    if (req.files['foto']) {
-      updateData.foto = req.files['foto'][0].filename;
-    }
-    if (req.files['declaracao_academica']) {
-      updateData.declaracao_academica = req.files['declaracao_academica'][0].filename;
-    }
-    if (req.files['declaracao_bancaria']) {
-      updateData.declaracao_bancaria = req.files['declaracao_bancaria'][0].filename;
+    if (req.file) {
+      updateData.foto = req.file.filename;
     }
 
-    // Hash da palavrapasse, se fornecida
     if (updateData.palavrapasse) {
       updateData.palavrapasse = await bcrypt.hash(updateData.palavrapasse, 10);
     }
 
-    // Verifica se há uma solicitação pendente
+    // Verifica se há uma solicitação pendente para este utilizador
     const solicitacaoPendente = await Solicitacoes.findOne({
       where: { user_id: req.params.id, estado: 'pendente' }
     });
 
     if (solicitacaoPendente) {
+      // Caso haja uma solicitação pendente, retorne um erro ou uma mensagem apropriada
       return res.status(400).json({ message: 'Há uma solicitação pendente para atualizar os dados deste utilizador.' });
     }
 
@@ -109,7 +104,6 @@ exports.atualizar = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 
 // Eliminar um utilizador por ID
