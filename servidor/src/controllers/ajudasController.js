@@ -134,27 +134,21 @@ exports.atualizar = async (req, res) => {
 // Atualizar estado das ajudas de custo
 exports.atualizarEstado = async (req, res) => {
     try {
-        const { id_estado, id_custo } = req.params;
-        const { novo_estado } = req.body;
+        const { id_custo } = req.params;
+        const { id_estado } = req.body;
 
-        // Verifica se o estado e a ajuda de custo existem
-        const estadoAjudas = await EstadoAjudas.findOne({ where: { id_estado, id_custo } });
+        const ajudas = await AjudasCusto.findByPk(id_custo);
 
-        if (!estadoAjudas) {
-            return res.status(404).json({ message: 'EstadoAjudas não encontrado' });
+        if(!ajudas){
+            return res.status(404).json({ message: 'Ajudas de custo não encontrada' });
         }
 
-        // Atualiza o estado
-        const [updated] = await EstadoAjudas.update({ id_estado: novo_estado }, {
-            where: { id_estado, id_custo }
-        });
+        await EstadoAjudas.update({id_custo}, { where: {id_custo}});
 
-        if (updated) {
-            const updatedEstadoAjudas = await EstadoAjudas.findOne({ where: { id_estado, id_custo } });
-            res.json(updatedEstadoAjudas);
-        } else {
-            res.status(404).json({ message: 'Erro ao atualizar EstadoAjudas' });
-        }
+        const updatedAjudaCusto = await AjudasCusto.findByPk(id_custo);
+
+        // Responder com a despesa atualizada
+        res.json(updatedAjudaCusto);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
