@@ -132,15 +132,14 @@ exports.list = async (req, res) => {
         reunioes.titulo,
         reunioes.descricao,
         reunioes.data,
-        estado.estado
-    FROM 
+		estado_reuniao.id_reuniao
+    FROM
         reunioes
-    JOIN 
-        estado_reuniao ON reunioes.id_reuniao = reunioes.id_reuniao
-    JOIN 
-        estado ON estado_reuniao.id_reuniao = estado.id_estado
-    WHERE 
-    reunioes.id_user = ${id_user_param};`;
+	  JOIN
+		estado_reuniao ON reunioes.id_reuniao = estado_reuniao.id_reuniao
+    WHERE
+    reunioes.id_user = ${id_user_param} AND
+	  estado_reuniao.id_estado = 1`;
     const reunioes = await sequelize.query(query8, {
       type: Sequelize.QueryTypes.SELECT,
     });
