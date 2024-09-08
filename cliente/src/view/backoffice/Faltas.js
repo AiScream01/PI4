@@ -74,6 +74,7 @@ export default function Faltas() {
                             <th scope="col"></th>
                             <th scope="col">Colaborador</th>
                             <th scope="col">Data</th>
+                            <th scope="col">Horas</th>
                             <th scope="col">Justificação</th>
                             <th scope="col">Ações</th>
                         </tr>
@@ -86,6 +87,7 @@ export default function Faltas() {
                                 </td>
                                 <td>{falta.utilizador.nome}</td>
                                 <td>{new Date(falta.data).toLocaleDateString()}</td>
+                                <td>{falta.horas}</td>
                                 <td>
                                     <a href={API_BASE_URL + 'uploads/' + falta.justificacao} download className="text-decoration-none">
                                         <FaFileDownload className="me-2" /> {falta.justificacao}
