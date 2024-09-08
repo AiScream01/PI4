@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../assets/CustomCSSMicroSite.css';
 import API_BASE_URL from "../../config"; // Ajuste conforme necessário
 
-const MicroSite = () => {
+export default function MicroSite() {
     const [microsite, setMicrosite] = useState({
         titulo: '',
         texto: '',
@@ -76,6 +76,4 @@ const MicroSite = () => {
             </footer>
         </div>
     );
-};
-
-export default MicroSite;
+}
