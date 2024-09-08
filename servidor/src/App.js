@@ -68,6 +68,8 @@ app.use(express.json());
 console.log(express.static(path.join(__dirname, 'uploads')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use('/microsite', micrositeRoute)
+
 // Rotas
 app.use('/appmobile', appMobileRoutes)
 
@@ -88,7 +90,7 @@ app.use('/faltas', faltasRoute)
 app.use('/estados', estadosRoute)
 app.use('/despesasviatura', despesasviaturaRoute)
 app.use('/ajudascusto', ajudascustoRoute)
-app.use('/microsite', micrositeRoute)
+
 
 // Sincronizar com o banco de dados
 sequelize.sync()

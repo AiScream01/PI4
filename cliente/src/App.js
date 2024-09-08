@@ -27,6 +27,7 @@ export default function App() {
     return (
         <Router>
             <Routes>
+                <Route path="/micro-site" element={<MicroSite />} />
                 {/* Rota padrão sem side bar*/}
                 <Route path="/solicitacoes" element={addSidebar(<Solicitacoes />)} />
                 <Route path="/pedido-ferias" element={addSidebar(<PedidoFerias />)} />
@@ -41,7 +42,7 @@ export default function App() {
                 <Route path="/reunioes" element={addSidebar(<Reunioes />)} />
                 <Route path="/utilizadores" element={addSidebar(<Utilizadores />)} />
                 <Route path="/micro-site-editar" element={addSidebar(<EditarMicroSite />)} />
-                <Route path="/micro-site" element={<MicroSite />} />
+
                 <Route path="/" element={(<Login />)} />
             </Routes>
         </Router>
