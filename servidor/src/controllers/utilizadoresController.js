@@ -41,12 +41,6 @@ exports.criar = async (req, res) => {
       return res.status(400).json({ error: 'Nome, email e palavrapasse são obrigatórios.' });
     }
 
-    // Se houver um arquivo PDF carregado, gerar o caminho correto
-    const declaracao_academica = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
-    // Se houver um arquivo PDF carregado, gerar o caminho correto
-    const declaracao_bancaria = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
-
-
     // Criptografa a senha usando bcrypt
     const hashedPassword = await bcrypt.hash(req.body.palavrapasse, 10);
 
@@ -61,8 +55,6 @@ exports.criar = async (req, res) => {
       email,
       role,
       foto: req.file ? req.file.filename : null,
-      declaracao_academica,
-      declaracao_bancaria,
       palavrapasse: hashedPassword,
     });
 
