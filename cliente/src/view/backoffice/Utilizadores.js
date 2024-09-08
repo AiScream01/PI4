@@ -474,7 +474,7 @@ export default function Utilizadores() {
                       htmlFor="declaracaoAcademicaAdd"
                       className="form-label"
                     >
-                      Declaração Acadêmica
+                      Declaração Académica
                     </label>
                     <input
                       type="file"

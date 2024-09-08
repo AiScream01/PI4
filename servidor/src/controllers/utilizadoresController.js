@@ -42,10 +42,10 @@ exports.criar = async (req, res) => {
     // Criptografar a palavra-passe
     const hashedPassword = await bcrypt.hash(palavrapasse, 10);
 
-    // Coleta os arquivos enviados
     const foto = req.files['foto'] ? req.files['foto'][0].filename : null;
     const declaracao_academica = req.files['declaracao_academica'] ? req.files['declaracao_academica'][0].filename : null;
     const declaracao_bancaria = req.files['declaracao_bancaria'] ? req.files['declaracao_bancaria'][0].filename : null;
+
 
     console.log("Arquivos recebidos:", { foto, declaracao_academica, declaracao_bancaria });
 
@@ -72,7 +72,7 @@ exports.atualizar = async (req, res) => {
   try {
     const updateData = { ...req.body };
 
-    // Coleta os arquivos enviados
+    
     if (req.files['foto']) {
       updateData.foto = req.files['foto'][0].filename;
     }
