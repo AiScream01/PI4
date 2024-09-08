@@ -15,16 +15,10 @@ router.get('/', utilizadoresController.listarTodos);
 router.get('/:id', utilizadoresController.listarPorId);
 
 // Criar um novo utilizador
-router.post('/create',
-    upload.fields([
-      { name: 'foto', maxCount: 1 },
-      { name: 'declaracao_academica', maxCount: 1 },
-      { name: 'declaracao_bancaria', maxCount: 1 }
-    ]),
-    utilizadoresController.criar
-  );
+router.post('/create', upload.single('foto'), upload.single('declaracao_academica'), upload.single('declaracao_bancaria'), utilizadoresController.criar);
+
 // Atualizar um utilizador por ID
-router.put('/update/:id', upload.single('foto'), utilizadoresController.atualizar);
+router.put('/update/:id', upload.single('foto'), upload.single('declaracao_academica'), upload.single('declaracao_bancaria'), utilizadoresController.atualizar);
 
 // Eliminar um utilizador por ID
 router.delete('/delete/:id', utilizadoresController.eliminar);

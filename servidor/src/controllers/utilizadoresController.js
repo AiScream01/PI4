@@ -31,43 +31,47 @@ exports.listarPorId = async (req, res) => {
 // Criar um novo utilizador
 exports.criar = async (req, res) => {
   try {
+    // Adicione log para ver o corpo da requisição
     console.log("Dados recebidos:", req.body);
 
+    // Validar a entrada
     const { nome, email, role, palavrapasse } = req.body;
 
     if (!nome || !email || !palavrapasse) {
       return res.status(400).json({ error: 'Nome, email e palavrapasse são obrigatórios.' });
     }
 
-    // Criptografar a palavra-passe
-    const hashedPassword = await bcrypt.hash(palavrapasse, 10);
+    // Se houver um arquivo PDF carregado, gerar o caminho correto
+    const declaracao_academica = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
+    // Se houver um arquivo PDF carregado, gerar o caminho correto
+    const declaracao_bancaria = req.file ? `/${req.file.filename}` : ''; // Caminho do arquivo PDF
 
-    // Coleta os arquivos enviados
-    const foto = req.files['foto'] ? `/${req.files['foto'][0].filename}` : null;
-    const declaracao_academica = req.files['declaracao_academica'] ? `/${req.files['declaracao_academica'][0].filename}` : null;
-    const declaracao_bancaria = req.files['declaracao_bancaria'] ? `/${req.files['declaracao_bancaria'][0].filename}` : null;
 
-    console.log("Arquivos recebidos:", { foto, declaracao_academica, declaracao_bancaria });
+    // Criptografa a senha usando bcrypt
+    const hashedPassword = await bcrypt.hash(req.body.palavrapasse, 10);
+
+
+
+    // Adicione log para verificar os dados antes de criar o utilizador
+    console.log("Dados do utilizador a serem criados:", {nome, email, role});
 
     // Cria o utilizador no banco de dados
     const utilizadorData = await Utilizadores.create({
       nome,
       email,
       role,
-      palavrapasse: hashedPassword,
-      foto,
+      foto: req.file ? req.file.filename : null,
       declaracao_academica,
-      declaracao_bancaria
+      declaracao_bancaria,
+      palavrapasse: hashedPassword,
     });
 
-    // Responder com o utilizador criado e status 201
     res.status(201).json(utilizadorData);
   } catch (error) {
     console.error("Erro ao criar utilizador:", error);
     res.status(500).json({ error: error.message });
   }
 };
-
 
 // Atualizar um utilizador por ID
 exports.atualizar = async (req, res) => {

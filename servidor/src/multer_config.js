@@ -8,9 +8,6 @@ module.exports = multer.diskStorage({
         cb(null, path.join(__dirname, 'uploads')); // Mesmo destino das imagens
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname); // Gerar um nome único para o arquivo
+        cb(null, file.originalname);
     },
 });
-    
-
-

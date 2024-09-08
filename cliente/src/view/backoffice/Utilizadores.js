@@ -17,6 +17,8 @@ export default function Utilizadores() {
   const [nomeEdit, setNomeEdit] = useState("");
   const [emailEdit, setEmailEdit] = useState("");
   const [fotoEdit, setFotoEdit] = useState(null);
+  const [declaracaoAcademicaEdit, setDeclaracaoAcademicaEdit] = useState(null);
+  const [declaracaoBancariaEdit, setDeclaracaoBancariaEdit] = useState(null);
   const [roleEdit, setRoleEdit] = useState("");
 
   // Estados para o modal de adição
@@ -24,6 +26,8 @@ export default function Utilizadores() {
   const [nomeAdd, setNomeAdd] = useState("");
   const [emailAdd, setEmailAdd] = useState("");
   const [fotoAdd, setFotoAdd] = useState(null);
+  const [declaracaoAcademicaAdd, setDeclaracaoAcademicaAdd] = useState(null);
+  const [declaracaoBancariaAdd, setDeclaracaoBancariaAdd] = useState(null);
   const [roleAdd, setRoleAdd] = useState("");
   const [palavrapasseAdd, setPalavrapasseAdd] = useState("");
 
@@ -45,12 +49,16 @@ export default function Utilizadores() {
   }, []);
 
   // Função para lidar com a mudança de arquivos
-  const handleFileChange = (e, isEdit = false) => {
+  const handleFileChange = (e, type, isEdit = false) => {
     const file = e.target.files[0];
     if (isEdit) {
-      setFotoEdit(file);
+      if (type === "foto") setFotoEdit(file);
+      if (type === "declaracao_academica") setDeclaracaoAcademicaEdit(file);
+      if (type === "declaracao_bancaria") setDeclaracaoBancariaEdit(file);
     } else {
-      setFotoAdd(file);
+      if (type === "foto") setFotoAdd(file);
+      if (type === "declaracao_academica") setDeclaracaoAcademicaAdd(file);
+      if (type === "declaracao_bancaria") setDeclaracaoBancariaAdd(file);
     }
   };
 
@@ -65,9 +73,10 @@ export default function Utilizadores() {
         formData.append("email", emailEdit);
         formData.append("role", roleEdit);
 
-        if (fotoEdit) {
-          formData.append("foto", fotoEdit);
-        }
+        if (fotoEdit) formData.append("foto", fotoEdit);
+        if (declaracaoAcademicaEdit) formData.append("declaracao_academica", declaracaoAcademicaEdit);
+        if (declaracaoBancariaEdit) formData.append("declaracao_bancaria", declaracaoBancariaEdit);
+
         const response = await axios.put(
           API_BASE_URL + `utilizador/update/${id_user}`,
           formData,
@@ -90,9 +99,9 @@ export default function Utilizadores() {
         formData.append("role", roleAdd);
         formData.append("palavrapasse", palavrapasseAdd);
 
-        if (fotoAdd) {
-          formData.append("foto", fotoAdd);
-        }
+        if (fotoAdd) formData.append("foto", fotoAdd);
+        if (declaracaoAcademicaAdd) formData.append("declaracao_academica", declaracaoAcademicaAdd);
+        if (declaracaoBancariaAdd) formData.append("declaracao_bancaria", declaracaoBancariaAdd);
 
         const response = await axios.post(
           API_BASE_URL + "utilizador/create",
@@ -227,295 +236,288 @@ export default function Utilizadores() {
                       setShowEditModal(true);
                     }}
                   >
-                    <FaEdit size={20} />
+                    <FaEdit />
                   </button>
                   <button
                     className="btn p-1"
-                    style={{ color: "#d33" }}
+                    style={{ color: "red" }}
                     onClick={() => handleDelete(utilizador.id_user)}
                   >
-                    <FaTrash size={20} />
+                    <FaTrash />
                   </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        {/* Paginação */}
-        <nav>
-          <ul className="pagination justify-content-center">
-            {[
-              ...Array(
-                Math.ceil(utilizadoresData.length / itemsPerPage)
-              ).keys(),
-            ].map((number) => (
+      </div>
+      <nav>
+        <ul className="pagination">
+          {[...Array(Math.ceil(utilizadoresData.length / itemsPerPage))].map(
+            (_, index) => (
               <li
-                key={number + 1}
-                className={`page-item ${
-                  currentPage === number + 1 ? "active" : ""
-                }`}
+                key={index}
+                className={`page-item ${currentPage === index + 1 ? "active" : ""
+                  }`}
               >
                 <button
-                  onClick={() => paginate(number + 1)}
                   className="page-link"
+                  onClick={() => paginate(index + 1)}
                 >
-                  {number + 1}
+                  {index + 1}
                 </button>
               </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+            )
+          )}
+        </ul>
+      </nav>
 
       {/* Modal de Edição */}
-      {showEditModal && (
-        <div className="modal show" style={{ display: "block" }}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Editar Utilizador</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={() => setShowEditModal(false)}
-                ></button>
-              </div>
-              <form onSubmit={(e) => handleSubmit(e, true)}>
-                <div className="modal-body">
-                  <div className="mb-3">
-                    <label htmlFor="nomeEdit" className="form-label">
-                      Nome
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="nomeEdit"
-                      value={nomeEdit}
-                      onChange={(e) => setNomeEdit(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="emailEdit" className="form-label">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="emailEdit"
-                      value={emailEdit}
-                      onChange={(e) => setEmailEdit(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="roleEdit" className="form-label">
-                      Role
-                    </label>
-                    <select
-                      className="form-select"
-                      id="roleEdit"
-                      value={roleEdit}
-                      onChange={(e) => setRoleEdit(e.target.value)}
-                      required
-                    >
-                      <option value="Admin">Admin</option>
-                      <option value="Utilizador">Utilizador</option>
-                    </select>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="fotoEdit" className="form-label">
-                      Foto
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      id="fotoEdit"
-                      onChange={(e) => handleFileChange(e, true)}
-                    />
-                  </div>
+      <div
+        className={`modal fade ${showEditModal ? "show d-block" : ""}`}
+        tabIndex="-1"
+        aria-labelledby="editModalLabel"
+        aria-hidden={!showEditModal}
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="editModalLabel">
+                Editar Utilizador
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setShowEditModal(false)}
+                aria-label="Close"
+              ></button>
+            </div>
+            <form onSubmit={(e) => handleSubmit(e, true)}>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="nomeEdit" className="form-label">
+                    Nome
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="nomeEdit"
+                    value={nomeEdit}
+                    onChange={(e) => setNomeEdit(e.target.value)}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
-                  <label
-                    htmlFor="declaracaoBancariaEdit"
-                    className="form-label"
+                  <label htmlFor="emailEdit" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="emailEdit"
+                    value={emailEdit}
+                    onChange={(e) => setEmailEdit(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="roleEdit" className="form-label">
+                    Role
+                  </label>
+                  <select
+                    id="roleEdit"
+                    className="form-select"
+                    value={roleEdit}
+                    onChange={(e) => setRoleEdit(e.target.value)}
+                    required
                   >
+                    <option value="Admin">Admin</option>
+                    <option value="Utilizador">Utilizador</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="fotoEdit" className="form-label">
+                    Foto
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="fotoEdit"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, "foto", true)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="declaracaoAcademicaEdit" className="form-label">
+                    Declaração Acadêmica
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="declaracaoAcademicaEdit"
+                    accept=".pdf"
+                    onChange={(e) => handleFileChange(e, "declaracao_academica", true)}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="declaracaoBancariaEdit" className="form-label">
                     Declaração Bancária
                   </label>
                   <input
                     type="file"
                     className="form-control"
                     id="declaracaoBancariaEdit"
-                    onChange={(e) =>
-                      handleFileChange(e, "declaracaoBancaria", true)
-                    }
+                    accept=".pdf"
+                    onChange={(e) => handleFileChange(e, "declaracao_bancaria", true)}
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setShowEditModal(false)}
+                >
+                  Fechar
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Atualizar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal de Adição */}
+      <div
+        className={`modal fade ${showAddModal ? "show d-block" : ""}`}
+        tabIndex="-1"
+        aria-labelledby="addModalLabel"
+        aria-hidden={!showAddModal}
+      >
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="addModalLabel">
+                Adicionar Utilizador
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setShowAddModal(false)}
+                aria-label="Close"
+              ></button>
+            </div>
+            <form onSubmit={(e) => handleSubmit(e, false)}>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="nomeAdd" className="form-label">
+                    Nome
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="nomeAdd"
+                    value={nomeAdd}
+                    onChange={(e) => setNomeAdd(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-3">
-                  <label
-                    htmlFor="declaracaoAcademicaEdit"
-                    className="form-label"
+                  <label htmlFor="emailAdd" className="form-label">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="emailAdd"
+                    value={emailAdd}
+                    onChange={(e) => setEmailAdd(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="roleAdd" className="form-label">
+                    Role
+                  </label>
+                  <select
+                    id="roleAdd"
+                    className="form-select"
+                    value={roleAdd}
+                    onChange={(e) => setRoleAdd(e.target.value)}
+                    required
                   >
-                    Declaração Académica
+                    <option value="Admin">Admin</option>
+                    <option value="Utilizador">Utilizador</option>
+                  </select>
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="fotoAdd" className="form-label">
+                    Foto
                   </label>
                   <input
                     type="file"
                     className="form-control"
-                    id="declaracaoAcademicaEdit"
-                    onChange={(e) =>
-                      handleFileChange(e, "declaracaoAcademica", true)
-                    }
+                    id="fotoAdd"
+                    accept="image/*"
+                    onChange={(e) => handleFileChange(e, "foto")}
                   />
                 </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => setShowEditModal(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Salvar mudanças
-                  </button>
+                <div className="mb-3">
+                  <label htmlFor="declaracaoAcademicaAdd" className="form-label">
+                    Declaração Acadêmica
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="declaracaoAcademicaAdd"
+                    accept=".pdf"
+                    onChange={(e) => handleFileChange(e, "declaracao_academica")}
+                  />
                 </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Modal de Adição */}
-      {showAddModal && (
-        <div className="modal show" style={{ display: "block" }}>
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Adicionar Utilizador</h5>
+                <div className="mb-3">
+                  <label htmlFor="declaracaoBancariaAdd" className="form-label">
+                    Declaração Bancária
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="declaracaoBancariaAdd"
+                    accept=".pdf"
+                    onChange={(e) => handleFileChange(e, "declaracao_bancaria")}
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="palavrapasseAdd" className="form-label">
+                    Palavra-passe
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="palavrapasseAdd"
+                    value={palavrapasseAdd}
+                    onChange={(e) => setPalavrapasseAdd(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn-close"
+                  className="btn btn-secondary"
                   onClick={() => setShowAddModal(false)}
-                ></button>
+                >
+                  Fechar
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Adicionar
+                </button>
               </div>
-              <form onSubmit={(e) => handleSubmit(e)}>
-                <div className="modal-body">
-                  <div className="mb-3">
-                    <label htmlFor="nomeAdd" className="form-label">
-                      Nome
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="nomeAdd"
-                      value={nomeAdd}
-                      onChange={(e) => setNomeAdd(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="emailAdd" className="form-label">
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="emailAdd"
-                      value={emailAdd}
-                      onChange={(e) => setEmailAdd(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="roleAdd" className="form-label">
-                      Role
-                    </label>
-                    <select
-                      className="form-select"
-                      id="roleAdd"
-                      value={roleAdd}
-                      onChange={(e) => setRoleAdd(e.target.value)}
-                      required
-                    >
-                      <option value="Admin">Admin</option>
-                      <option value="Utilizador">Utilizador</option>
-                    </select>
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="fotoAdd" className="form-label">
-                      Foto
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      id="fotoAdd"
-                      onChange={(e) => handleFileChange(e)}
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="declaracaoBancariaAdd"
-                      className="form-label"
-                    >
-                      Declaração Bancária
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      id="declaracaoBancariaAdd"
-                      onChange={(e) =>
-                        handleFileChange(e, "declaracaoBancaria")
-                      }
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label
-                      htmlFor="declaracaoAcademicaAdd"
-                      className="form-label"
-                    >
-                      Declaração Académica
-                    </label>
-                    <input
-                      type="file"
-                      className="form-control"
-                      id="declaracaoAcademicaAdd"
-                      onChange={(e) =>
-                        handleFileChange(e, "declaracaoAcademica")
-                      }
-                    />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="palavrapasseAdd" className="form-label">
-                      Senha
-                    </label>
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="palavrapasseAdd"
-                      value={palavrapasseAdd}
-                      onChange={(e) => setPalavrapasseAdd(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => setShowAddModal(false)}
-                  >
-                    Cancelar
-                  </button>
-                  <button type="submit" className="btn btn-primary">
-                    Adicionar
-                  </button>
-                </div>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
