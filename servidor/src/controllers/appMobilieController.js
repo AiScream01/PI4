@@ -132,6 +132,7 @@ exports.list = async (req, res) => {
         reunioes.titulo,
         reunioes.descricao,
         reunioes.data,
+        reunioes.hora,
 		estado.estado
     FROM
         reunioes
