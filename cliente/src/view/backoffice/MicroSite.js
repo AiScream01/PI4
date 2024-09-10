@@ -68,10 +68,6 @@ export default function MicroSite() {
                         <p>+351 234 059 200</p>
                     </div>
 
-                    <div className="column">
-                        <h3>Backoffice</h3>
-                        <a href="/login" className="btn btn-primary">Ir para Login do Backoffice</a>
-                    </div>
                 </div>
             </footer>
         </div>
